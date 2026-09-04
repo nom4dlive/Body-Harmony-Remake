@@ -6,7 +6,8 @@ import {
   ShieldCheck, ArrowLeft, Check, AlertCircle, 
   CreditCard, QrCode, Copy, Sparkles, User, Mail, 
   Phone, Award, ExternalLink, Lock, Building, MapPin, 
-  Clock, MessageSquare, ChevronRight, HelpCircle, CheckCircle2
+  Clock, MessageSquare, ChevronRight, HelpCircle, CheckCircle2,
+  RefreshCw, RotateCcw
 } from 'lucide-react';
 import { congressApi } from '../../services/api';
 import { trackBeginCheckout, trackPurchase } from '../../services/telemetry';
@@ -473,17 +474,6 @@ export default function CongressCheckoutPage() {
       return;
     }
 
-    if (paymentMethod === 'card') {
-      if (!cardData.number || !cardData.holder_name || !cardData.expiry_month || !cardData.expiry_year || !cardData.ccv) {
-        setFormError('Por favor, preencha todos os dados do cartão de crédito.');
-        return;
-      }
-      if (holderType === 'third_party' && (!holderInfo.name.trim() || !holderInfo.cpf)) {
-        setFormError('Por favor, informe o Nome Completo e CPF do titular do cartão.');
-        return;
-      }
-    }
-
     setSubmitting(true);
 
     try {
@@ -509,6 +499,11 @@ export default function CongressCheckoutPage() {
 
       if (res?.ok && res?.data) {
         setCheckoutResult(res.data);
+        // Se for pagamento com cartão e tiver a URL oficial hospedada do Asaas, redireciona imediatamente
+        if (paymentMethod === 'card' && res.data.invoice_url) {
+          window.location.href = res.data.invoice_url;
+          return;
+        }
       } else {
         const errorMsg = res?.error || res?.message || 'O banco não autorizou a transação.';
         setFormError(errorMsg);
@@ -527,19 +522,83 @@ export default function CongressCheckoutPage() {
     }
   };
 
-  // Copiar Código PIX
-  const handleCopyPix = () => {
-    if (checkoutResult?.pix_copy_paste) {
-      navigator.clipboard.writeText(checkoutResult.pix_copy_paste);
-      setCopiedPix(true);
-      setTimeout(() => setCopiedPix(false), 2500);
+  // Polling em background para verificar aprovação automática do PIX
+  useEffect(() => {
+    let interval = null;
+    if (checkoutResult && checkoutResult.payment_method === 'pix' && checkoutResult.ticket_token) {
+      interval = setInterval(async () => {
+        try {
+          const res = await congressApi.getTicket(checkoutResult.ticket_token);
+          if (res?.ok && res?.data) {
+            const status = res.data.payment_status;
+            if (res.data.is_confirmed || status === 'CONFIRMED' || status === 'RECEIVED' || status === 'FREE_APPROVED') {
+              setCheckoutResult(prev => ({
+                ...prev,
+                ...res.data,
+                payment_status: 'CONFIRMED'
+              }));
+            }
+          }
+        } catch (err) {
+          // Polling defensivo silencioso
+        }
+      }, 3500);
     }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [checkoutResult]);
+
+  // Copiar Código PIX com Fallback Robusto 3-Tier (Mobile Safari, Chrome iOS & Android)
+  const handleCopyPix = () => {
+    const text = checkoutResult?.pix_copy_paste;
+    if (!text) return;
+
+    let copied = false;
+    // Tier 1: Clipboard API nativa
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          setCopiedPix(true);
+          setTimeout(() => setCopiedPix(false), 3000);
+        })
+        .catch(() => {
+          fallbackCopy(text);
+        });
+      return;
+    }
+
+    fallbackCopy(text);
+  };
+
+  const fallbackCopy = (text) => {
+    try {
+      const el = document.getElementById('pixCopyPasteInput');
+      if (el) {
+        el.focus();
+        el.select();
+        el.setSelectionRange(0, 99999); // Mobile iOS Safari
+      }
+      const successful = document.execCommand('copy');
+      if (successful) {
+        setCopiedPix(true);
+        setTimeout(() => setCopiedPix(false), 3000);
+      }
+    } catch (err) {
+      console.warn('Erro na copia manual:', err);
+    }
+  };
+
+  // Gerar Nova Chave PIX
+  const handleRegeneratePix = () => {
+    setCheckoutResult(null);
+    setFormError('');
   };
 
   // Texto WhatsApp VIP
   const vipWhatsAppUrl = useMemo(() => {
     const text = encodeURIComponent(
-      `Olá equipe Body Harmony! Estou tentando finalizar minha inscrição no Congresso (${activeTier.name}) no valor de R$ ${(finalAmountCents / 100).toFixed(2).replace('.', ',')}, mas meu cartão não passou. Podem me ajudar com uma opção de pagamento ou maquininha? Meu nome é ${customer.name || 'congressista'}.`
+      `Olá equipe Body Harmony! Estou tentando finalizar minha inscrição no Congresso (${activeTier.name}) no valor de R$ ${(finalAmountCents / 100).toFixed(2).replace('.', ',')}, mas meu pagamento via PIX apresentou inconsistência. Podem me ajudar a emitir um código novo ou pagar de outra forma? Meu nome é ${customer.name || 'congressista'}.`
     );
     return `https://wa.me/5518996959486?text=${text}`;
   }, [activeTier, finalAmountCents, customer]);
@@ -560,39 +619,106 @@ export default function CongressCheckoutPage() {
               Abra o app do seu banco, escolha <strong>PIX Copia e Cola</strong> ou aponte a câmera para o QR Code abaixo.
             </p>
 
-            {/* Imagem do QR Code */}
+            {/* Imagem do QR Code em Alta Definição */}
             {checkoutResult.pix_qr_code && (
-              <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '12px', display: 'inline-block', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
+              <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: '16px', display: 'inline-block', marginBottom: '1.5rem', boxShadow: '0 8px 30px rgba(0,0,0,0.6)' }}>
                 <img 
                   src={checkoutResult.pix_qr_code} 
                   alt="QR Code PIX" 
-                  style={{ width: '220px', height: '220px', display: 'block' }} 
+                  style={{ width: '230px', height: '230px', display: 'block' }} 
                 />
               </div>
             )}
 
-            {/* Código Copia e Cola */}
+            {/* Código Copia e Cola com 3-Tier Fallback */}
             {checkoutResult.pix_copy_paste && (
-              <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                <input 
-                  type="text" 
-                  readOnly 
-                  value={checkoutResult.pix_copy_paste} 
-                  style={{ flex: 1, background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px', padding: '0.75rem', color: '#CBD5E1', fontSize: '0.8rem', fontFamily: 'monospace' }} 
-                />
-                <AuraButtonPrimary type="button" onClick={handleCopyPix} style={{ minHeight: '44px', padding: '0 1.25rem', gap: '0.4rem', fontSize: '0.85rem' }}>
-                  {copiedPix ? <Check size={16} /> : <Copy size={16} />}
-                  {copiedPix ? 'Copiado!' : 'Copiar'}
-                </AuraButtonPrimary>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <input 
+                    id="pixCopyPasteInput"
+                    type="text" 
+                    readOnly 
+                    value={checkoutResult.pix_copy_paste} 
+                    onClick={(e) => e.target.select()}
+                    style={{ flex: 1, background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px', padding: '0.75rem', color: '#CBD5E1', fontSize: '0.8rem', fontFamily: 'monospace' }} 
+                  />
+                  <AuraButtonPrimary type="button" onClick={handleCopyPix} style={{ minHeight: '44px', padding: '0 1.25rem', gap: '0.4rem', fontSize: '0.85rem' }}>
+                    {copiedPix ? <Check size={16} /> : <Copy size={16} />}
+                    {copiedPix ? 'Copiado!' : 'Copiar Código'}
+                  </AuraButtonPrimary>
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#64748B', textAlign: 'left' }}>
+                  Dica: Se o botão não colar no seu aplicativo do banco, toque dentro da caixa de texto para selecionar e copiar manualmente.
+                </div>
               </div>
             )}
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FDE68A', fontSize: '0.85rem', marginBottom: '2rem' }}>
-              <Clock size={16} />
-              <span>Aprovação em segundos assim que você transferir</span>
+            {/* Chave PIX Direta Oficial (Zero Intermediários Bacen) */}
+            <div style={{ background: 'rgba(10, 62, 96, 0.4)', border: '1px solid rgba(212, 175, 55, 0.3)', borderRadius: '10px', padding: '0.85rem 1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
+              <div style={{ fontSize: '0.78rem', color: '#FDE68A', fontWeight: 700, marginBottom: '0.35rem' }}>
+                🔑 Chave PIX Aleatória Direta (Se preferir transferir pelo app do seu banco):
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', background: 'rgba(0,0,0,0.35)', padding: '0.5rem 0.75rem', borderRadius: '6px' }}>
+                <span style={{ fontSize: '0.82rem', fontFamily: 'monospace', color: '#FFFFFF', wordBreak: 'break-all' }}>
+                  c15a5ca2-ba54-4501-9beb-0f07ca3d21e2
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText('c15a5ca2-ba54-4501-9beb-0f07ca3d21e2');
+                    setCopiedPix(true);
+                    setTimeout(() => setCopiedPix(false), 2500);
+                  }}
+                  style={{ background: '#D4AF37', color: '#0A3E60', border: 'none', borderRadius: '4px', padding: '0.35rem 0.65rem', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', flexShrink: 0 }}
+                >
+                  Copiar Chave
+                </button>
+              </div>
+              <div style={{ fontSize: '0.74rem', color: '#94A3B8', marginTop: '0.4rem' }}>
+                Favorecido: <strong>Body Harmony Eletroestimu</strong> · Valor exato: <strong>R$ {(finalAmountCents / 100).toFixed(2).replace('.', ',')}</strong>
+              </div>
+            </div>
+
+            {/* Status em Tempo Real */}
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '0.65rem', 
+              margin: '0 0 1.5rem',
+              padding: '0.75rem 1rem',
+              background: 'rgba(212, 175, 55, 0.08)',
+              border: '1px solid rgba(212, 175, 55, 0.25)',
+              borderRadius: '8px',
+              fontSize: '0.82rem',
+              color: '#f9e27e',
+              fontWeight: 600
+            }}>
+              <RefreshCw size={15} style={{ animation: 'spin 2s linear infinite' }} />
+              <span>Aguardando pagamento... Sincronização bancária ativa em tempo real</span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {checkoutResult.asaas_invoice_url && (
+                <AuraButtonPrimary 
+                  as="a" 
+                  href={checkoutResult.asaas_invoice_url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{ textDecoration: 'none', justifyContent: 'center', minHeight: '46px', gap: '0.5rem', fontSize: '0.88rem' }}
+                >
+                  <ExternalLink size={16} /> Abrir Página Oficial de Pagamento Asaas
+                </AuraButtonPrimary>
+              )}
+
+              <AuraButtonGhost 
+                type="button" 
+                onClick={handleRegeneratePix} 
+                style={{ justifyContent: 'center', minHeight: '44px', gap: '0.5rem', fontSize: '0.85rem', borderColor: 'rgba(255,255,255,0.2)' }}
+              >
+                <RotateCcw size={15} /> Gerar Novo Código PIX / Alterar Forma de Pagamento
+              </AuraButtonGhost>
+
               <AuraButtonGhost as="a" href={vipWhatsAppUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', justifyContent: 'center', minHeight: '46px', gap: '0.5rem', fontSize: '0.88rem' }}>
                 <MessageSquare size={16} /> Dúvidas no pagamento? Falar no WhatsApp
               </AuraButtonGhost>
@@ -736,135 +862,54 @@ export default function CongressCheckoutPage() {
                 {/* Bloco de Cartão de Crédito */}
                 {paymentMethod === 'card' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    {/* Seletor de Titularidade em Abas Claras */}
-                    <div style={{ marginBottom: '0.85rem' }}>
-                      <label style={{ fontSize: '0.82rem', fontWeight: 600, color: '#CBD5E1', display: 'block', marginBottom: '0.4rem' }}>
-                        De quem é o cartão que você vai usar?
-                      </label>
-                      <HolderTypeSelector>
-                        <HolderTypeOption 
-                          type="button" 
-                          $selected={holderType === 'same'} 
-                          onClick={() => setHolderType('same')}
-                        >
-                          <User size={14} /> Meu Próprio Cartão
-                        </HolderTypeOption>
-                        <HolderTypeOption 
-                          type="button" 
-                          $selected={holderType === 'third_party'} 
-                          onClick={() => setHolderType('third_party')}
-                        >
-                          <Building size={14} /> Cartão de Outra Pessoa
-                        </HolderTypeOption>
-                      </HolderTypeSelector>
-                    </div>
-
-                    {/* Campos de Titular de Terceiros */}
-                    {holderType === 'third_party' && (
-                      <div style={{ background: 'rgba(212, 175, 55, 0.06)', border: '1px dashed rgba(212, 175, 55, 0.35)', padding: '1rem', borderRadius: '8px', marginBottom: '1.25rem' }}>
-                        <div style={{ fontSize: '0.78rem', color: '#FDE68A', fontWeight: 700, marginBottom: '0.75rem' }}>
-                          💡 Preencha os dados do dono do cartão (mãe, marido ou clínica) para aprovar sem recusa:
-                        </div>
-                        <FormGroup $cols={2}>
-                          <InputWrapper>
-                            <label>Nome do Dono do Cartão *</label>
-                            <input 
-                              type="text" 
-                              placeholder="Como impresso no cartão" 
-                              value={holderInfo.name}
-                              onChange={(e) => setHolderInfo(prev => ({ ...prev, name: e.target.value }))}
-                              required={holderType === 'third_party'}
-                            />
-                          </InputWrapper>
-                          <InputWrapper>
-                            <label>CPF do Dono do Cartão *</label>
-                            <input 
-                              type="text" 
-                              placeholder="000.000.000-00" 
-                              value={holderInfo.cpf}
-                              onChange={handleHolderCpfChange}
-                              required={holderType === 'third_party'}
-                            />
-                          </InputWrapper>
-                        </FormGroup>
-                      </div>
-                    )}
-
-                    <FormGroup>
-                      <InputWrapper>
-                        <label>Número do Cartão *</label>
-                        <input 
-                          type="text" 
-                          placeholder="0000 0000 0000 0000" 
-                          value={cardData.number}
-                          onChange={handleCardNumberChange}
-                          required={paymentMethod === 'card'}
-                        />
-                      </InputWrapper>
-                    </FormGroup>
-
-                    <FormGroup $cols={2}>
-                      <InputWrapper>
-                        <label>Nome Impresso no Cartão *</label>
-                        <input 
-                          type="text" 
-                          placeholder="EX: MARIA S SILVA" 
-                          value={cardData.holder_name}
-                          onChange={(e) => setCardData(prev => ({ ...prev, holder_name: e.target.value.toUpperCase() }))}
-                          required={paymentMethod === 'card'}
-                        />
-                      </InputWrapper>
-                      <FormGroup $cols={2} style={{ margin: 0 }}>
-                        <InputWrapper>
-                          <label>Validade *</label>
-                          <div style={{ display: 'flex', gap: '0.3rem' }}>
-                            <input 
-                              type="text" 
-                              placeholder="MM" 
-                              maxLength={2} 
-                              value={cardData.expiry_month}
-                              onChange={(e) => setCardData(prev => ({ ...prev, expiry_month: e.target.value.replace(/\D/g, '') }))}
-                              required={paymentMethod === 'card'}
-                            />
-                            <input 
-                              type="text" 
-                              placeholder="AA" 
-                              maxLength={2} 
-                              value={cardData.expiry_year}
-                              onChange={(e) => setCardData(prev => ({ ...prev, expiry_year: e.target.value.replace(/\D/g, '') }))}
-                              required={paymentMethod === 'card'}
-                            />
+                    <div style={{
+                      background: 'rgba(212, 175, 55, 0.05)',
+                      border: '1px solid rgba(212, 175, 55, 0.25)',
+                      borderRadius: '12px',
+                      padding: '1.25rem',
+                      marginBottom: '1rem'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.75rem' }}>
+                        <ShieldCheck size={22} color="#D4AF37" />
+                        <div>
+                          <div style={{ color: '#F8FAFC', fontWeight: 700, fontSize: '0.95rem' }}>
+                            Checkout Blindado Asaas (Até 12x)
                           </div>
-                        </InputWrapper>
-                        <InputWrapper>
-                          <label>CVV *</label>
-                          <input 
-                            type="text" 
-                            placeholder="123" 
-                            maxLength={4} 
-                            value={cardData.ccv}
-                            onChange={(e) => setCardData(prev => ({ ...prev, ccv: e.target.value.replace(/\D/g, '') }))}
-                            required={paymentMethod === 'card'}
-                          />
-                        </InputWrapper>
-                      </FormGroup>
-                    </FormGroup>
+                          <div style={{ color: '#94A3B8', fontSize: '0.78rem' }}>
+                            Ambiente bancário oficial com autenticação 3D-Secure
+                          </div>
+                        </div>
+                      </div>
 
-                    <FormGroup>
-                      <InputWrapper>
-                        <label>Parcelamento *</label>
-                        <select 
-                          value={installments} 
-                          onChange={(e) => setInstallments(Number(e.target.value))}
-                        >
-                          {installmentOptions.map(opt => (
-                            <option key={opt.num} value={opt.num}>
-                              {opt.label}
-                            </option>
-                          ))}
-                        </select>
-                      </InputWrapper>
-                    </FormGroup>
+                      <div style={{ fontSize: '0.85rem', color: '#CBD5E1', lineHeight: '1.5', marginBottom: '1rem' }}>
+                        Para sua total proteção e evitar bloqueios por divergência de titularidade, você será direcionado para a <strong>fatura oficial do Asaas</strong> ao clicar no botão abaixo.
+                      </div>
+
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                        gap: '0.65rem',
+                        background: 'rgba(10, 25, 47, 0.6)',
+                        padding: '0.85rem',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        fontSize: '0.78rem',
+                        color: '#94A3B8'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <CheckCircle2 size={14} color="#10B981" /> Aceita cartão de terceiros (mãe/parente/empresa)
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <CheckCircle2 size={14} color="#10B981" /> Parcelamento em até 12x no cartão
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <CheckCircle2 size={14} color="#10B981" /> Liberação imediata da sua vaga
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <CheckCircle2 size={14} color="#10B981" /> Sem necessidade de digitar cartão aqui
+                        </div>
+                      </div>
+                    </div>
                   </motion.div>
                 )}
 

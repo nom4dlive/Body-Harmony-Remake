@@ -25,6 +25,9 @@
   1. `🔒 Concluir no App do Banco (Link Seguro Asaas)`: abre a fatura oficial com suporte a autenticação biométrica 3DS.
   2. `⚡ Preferir Pagar via PIX com Liberação Instantânea`: alterna a modalidade para PIX em 1 clique.
 - **Polling Reativo em Background**: Manter escuta periódica do status da inscrição/pedido enquanto o usuário abre o app do banco. Assim que o pagamento for aprovado externamente, a tela transiciona automaticamente para a celebração e emissão da credencial/recibo sem exigir recarregamento manual.
+- **Chave Aleatória Direta do Asaas & Redirecionamento Blindado**:
+  - Checkouts de alta conversão e eventos devem exibir a Chave Aleatória Direta da conta Asaas em destaque com botão de cópia rápida em 1 clique (com fallback robusto para iOS Safari e Android), contornando 100% dos atrasos ou rejeições de sincronização de QR Code dinâmico do Banco Central (SPI).
+  - Na aba de Cartão de Crédito, priorizar o redirecionamento com 1 clique para a fatura oficial hospedada do Asaas, permitindo parcelamento em até 12x sem atrito de digitação manual de número/CVV e com aceitação de cartões corporativos ou de terceiros (mãe, cônjuge, clínica).
 15. **Invariante de Experiência Omnichannel e Fidelidade WhatsApp (Omnichannel Chat UX Invariant)**:
     - **Reações Emoji (ReactionPills)**: Emojis isolados de reação (`👍`, `❤️`, etc.) nunca devem gerar novos balões de conversa no chat. Devem ser agrupados na mensagem de referência e exibidos como pequenas pílulas (`ReactionPill`) sobrepostas na borda inferior do balão.
     - **Mensagens de Grupo**: Cabeçalhos de remetentes de grupo (`**+55... - Nome:**`) devem ser extraídos pelo parser e renderizados como tags de autor estilizadas com cores estáveis geradas por hash individual.

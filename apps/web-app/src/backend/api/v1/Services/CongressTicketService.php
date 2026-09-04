@@ -770,6 +770,8 @@ class CongressTicketService {
                     'payment_method' => 'pix',
                     'payment_status' => 'PENDING',
                     'asaas_payment_id' => $pixRes['payment_id'],
+                    'asaas_invoice_url' => $pixRes['invoice_url'] ?? null,
+                    'bank_slip_url' => $pixRes['bank_slip_url'] ?? null,
                     'pix_qr_code' => $pixRes['pix_qr_code'],
                     'pix_copy_paste' => $pixRes['pix_copy_paste'],
                     'pix_expiration' => $pixRes['expiration'],
@@ -780,16 +782,15 @@ class CongressTicketService {
             ];
         }
 
-        // Caso 3: PAGAMENTO VIA CARTÃO DE CRÉDITO
-        if ($paymentMethod === 'card') {
+        // Caso 3: PAGAMENTO VIA CARTÃO DE CRÉDITO (Redirecionamento Seguro Hospedado Asaas em até 12x)
+        if ($paymentMethod === 'card' || $paymentMethod === 'hosted_card') {
             $installments = max(1, min(12, (int)($data['installments'] ?? 1)));
-            $cardData = $data['card_data'] ?? [];
 
-            $cardRes = $this->gateway->createCreditCardCharge([
+            // Gera cobrança oficial hospedada no Asaas com suporte a parcelamento 1x a 12x e 3DS
+            $hostedRes = $this->gateway->createHostedInvoice([
                 'amount_cents' => $finalAmountCents,
                 'installments' => $installments,
-                'card_data' => $cardData,
-                'holder_info' => $data['holder_info'] ?? null,
+                'billing_type' => 'UNDEFINED',
                 'customer_name' => $name,
                 'customer_email' => $email,
                 'customer_cpf' => $cpf,
@@ -798,27 +799,20 @@ class CongressTicketService {
                 'external_reference' => $ticketToken
             ]);
 
-            if (!$cardRes['ok']) {
-                $declineError = $cardRes['error'] ?? 'O banco do cartão recusou a cobrança.';
-                error_log("[CongressTicketService] Cartão recusado: {$declineError}. Tentando gerar fatura de fallback 3DS.");
-
-                // Reverte incremento de uso do cupom pois a cobrança não foi liquidada
+            if (!$hostedRes['ok']) {
+                $errorMsg = $hostedRes['error'] ?? 'Não foi possível gerar a fatura de pagamento no momento.';
                 if ($couponCode) {
                     try {
                         $stmtDec = $this->db->prepare("UPDATE `congress_coupons` SET `current_uses` = GREATEST(0, `current_uses` - 1) WHERE `code` = ?");
                         $stmtDec->execute([$couponCode]);
                     } catch (\Throwable $eDec) {}
                 }
-
                 return [
                     'ok' => false,
-                    'error' => $declineError,
-                    'can_switch_to_pix' => true,
+                    'error' => $errorMsg,
                     'ticket_token' => $ticketToken
                 ];
             }
-
-            $payStatus = ($cardRes['status'] === 'CONFIRMED') ? 'CONFIRMED' : 'PENDING';
 
             $stmt = $this->db->prepare("
                 INSERT INTO `congress_registrations`
@@ -827,13 +821,13 @@ class CongressTicketService {
                     `category`, `coupon_code`, `discount_cents`, `amount_cents`, `payment_method`, `payment_status`,
                     `asaas_payment_id`, `installments`, `installment_value_cents`
                 )
-                VALUES (?, ?, ?, ?, ?, ?, 'Geral', ?, ?, ?, 'card', ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, 'Geral', ?, ?, ?, 'card', 'PENDING', ?, ?, ?)
             ");
 
             $stmt->execute([
                 $ticketToken, $tierId, $name, $email, $cpf, $phone,
-                $couponCode, $discountCents, $cardRes['amount_cents'], $payStatus,
-                $cardRes['payment_id'], $installments, $cardRes['installment_value_cents']
+                $couponCode, $discountCents, $hostedRes['amount_cents'],
+                $hostedRes['payment_id'], $installments, $hostedRes['installment_value_cents']
             ]);
 
             $regId = (int)$this->db->lastInsertId();
@@ -845,17 +839,15 @@ class CongressTicketService {
                     'registration_id' => $regId,
                     'tier_name' => $tier['name'],
                     'customer_name' => $name,
-                    'amount_cents' => $cardRes['amount_cents'],
+                    'amount_cents' => $hostedRes['amount_cents'],
                     'installments' => $installments,
-                    'installment_value_cents' => $cardRes['installment_value_cents'],
+                    'installment_value_cents' => $hostedRes['installment_value_cents'],
                     'payment_method' => 'card',
-                    'payment_status' => $payStatus,
-                    'asaas_payment_id' => $cardRes['payment_id'],
-                    'qr_code_url' => ($payStatus === 'CONFIRMED') ? $qrCodeUrl : null,
-                    'is_mock' => (bool)($cardRes['is_mock'] ?? false),
-                    'message' => ($payStatus === 'CONFIRMED')
-                        ? 'Pagamento aprovado e inscrição confirmada com sucesso!'
-                        : 'Pagamento em análise pela operadora do cartão.'
+                    'payment_status' => 'PENDING',
+                    'asaas_payment_id' => $hostedRes['payment_id'],
+                    'invoice_url' => $hostedRes['invoice_url'] ?? null,
+                    'is_mock' => (bool)($hostedRes['is_mock'] ?? false),
+                    'message' => 'Fatura gerada com sucesso. Conclua o pagamento de forma segura.'
                 ]
             ];
         }

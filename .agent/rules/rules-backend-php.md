@@ -150,3 +150,9 @@ Ação:
 - **Zero Testes Manuais & Esteira E2E Obrigatória**: Toda alteração no fluxo de contratos ou termos DEVE ser validada por testes sintéticos automatizados (`ContractSigningSecurityTest.php` e `test_contract_signing_e2e.ps1`). Esses testes devem ser acoplados obrigatoriamente ao `nexus_gate.ps1` (pré-deploy) e ao Deep Smoke Test de `deploy-hostinger.ps1` (pós-deploy), validando compilação mPDF, Folha de Chancela Jurídica (MP 2.200-2/2001 e Lei 14.063/2020), QR Code e Hash SHA-256.
 - **Resolução Resiliente do Autoloader Composer**: `ContractPdfService` DEVE conter resolução defensiva com múltiplos fallbacks para o `vendor/autoload.php` (`__DIR__ . '/../../../vendor/autoload.php'`, `__DIR__ . '/../../../../build/public_html/vendor/autoload.php'`), garantindo que mPDF e classes auxiliares carreguem sem dependência do ponto de entrada da execução (CLI, Webhook, API ou Cron).
 
+🛡️ REGRA 83: Invariante de Contingência Tripla de Checkout Asaas (Direct PIX Key & Hosted Invoice First)
+Diretriz: Em checkouts de eventos, ingressos e alta conversão, o gateway Asaas deve operar com contingência tripla para blindar o fluxo de vendas contra rejeições de adquirente por titularidade de terceiros e instabilidade do SPI/Bacen.
+Ação:
+- **PIX Tri-Channel**: Toda criação de cobrança PIX deve retornar o QR Code dinâmico, o Copia e Cola, e a URL da fatura oficial hospedada (`invoiceUrl`), além de disponibilizar a chave aleatória direta da conta jurídica para contingência imediata de transferência bancária manual.
+- **Cartão Hosted-First sem Carnê**: Para pagamentos parcelados onde haja risco de titularidade divergente (ex: uso de cartão da mãe ou parente), o backend deve gerar a cobrança avulsa com `billing_type: UNDEFINED` sem gerar carnês futuros, retornando `invoice_url` para conclusão no ambiente blindado 3DS do Asaas.
+

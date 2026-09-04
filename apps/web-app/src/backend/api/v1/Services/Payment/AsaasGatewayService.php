@@ -357,11 +357,16 @@ class AsaasGatewayService implements PaymentGatewayInterface {
             $pixQrCode = 'data:image/png;base64,' . $pixQrCode;
         }
 
+        $invoiceUrl = $res['data']['invoiceUrl'] ?? null;
+        $bankSlipUrl = $res['data']['bankSlipUrl'] ?? null;
+
         return [
             'ok' => true,
             'payment_id' => $paymentId,
             'pix_qr_code' => $pixQrCode,
             'pix_copy_paste' => $pixCopyPaste,
+            'invoice_url' => $invoiceUrl,
+            'bank_slip_url' => $bankSlipUrl,
             'expiration' => $expiration,
             'amount_cents' => $amountCents,
             'notification_disabled' => $this->notificationDisabled,
