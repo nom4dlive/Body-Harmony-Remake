@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SiteConfigHistoryContract",
+  "description": "Contrato de histórico de revisões e rollback para o Visual Editor no painel Admin",
+  "endpoints": {
+    "/v1/admin/site_config/history": {
+      "GET": {
+        "summary": "Obtém a lista de revisões históricas salvas do layout e configurações do site",
+        "security": ["AdminToken"],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "history": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "integer" },
+                          "created_at": { "type": "string", "format": "date-time" },
+                          "admin_name": { "type": "string" },
+                          "summary_diff": { "type": "string", "description": "Breve descrição visual do que mudou" }
+                        },
+                        "required": ["id", "created_at", "admin_name"]
+                      }
+                    }
+                  },
+                  "required": ["history"]
+                }
+              }
+            }
+          },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/v1/admin/site_config/rollback": {
+      "POST": {
+        "summary": "Restaura o site para uma versão anterior a partir do ID da revisão",
+        "security": ["AdminToken"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "revision_id": { "type": "integer", "description": "ID da revisão histórica a ser restaurada" }
+                },
+                "required": ["revision_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restauração bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "config": { "type": "object", "description": "O novo objeto JSON de site_config carregado" }
+                  },
+                  "required": ["ok", "message", "config"]
+                }
+              }
+            }
+          },
+          "400": { "description": "Requisição inválida ou revisão não encontrada" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    }
+  }
+}

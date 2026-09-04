@@ -1,0 +1,23 @@
+# ============================================================================
+# SECURITY: Protect .env files from web access
+# ============================================================================
+<Files ".env*">
+    Require all denied
+</Files>
+
+# Alternative for Apache 2.2 compatibility
+<FilesMatch "^\.env">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ============================================================================
+# URL REWRITING
+# ============================================================================
+RewriteEngine On
+CGIPassAuth On
+
+# Route all requests to index.php unless the file/dir exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

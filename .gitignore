@@ -1,0 +1,80 @@
+# Node & Dependencies
+node_modules/
+vendor/
+
+# Environment & Secrets (Universal protection)
+.env*
+*.env*
+!.env.example
+!.env.*.example
+!*.env.template
+!*.env.example
+!docker-compose*.yml
+
+# SSH Keys, Public/Private Keys and Certificates
+openspec/tracker/Hostinger_VPS/id_ed25519*
+openspec/tracker/Hostinger_VPS/rootpass.txt
+openspec/tracker/Hostinger_VPS/API.md
+*.key
+*.pem
+*.pub
+*.crt
+*.p12
+*.pfx
+id_ed25519*
+id_rsa*
+
+# Local References, Credentials & Sensitive Docs
+Landing_Pages/FTP_Credenciais.md
+*FTP_Credenciais*
+zz_Referencias/
+*service-account*.json
+*credentials*.json
+google-service-account*.json
+token.json
+*token*.json
+client_secret*.json
+
+# Logs, Runtime & Temporary Files
+logs/
+tmp/
+tmp_mpdf/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Builds and Distributions
+build/
+dist/
+apps/web-app/build/
+releases/
+
+# Backups and Local Scratch
+/backups/
+/scratch/
+scratch*
+private_uploads/
+exports/
+
+# Test Artifacts and Browser Data
+tests/results/
+chrome-user-data/
+.pki/
+
+# Media Uploads & Database Snapshots (Heavy Binaries)
+uploads/
+**/uploads/**
+!apps/web-app/src/backend/uploads/.gitkeep
+infrastructure/database/snapshot/
+*.sql.gz
+*.sql.bak
+*.bak*
+
+# Binaries, Large Videos & Legacy Archives
+scripts/lms/bin/
+openspec/archive_legacy.zip
+apps/web-app/src/frontend/src/assets/assets/raw/videos/
+*.MOV
+*.mov

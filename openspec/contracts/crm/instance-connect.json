@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMInstanceConnectContract",
+  "description": "Contrato para geração de QR Code e Pairing Code de uma linha de WhatsApp",
+  "type": "object",
+  "required": ["success", "instance_key"],
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "instance_key": {
+      "type": "string"
+    },
+    "pairing_code": {
+      "type": ["string", "null"]
+    },
+    "qrcode_base64": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+---
+id: zero-trust-hard-gating
+trigger: "before claiming any implementation, bugfix or task completion"
+confidence: 0.90
+domain: "verification"
+source: "session-observation"
+scope: project
+project_id: "body-harmony-remake"
+---
+
+# Zero-Trust Hard Gating
+
+## Action
+Never claim a task is completed, fixed or verified without physically running:
+`powershell -ExecutionPolicy Bypass -File scripts/nexus_gate.ps1`
+and ensuring Exit Code 0.
+
+## Evidence
+- Prevents hallucinated completions ('said it was done but was not').
+- Deterministic gating eliminates multi-cycle debug loops.

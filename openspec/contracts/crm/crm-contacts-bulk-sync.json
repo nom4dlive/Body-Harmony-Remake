@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRM Contacts Bulk Sync Contract",
+  "description": "Especificação do contrato de sincronização em massa de licenciadas ativas com a base de contatos do Chatwoot (PLAN-176)",
+  "type": "object",
+  "endpoints": {
+    "sync": {
+      "method": "POST",
+      "path": "/api/v1/crm/contacts/sync-licenciadas",
+      "auth_required": true,
+      "request": {
+        "type": "object",
+        "properties": {
+          "force_refresh": { "type": "boolean" }
+        }
+      },
+      "response": {
+        "type": "object",
+        "required": ["success", "total_licenciadas", "synced_count"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "total_licenciadas": { "type": "integer" },
+          "synced_count": { "type": "integer" },
+          "errors": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  }
+}

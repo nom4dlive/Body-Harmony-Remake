@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShopAdminOrdersAsaasResponse",
+  "description": "Schema de resposta unificada da listagem de pedidos da loja e inscrições do congresso com status Asaas",
+  "type": "object",
+  "required": ["success", "data"],
+  "properties": {
+    "success": { "type": "boolean" },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "customer_name",
+          "customer_email",
+          "customer_phone",
+          "amount_cents",
+          "payment_method",
+          "payment_status",
+          "created_at"
+        ],
+        "properties": {
+          "id": { "type": ["integer", "string"] },
+          "customer_name": { "type": "string" },
+          "customer_email": { "type": "string" },
+          "customer_phone": { "type": "string" },
+          "customer_cpf": { "type": ["string", "null"] },
+          "product_name": { "type": "string" },
+          "product_category": { "type": ["string", "null"] },
+          "amount_cents": { "type": "integer" },
+          "installments": { "type": "integer" },
+          "payment_method": { "type": "string" },
+          "payment_status": {
+            "type": "string",
+            "enum": [
+              "PAID",
+              "PENDING",
+              "RECEIVED",
+              "CONFIRMED",
+              "FREE_APPROVED",
+              "FAILED",
+              "CANCELLED",
+              "REFUNDED"
+            ]
+          },
+          "ticket_code": { "type": ["string", "null"] },
+          "ticket_token": { "type": ["string", "null"] },
+          "checked_in": { "type": ["boolean", "integer"] },
+          "checked_in_at": { "type": ["string", "null"] },
+          "source_type": { "type": "string", "enum": ["shop_order", "congress_registration"] },
+          "created_at": { "type": "string" }
+        }
+      }
+    }
+  }
+}

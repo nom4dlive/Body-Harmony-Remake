@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Contract Public Criptographic Validation Contract",
+  "description": "Especificação estrita para validação pública de contratos por UUID no ecossistema Body Harmony",
+  "type": "object",
+  "properties": {
+    "ok": { "type": "boolean" },
+    "contract": {
+      "type": "object",
+      "properties": {
+        "uuid": { "type": "string" },
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["DRAFT", "GENERATED", "PENDING_SIGNATURE", "SIGNED"] },
+        "sha256_hash": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" },
+        "pdf_url": { "type": "string" },
+        "signatories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "signer_type": { "type": "string" },
+              "signer_name": { "type": "string" },
+              "signer_document": { "type": "string" },
+              "signer_email": { "type": "string" },
+              "signature_mode": { "type": "string" },
+              "signed_at": { "type": "string" },
+              "ip_address": { "type": "string" },
+              "checksum_signature": { "type": "string" },
+              "signature_image_data": { "type": "string" }
+            },
+            "required": ["signer_type", "signer_name", "signed_at", "checksum_signature"]
+          }
+        }
+      },
+      "required": ["uuid", "title", "status", "sha256_hash", "signatories"]
+    }
+  },
+  "required": ["ok"]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRM Cockpit Appointment Contract",
+  "description": "Especificação do contrato de criação e gestão de agendamentos no Cockpit CRM (PLAN-174)",
+  "type": "object",
+  "endpoints": {
+    "create": {
+      "method": "POST",
+      "path": "/api/v1/crm/cockpit/appointments",
+      "auth_required": false,
+      "request": {
+        "type": "object",
+        "required": ["contact_phone", "patient_name", "procedure_name", "scheduled_at"],
+        "properties": {
+          "inbox_id": { "type": "integer" },
+          "conversation_id": { "type": "integer" },
+          "contact_phone": { "type": "string" },
+          "patient_name": { "type": "string" },
+          "procedure_name": { "type": "string" },
+          "scheduled_at": { "type": "string" },
+          "duration_minutes": { "type": "integer" },
+          "notes": { "type": "string" }
+        }
+      },
+      "response": {
+        "type": "object",
+        "required": ["status", "data"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success", "error"]
+          },
+          "data": {
+            "type": "object",
+            "required": ["appointment_id", "google_calendar_url", "whatsapp_message"],
+            "properties": {
+              "appointment_id": { "type": "integer" },
+              "google_calendar_url": { "type": "string" },
+              "whatsapp_message": { "type": "string" },
+              "synced_services": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "services_summary": { "type": "string" }
+            }
+          },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsThumbnailsBatchStatusResponse",
+  "description": "GET /admin/lms/lessons/generate-thumbnails-batch-status — Consulta o progresso em tempo real da geração de miniaturas em lote.",
+  "path": "/admin/lms/lessons/generate-thumbnails-batch-status",
+  "method": "GET",
+  "status": 200,
+  "response": {
+    "type": "object",
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "is_running": {
+            "type": "boolean",
+            "description": "Indica se o job de extração de miniaturas está executando em background"
+          },
+          "total_videos": {
+            "type": "integer",
+            "description": "Total de aulas com vídeo local mapeadas no LMS"
+          },
+          "converted": {
+            "type": "integer",
+            "description": "Total de aulas com miniaturas geradas com sucesso"
+          },
+          "pending": {
+            "type": "integer",
+            "description": "Total de aulas sem miniatura (pendentes)"
+          },
+          "progress_percent": {
+            "type": "integer",
+            "description": "Percentual de progresso do lote atual de extração"
+          },
+          "last_error": {
+            "type": ["string", "null"],
+            "description": "Mensagem do último erro ocorrido se houver falhas de processamento"
+          }
+        },
+        "required": ["is_running", "total_videos", "converted", "pending", "progress_percent"]
+      }
+    },
+    "required": ["success", "data"]
+  }
+}

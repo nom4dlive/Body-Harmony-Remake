@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="pt-BR" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pipeline de Vendas - Body Harmony CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c2c7cf",
+                        "whisper-border": "#D97706",
+                        "on-surface": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-tint": "#376286",
+                        "tertiary-fixed-dim": "#abcae9",
+                        "tertiary-fixed": "#cee5ff",
+                        "secondary-container": "#fd8a23",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f7f9fb",
+                        "success-emerald": "#10B981",
+                        "tertiary": "#022740",
+                        "on-primary-container": "#80a9d1",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#42474e",
+                        "sidebar-bg": "#072B44",
+                        "on-primary": "#ffffff",
+                        "sidebar-inactive-icon": "#94A3B8",
+                        "tertiary-container": "#1e3d57",
+                        "primary-fixed-dim": "#a1cbf4",
+                        "whisper-bg": "#FEF3C7",
+                        "secondary": "#944b00",
+                        "secondary-fixed": "#ffdcc5",
+                        "on-secondary-fixed-variant": "#713700",
+                        "on-secondary-fixed": "#301400",
+                        "on-tertiary-fixed": "#001d32",
+                        "on-primary-fixed": "#001d32",
+                        "on-tertiary-container": "#8aa8c6",
+                        "warning-amber": "#F59E0B",
+                        "surface-dim": "#d8dadc",
+                        "surface-variant": "#e0e3e5",
+                        "secondary-fixed-dim": "#ffb783",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#1c4a6d",
+                        "primary": "#002841",
+                        "surface-container": "#eceef0",
+                        "surface": "#f7f9fb",
+                        "danger-ruby": "#EF4444",
+                        "surface-container-high": "#e6e8ea",
+                        "primary-container": "#0a3e60",
+                        "gold-vibrant": "#FFB366",
+                        "inverse-surface": "#2d3133",
+                        "primary-fixed": "#cde5ff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#2b4964",
+                        "surface-bright": "#f7f9fb",
+                        "inverse-primary": "#a1cbf4",
+                        "surface-container-low": "#f2f4f6",
+                        "on-background": "#191c1e",
+                        "outline": "#72777f",
+                        "on-error-container": "#93000a",
+                        "sidebar-inactive-text": "#E2E8F0",
+                        "on-secondary-container": "#633000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "inbox-list-width": "340px",
+                        "margin": "1.5rem",
+                        "sidebar-width": "250px",
+                        "dossier-width": "380px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "chat-message": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "chat-message": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<aside class="fixed h-screen w-sidebar-width left-0 top-0 bg-sidebar-bg dark:bg-sidebar-bg flex flex-col h-full py-gutter space-y-4 shadow-lg z-50 md:flex hidden">
+<div class="px-6 mb-4">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-primary dark:text-on-primary tracking-tight">logobranco.svg</h1>
+
+</div>
+<div class="px-4 mb-4">
+<button class="w-full bg-[#ED7E13] hover:bg-secondary-container text-white font-headline-md text-headline-md py-3 rounded-lg flex items-center justify-center gap-2 shadow-sm transition-colors duration-200">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">add</span>
+                + Novo Paciente / Lead
+            </button>
+</div>
+<nav class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-md text-label-md">Omnichannel Inbox</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">Histórico</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-md text-label-md">Campanhas</span>
+</a>
+<!-- Active State -->
+<a class="text-secondary-container font-bold border-l-4 border-secondary-container bg-primary-container/20 px-4 py-3 flex items-center gap-3 opacity-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">monetization_on</span>
+<span class="font-label-md text-label-md">Pipeline de Vendas</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="font-label-md text-label-md">Agendamento Clínico</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Faturamento</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-md text-label-md">Google Calendar</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="font-label-md text-label-md">Drive Documents</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-label-md text-label-md">Gmail Sync</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Configurações</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-label-md text-label-md">Canais</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md">Equipe</span>
+</a>
+</nav>
+<div class="mt-auto px-2 space-y-1">
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Notificações</span>
+</a>
+<a class="text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">dark_mode</span>
+<span class="font-label-md text-label-md">Tema</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-[250px] flex flex-col h-screen overflow-hidden bg-background">
+<!-- TopNavBar -->
+<header class="h-16 px-margin w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant dark:border-on-surface-variant flex justify-between items-center flex-shrink-0 z-40">
+<div class="flex items-center gap-8">
+<div class="md:hidden">
+<button class="text-primary hover:text-secondary p-2 rounded-md">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors font-body-md text-body-md" href="#">Workspace</a>
+<a class="text-on-surface-variant dark:text-outline hover:text-primary transition-colors font-body-md text-body-md" href="#">Relatórios</a>
+<a class="text-primary font-bold border-b-2 border-secondary-container pb-1 font-body-md text-body-md scale-95 duration-150" href="#">Dashboards</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<!-- Funnel Selector -->
+<div class="hidden lg:flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/30 shadow-sm">
+<span class="material-symbols-outlined text-outline text-sm">filter_list</span>
+<select class="bg-transparent border-none text-body-md font-body-md text-primary focus:ring-0 cursor-pointer py-0 pl-1 pr-8">
+<option>Expansão Licenciadas B2B</option>
+<option>Pacientes Alta Renda B2C</option>
+</select>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">contrast</span></button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/50">
+<div class="text-right hidden sm:block">
+<p class="font-headline-sm text-headline-sm font-semibold text-primary">Mariana Silva</p>
+<p class="font-label-md text-label-md text-success-emerald">Disponível</p>
+</div>
+<img alt="Mariana Silva Profile Image" class="w-10 h-10 rounded-full border-2 border-surface object-cover shadow-sm" data-alt="A professional headshot of a female executive in a modern office, wearing a navy blue blazer. Bright, natural lighting, high resolution, corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLVsfLe6gJRljjCqSWAvyJt8N48ONwZY3eUcsh0YQeXmGsr2bJ1h5kgUNeFczaIGv3ac8AQRpgyG5UmOj_4jLzbC35VixsZKn_QrR0bjEydgaX6-_1pffD0YmXASVNrRy5lFVtt9moZEYFcwENrtt26D3HVHPk7h4SGTAKnfcHxbtBB_jdZhqNaHZJ2qzhRQwa92ZcokhPXvfv-LvWluVxxxDQG6ksV-KvymM3FdscO6ZPwa0qjkSv">
+</div>
+</div>
+</header>
+<!-- Kanban Board Area -->
+<div class="flex-1 overflow-x-auto overflow-y-hidden p-6">
+<div class="flex items-start gap-6 h-full pb-4">
+<!-- Column: Novos Leads -->
+<div class="flex-shrink-0 w-[300px] h-full flex flex-col bg-surface-container-low rounded-xl border border-outline-variant/20 shadow-sm">
+<div class="p-4 border-b border-outline-variant/20 flex justify-between items-center bg-surface-bright rounded-t-xl">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-blue-500"></div>
+<h3 class="font-headline-md text-headline-md text-primary">Novos Leads</h3>
+<span class="bg-surface-container text-on-surface-variant text-xs py-0.5 px-2 rounded-full font-label-md">3</span>
+</div>
+<button class="text-outline hover:text-primary"><span class="material-symbols-outlined text-sm">more_horiz</span></button>
+</div>
+<div class="p-3 flex-1 overflow-y-auto space-y-3 custom-scrollbar">
+<!-- Kanban Card -->
+<div class="bg-white rounded-xl shadow-sm border border-[#E2E8F0] p-4 cursor-grab hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Instagram</span>
+<span class="text-outline text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 2h</span>
+</div>
+<h4 class="font-headline-md text-[16px] font-semibold text-on-surface mb-1">Dra. Camila Torres</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-1">Interesse em franquia SP Capital</p>
+<div class="flex justify-between items-end mt-4">
+<div class="font-headline-md text-[15px] font-bold text-primary">R$ 150k <span class="text-xs text-outline font-normal">est.</span></div>
+<div class="flex -space-x-2 relative">
+<img alt="Agent" class="w-6 h-6 rounded-full border-2 border-white relative z-10" data-alt="Small avatar of a smiling male consultant, well-lit, corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXwEEMCxVYHAi5eoT1hnlYLqj8DrW4qBl4KIRvEoq9o--DtKWpx-02k6pv6o9LJYJk9m9PTsbJFafmeP8RPkaPFWUpdXGbw3kVWrBVa5kKYUeZYPZFWFYH1Wnoiwm7xqqialJVk5IsnlLZ4YwWXPHY8iIMkXWZMx1Qh_CYVjUP7wFD4IAFQw31QC6Li0Po1XiwzvUyYUxrU1G_gtmWYKPeNGC9xHGvsjV8CrWXIXTRSqssVbiYGqr5">
+<div class="absolute -bottom-1 -right-1 w-3 h-3 bg-success-emerald rounded-full border border-white z-20"></div>
+</div>
+</div>
+</div>
+<!-- Kanban Card -->
+<div class="bg-white rounded-xl shadow-sm border border-[#E2E8F0] p-4 cursor-grab hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">WhatsApp</span>
+<span class="text-outline text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 5h</span>
+</div>
+<h4 class="font-headline-md text-[16px] font-semibold text-on-surface mb-1">Clínica Estética Bela</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-1">Solicitou PDF de apresentação</p>
+<div class="flex justify-between items-end mt-4">
+<div class="font-headline-md text-[15px] font-bold text-primary">R$ 220k <span class="text-xs text-outline font-normal">est.</span></div>
+<div class="flex -space-x-2 relative">
+<img alt="Agent" class="w-6 h-6 rounded-full border-2 border-white relative z-10" data-alt="Small avatar of a female consultant with glasses, corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5sf-__1GHGHMyeUIMkD3EH6-v-L8S7GOL7hTIACuifRbtDPlMf26T-LKNlAiaptH3-oIrhgzXhMhzene8e5zXUSIQ_mMEMNYZ2Gd2I3qLOtoYM8mK8EE-7dagNlLIUT1-o6I8IKEEhKcIwEmShpP428NuP8BWcFBUzYECpZ5nsplpHybvJmo474WnI0H5nkILKvf8CX_SYSgpvB2NNoNzvLRWXrJw1bid7skN_61X2E7B8LkB-1cH">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Qualificados -->
+<div class="flex-shrink-0 w-[300px] h-full flex flex-col bg-surface-container-low rounded-xl border border-outline-variant/20 shadow-sm">
+<div class="p-4 border-b border-outline-variant/20 flex justify-between items-center bg-surface-bright rounded-t-xl">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-purple-500"></div>
+<h3 class="font-headline-md text-headline-md text-primary">Qualificados</h3>
+<span class="bg-surface-container text-on-surface-variant text-xs py-0.5 px-2 rounded-full font-label-md">1</span>
+</div>
+<button class="text-outline hover:text-primary"><span class="material-symbols-outlined text-sm">more_horiz</span></button>
+</div>
+<div class="p-3 flex-1 overflow-y-auto space-y-3 custom-scrollbar">
+<!-- Kanban Card -->
+<div class="bg-white rounded-xl shadow-sm border border-[#E2E8F0] p-4 cursor-grab hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1 bg-purple-500"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="bg-gray-100 text-gray-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Site Form</span>
+<span class="text-warning-amber text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">warning</span> Action Req</span>
+</div>
+<h4 class="font-headline-md text-[16px] font-semibold text-on-surface mb-1">Dr. Roberto Almeida</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-1">Perfil ideal para Flagship RJ</p>
+<div class="flex gap-1 mb-3">
+<span class="px-2 py-1 bg-surface-container-high rounded text-[10px] font-medium text-on-surface-variant">Alto Potencial</span>
+<span class="px-2 py-1 bg-surface-container-high rounded text-[10px] font-medium text-on-surface-variant">Rio de Janeiro</span>
+</div>
+<div class="flex justify-between items-end mt-2 pt-3 border-t border-outline-variant/20">
+<div class="font-headline-md text-[15px] font-bold text-primary">R$ 500k <span class="text-xs text-outline font-normal">est.</span></div>
+<div class="flex -space-x-2 relative">
+<img alt="Agent" class="w-6 h-6 rounded-full border-2 border-white relative z-10" data-alt="Small avatar of a female consultant, corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPI-67XxQZXhAzyiDUydJ-p1ZvKt5K9Uzz1g_Ef_Y5BB5OUkzN9nVpcE10QI1PI0iaszFKY3yZSvycnanHM3WaBfuTgYezD52Rn_6nI-AbMQSh_pcZd5rG507o8dS2iRwIeaUMGcv1jCwyhbTl4SZsBcqAbFTECyU3eWcBuJmGI-yKGwxAKBuQ2dnemAnlvz7Wfx8mkMSZ0KWhDfTnmhCgVZ9p9gizU3ivXlPqxPSPPhrkW_1EOhDd">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Column Button -->
+<div class="flex-shrink-0 w-[50px] h-full flex justify-center pt-4">
+<button class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-primary-container/10 hover:text-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #e0e3e5;
+            border-radius: 20px;
+        }
+    </style>
+
+
+</body></html>

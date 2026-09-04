@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  bodyharmony-notebooklm-bridge:
+    container_name: bodyharmony-notebooklm-bridge
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "5055:5055"
+    environment:
+      - PORT=5055
+      - NOTEBOOKLM_SESSION_FILE=/root/.notebooklm/session.json
+      - NOTEBOOKLM_BACKEND=web
+      - MEDIA_STORAGE_DIR=/app/storage
+    volumes:
+      - /root/.notebooklm:/root/.notebooklm:rw
+      - /opt/bodyharmony/public_uploads/smartbook:/app/storage:rw
+    networks:
+      - bodyharmony_internal
+
+networks:
+  bodyharmony_internal:
+    external: true

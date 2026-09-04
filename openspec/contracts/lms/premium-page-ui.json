@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Premium Page UI Contract (PLAN-012)",
+  "description": "A PremiumPage consome api.getLmsContent() já existente e filtra apenas módulos com is_exclusive=true e has_access=false. Nenhum novo endpoint criado.",
+  "data_source": "GET /api/v1/lms/modules (contrato existente em lms/modules-licenciada.json)",
+  "filter": "modules.filter(m => m.is_exclusive && !m.has_access)",
+  "ui_contract": {
+    "route": "/portal-licenciada/premium",
+    "page_title": "Módulos Premium — Body Harmony",
+    "components": {
+      "hero_strip": {
+        "location": "Dashboard.jsx — antes dos carrosséis de aulas",
+        "condition": "lockedExclusiveModules.length > 0",
+        "elements": ["ícone ✦", "texto teaser", "link CTA para /portal-licenciada/premium"],
+        "colors": { "background": "#ED7E13 gradient", "text": "#FFFFFF" }
+      },
+      "navbar_link": {
+        "location": "PortalNavbar.jsx — desktop nav-links",
+        "label": "Premium",
+        "badge": { "type": "dot pulsante", "color": "#ED7E13", "condition": "lockedExclusiveModules.length > 0" }
+      },
+      "bottom_nav_item": {
+        "location": "BottomNavbar.jsx",
+        "icon": "FaStar",
+        "label": "Premium",
+        "badge": { "type": "dot", "color": "#ED7E13" }
+      },
+      "premium_card": {
+        "fields": ["title", "description (completa)", "thumbnail_url", "lessons (count)", "has_access"],
+        "cta": "WhatsApp com CPF",
+        "min_touch_target": "44px"
+      }
+    }
+  },
+  "plan_ref": "PLAN-012",
+  "updated_at": "2026-06-05"
+}

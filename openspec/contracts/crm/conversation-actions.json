@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRM Conversation Actions Contract",
+  "type": "object",
+  "required": ["conversation_id", "action"],
+  "properties": {
+    "conversation_id": { "type": "string" },
+    "action": { "type": "string", "enum": ["toggle_status", "assign_agent", "assign_team", "add_labels", "remove_labels", "mute", "unmute"] },
+    "status": { "type": "string", "enum": ["open", "resolved", "pending", "snoozed"] },
+    "agent_id": { "type": "integer" },
+    "team_id": { "type": "integer" },
+    "labels": { "type": "array", "items": { "type": "string" } }
+  }
+}

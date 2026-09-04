@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GET /v1/aluna/catalog — Portal da Aluna (PLAN-011)",
+  "description": "Retorna todos os módulos LMS ativos para alunas autenticadas. Módulos exclusivos aparecem com is_exclusive=true e has_access=false se a aluna não tiver autorização — expondo a vitrine de compra sem conceder acesso ao conteúdo.",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/aluna/catalog",
+    "headers": {
+      "X-ALUNA-TOKEN": "string (token de sessão da aluna, prefixo al_)"
+    }
+  },
+  "response": {
+    "success": {
+      "status": 200,
+      "body_array_of": {
+        "id": "integer",
+        "title": "string",
+        "description": "string | null",
+        "thumbnail_url": "string | null",
+        "video_url": "string | null",
+        "is_exclusive": "boolean — true indica módulo de acesso restrito",
+        "has_access": "boolean — true se aluna tiver acesso concedido ativo em aluna_course_access"
+      }
+    }
+  },
+  "breaking_change": "Campo is_exclusive adicionado. Módulos exclusivos sem acesso agora aparecem no array (antes eram filtrados). O campo has_access=false indica que o card deve ser exibido como vitrine bloqueada.",
+  "plan_ref": "PLAN-011",
+  "updated_at": "2026-06-05"
+}

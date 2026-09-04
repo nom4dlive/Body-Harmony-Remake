@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "AGENTS.md"
+  ],
+  "mcp": {
+    "notebooklm": {
+      "type": "local",
+      "command": [
+        "uv",
+        "run",
+        "notebooklm-mcp"
+      ],
+      "enabled": true
+    }
+  }
+}

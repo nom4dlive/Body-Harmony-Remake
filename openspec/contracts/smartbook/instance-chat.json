@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SmartBook Instance Chat Contract",
+  "description": "Contrato estrito para histórico e envio de mensagens no chat isolado por instância e licenciada com rastreabilidade de IA",
+  "endpoints": {
+    "get_chat_history": {
+      "method": "GET",
+      "path": "/api/v1/smartbook/instances/{instance_id}/chat",
+      "query_params": {
+        "user_id": { "type": "string", "required": true }
+      },
+      "response": {
+        "status_code": 200,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "instance_id", "user_id", "role", "content", "timestamp"],
+          "properties": {
+            "id": { "type": "string" },
+            "instance_id": { "type": "string" },
+            "user_id": { "type": "string" },
+            "role": { "type": "string", "enum": ["user", "assistant", "system"] },
+            "content": { "type": "string" },
+            "ai_metadata": {
+              "type": "object",
+              "properties": {
+                "model": { "type": "string" },
+                "prompt_used": { "type": "object" },
+                "clinical_rationale": { "type": "string" },
+                "generation_metrics": { "type": "object" }
+              }
+            },
+            "timestamp": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    },
+    "send_chat_message": {
+      "method": "POST",
+      "path": "/api/v1/smartbook/instances/{instance_id}/chat",
+      "request": {
+        "type": "object",
+        "required": ["user_id", "content"],
+        "properties": {
+          "user_id": { "type": "string" },
+          "role": { "type": "string", "enum": ["user", "assistant"], "default": "user" },
+          "content": { "type": "string" },
+          "generate_ai_reply": { "type": "boolean", "default": true }
+        },
+        "additionalProperties": false
+      },
+      "response": {
+        "status_code": 200,
+        "type": "object",
+        "required": ["user_message", "assistant_message"],
+        "properties": {
+          "user_message": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "content": { "type": "string" },
+              "timestamp": { "type": "string" }
+            }
+          },
+          "assistant_message": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "content": { "type": "string" },
+              "ai_metadata": { "type": "object" },
+              "timestamp": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

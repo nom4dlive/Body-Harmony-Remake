@@ -1,0 +1,18 @@
+{
+  "name": "body-harmony-workspace",
+  "version": "3.2.0",
+  "private": true,
+  "description": "Body Harmony Nexus V3.2 Fullstack Monorepo",
+  "scripts": {
+    "setup:env": "python scripts/setup_env.py",
+    "setup:mock": "python scripts/setup_env.py --mode audit",
+    "dev": "npm --prefix apps/web-app run dev",
+    "build": "npm --prefix apps/web-app run build",
+    "test": "npm --prefix apps/web-app run test",
+    "gate": "powershell -ExecutionPolicy Bypass -File scripts/nexus_gate.ps1"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.2"
+  }
+}
+

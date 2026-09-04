@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gestor Onboarding Funnel & Auto Contract Generation Contract",
+  "description": "Contrato de API para o Funil de Onboarding de Licenciadas, Pré-cadastro Público com OCR, Régua WhatsApp e Validação em 2 Etapas (Nexus Protocol V3.1)",
+  "endpoints": {
+    "POST /admin/onboarding/tokens": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "categoria": { "type": "string" },
+          "telefone_whatsapp": { "type": "string" },
+          "nome_candidata": { "type": "string" },
+          "expires_in_days": { "type": "integer" }
+        },
+        "required": ["categoria", "telefone_whatsapp"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "public_link": { "type": "string" },
+          "token": { "type": "string" },
+          "expires_at": { "type": "string" },
+          "whatsapp_message": { "type": "string" }
+        },
+        "required": ["success", "public_link", "token"]
+      }
+    },
+    "GET /public/onboarding/{token}": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "valid": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": { "type": "string" },
+              "categoria": { "type": "string" },
+              "telefone_whatsapp": { "type": "string" },
+              "nome_candidata": { "type": "string" },
+              "expires_at": { "type": "string" }
+            }
+          }
+        },
+        "required": ["success", "valid", "data"]
+      }
+    },
+    "POST /public/onboarding/{token}": {
+      "request_multipart": {
+        "nome": "string",
+        "cpf": "string",
+        "rg": "string",
+        "email": "string",
+        "telefone_whatsapp": "string",
+        "cep": "string",
+        "endereco": "string",
+        "numero": "string",
+        "complemento": "string",
+        "bairro": "string",
+        "cidade": "string",
+        "estado": "string",
+        "nacionalidade": "string",
+        "estado_civil": "string",
+        "profissao": "string",
+        "documento_img": "file upload (foto RG/CPF/CNH para OCR)"
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "onboarding_id": { "type": "integer" },
+          "status": { "type": "string" }
+        },
+        "required": ["success", "message", "onboarding_id"]
+      }
+    },
+    "POST /public/onboarding/ocr": {
+      "request_multipart": {
+        "documento_img": "file upload (foto RG/CPF/CNH)"
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "extracted_data": {
+            "type": "object",
+            "properties": {
+              "nome": { "type": "string" },
+              "cpf": { "type": "string" },
+              "rg": { "type": "string" },
+              "cep": { "type": "string" },
+              "endereco": { "type": "string" }
+            }
+          },
+          "confidence": { "type": "number" },
+          "raw_text": { "type": "string" }
+        },
+        "required": ["success", "extracted_data", "confidence"]
+      }
+    },
+    "GET /admin/onboarding/funnel": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "columns": {
+            "type": "object",
+            "properties": {
+              "pre_cadastro": { "type": "array" },
+              "contrato_emitido": { "type": "array" },
+              "aguardando_assinatura": { "type": "array" },
+              "validar_pagamento": { "type": "array" },
+              "ativo_liberado": { "type": "array" }
+            },
+            "required": ["pre_cadastro", "contrato_emitido", "aguardando_assinatura", "validar_pagamento", "ativo_liberado"]
+          },
+          "stages": { "type": "object" },
+          "items": { "type": "array" },
+          "total": { "type": "integer" }
+        },
+        "required": ["success", "columns"]
+      }
+    },
+    "GET /admin/onboarding/requests/{id}": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "request": { "type": "object" }
+        },
+        "required": ["success", "request"]
+      }
+    },
+    "POST /admin/onboarding/{id}/generate-contract": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "template_slug": { "type": "string" },
+          "taxa_inicial_num": { "type": "string" },
+          "taxa_inicial_extenso": { "type": "string" },
+          "condicoes_pagamento": { "type": "string" },
+          "cidade_celebracao": { "type": "string" }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "contract_id": { "type": "integer" },
+          "contract_uuid": { "type": "string" },
+          "sign_token": { "type": "string" },
+          "sign_url": { "type": "string" },
+          "whatsapp_link": { "type": "string" }
+        },
+        "required": ["success", "message", "contract_uuid"]
+      }
+    },
+    "POST /admin/onboarding/{id}/whatsapp-reminder": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "whatsapp_url": { "type": "string" },
+          "text": { "type": "string" }
+        },
+        "required": ["success", "whatsapp_url"]
+      }
+    },
+    "POST /admin/onboarding/{id}/confirm-payment": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "payment_method": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "request_id": { "type": "integer" },
+          "licenciada_id": { "type": "integer" },
+          "status": { "type": "string" },
+          "lms_access_granted": { "type": "boolean" }
+        },
+        "required": ["success", "message", "lms_access_granted"]
+      }
+    },
+    "PATCH /admin/onboarding/{id}/status": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string" },
+          "notes": { "type": "string" }
+        },
+        "required": ["status"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" }
+        },
+        "required": ["success"]
+      }
+    }
+  }
+}

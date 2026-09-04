@@ -1,0 +1,61 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# 🛡️ Anti-Cache Policy for index.html (STABILITY FIX V44.0.2)
+# Ensures clients always get the latest asset manifest
+<FilesMatch "index\.html$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </IfModule>
+</FilesMatch>
+
+DirectoryIndex index.html index.php
+
+# Security: Block access to .env file
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Increase PHP Limits for Large JSON Payloads
+<IfModule mod_php.c>
+    php_value upload_max_filesize 64M
+    php_value post_max_size 64M
+    php_value memory_limit 256M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Fix Authorization Header Stripping
+# Some servers require explicit flag
+CGIPassAuth On
+
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# ----------------------------------------------------------------------
+# API ROUTES (Backend)
+# ----------------------------------------------------------------------
+
+# Handle API V1
+RewriteCond %{REQUEST_URI} ^/api/v1/
+RewriteRule ^api/v1/(.*)$ api/v1/index.php [QSA,L]
+
+# General API Fallback
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteRule ^api/(.*)$ api/$1 [L]
+
+# ----------------------------------------------------------------------
+# FRONTEND ROUTES (React SPA)
+# ----------------------------------------------------------------------
+
+# Serve existing files/directories directly (Assets, Images, API files)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 🛡️ Hardened SPA Routing: Redirect everything else to index.html
+# This ensures sub-paths like /lms or /portal-licenciada/dashboard load the React app correctly.
+RewriteRule ^ index.html [L]

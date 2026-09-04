@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsNotebookFullstackSpecContract",
+  "description": "Contrato unificado para o ecossistema de cadernos NotebookLM, 5 abas do gestor e botão transcrever",
+  "type": "object",
+  "properties": {
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" },
+          "notebook_id": { "type": "string" },
+          "status": { "type": "string" },
+          "lessons_count": { "type": "integer" },
+          "transcribed_count": { "type": "integer" }
+        },
+        "required": ["id", "title", "notebook_id", "status"]
+      }
+    },
+    "beta_testers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "credits_limit": { "type": "integer" },
+          "credits_used_today": { "type": "integer" },
+          "is_beta_active": { "type": "integer" }
+        },
+        "required": ["id", "name"]
+      }
+    },
+    "podcasts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "audio_url": { "type": "string" },
+          "is_featured": { "type": "boolean" }
+        },
+        "required": ["id", "title"]
+      }
+    }
+  },
+  "additionalProperties": true
+}

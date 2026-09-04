@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-06-02T12:00:00Z",
+  "project_root": "F:\\Body-Harmony-Remake",
+  "languages": [
+    { "name": "PHP", "extensions": [".php"], "file_count": 122 },
+    { "name": "JavaScript", "extensions": [".js", ".jsx"], "file_count": 189 },
+    { "name": "TypeScript", "extensions": [".ts", ".tsx"], "file_count": 30 },
+    { "name": "Python", "extensions": [".py"], "file_count": 2 }
+  ],
+  "primary_language": "PHP",
+  "frameworks": [
+    { "name": "React", "version": "18.3.1", "source": "apps/web-app/package.json" },
+    { "name": "Vite", "version": "6.0.5", "source": "apps/web-app/package.json" },
+    { "name": "React Router", "version": "7.1.1", "source": "apps/web-app/package.json" },
+    { "name": "styled-components", "version": "6.1.13", "source": "apps/web-app/package.json" },
+    { "name": "framer-motion", "version": "12.26.2", "source": "apps/web-app/package.json" },
+    { "name": "recharts", "version": "3.7.0", "source": "apps/web-app/package.json" },
+    { "name": "aiogram", "version": "3.4.1", "source": "apps/telegram-bot/requirements.txt" },
+    { "name": "mpdf", "version": "^8.2", "source": "apps/web-app/src/backend/composer.json" },
+    { "name": "Tailwind CSS", "version": "present", "source": "Landing_Pages/Projetos/" }
+  ],
+  "package_manager": "npm",
+  "entry_points": [
+    { "path": "apps/web-app/src/frontend/src/main.jsx", "type": "app_entry" },
+    { "path": "apps/web-app/src/backend/api/v1/index.php", "type": "api_router" },
+    { "path": "apps/web-app/src/backend/api/config.php", "type": "config" },
+    { "path": "apps/telegram-bot/main.py", "type": "bot_entry" },
+    { "path": "Landing_Pages/Projetos/deploy-all.mjs", "type": "deploy_script" }
+  ],
+  "config_files": [
+    "apps/web-app/vite.config.js",
+    "apps/web-app/vitest.config.js",
+    "apps/web-app/.env",
+    "apps/web-app/src/backend/.env",
+    "apps/web-app/src/backend/.env.example",
+    "infrastructure/docker/.env.production.template",
+    "infrastructure/docker/docker-compose.yml",
+    ".env.deploy"
+  ],
+  "ci_cd": [],
+  "docker": {
+    "dockerfile": "infrastructure/docker/Dockerfile.php",
+    "compose": "infrastructure/docker/docker-compose.yml"
+  },
+  "database_hints": [
+    { "path": "apps/web-app/src/backend/migrations/", "type": "migrations_dir" },
+    { "path": "apps/web-app/src/backend/api/config.php", "type": "db_config" },
+    { "path": "apps/web-app/src/backend/api/v1/Core/db.php", "type": "db_connection" },
+    { "path": "apps/web-app/src/backend/seeds/", "type": "seeds_dir" }
+  ],
+  "test_framework": "Vitest",
+  "test_file_count": 3,
+  "modules": [
+    "auth",
+    "admin",
+    "aluna",
+    "licenciada",
+    "lms",
+    "nexus",
+    "doctor-harmony",
+    "content",
+    "leads",
+    "results",
+    "faq",
+    "media",
+    "analytics",
+    "certificate",
+    "broadcast",
+    "workshop"
+  ],
+  "total_files": 400,
+  "organization_suggestion": {
+    "granularity": "hybrid",
+    "rationale": "Sinais mistos detectados: roteamento centralizado (Router.php) sugere endpoint, pastas de domínio (Controllers/, admin/, auth/) sugerem módulo, frontend por páginas sugere feature. Múltiplos sinais com peso parecido → organização híbrida.",
+    "signals": [
+      {
+        "type": "roteamento_centralizado",
+        "evidence": [
+          "apps/web-app/src/backend/api/v1/Core/Router.php",
+          "apps/web-app/src/backend/api/v1/index.php"
+        ]
+      },
+      {
+        "type": "pastas_dominio",
+        "evidence": [
+          "apps/web-app/src/backend/api/v1/Controllers/",
+          "apps/web-app/src/backend/api/v1/admin/",
+          "apps/web-app/src/backend/api/v1/auth/",
+          "apps/web-app/src/backend/api/v1/lms/"
+        ]
+      },
+      {
+        "type": "frontend_features",
+        "evidence": [
+          "apps/web-app/src/frontend/src/pages/Admin/",
+          "apps/web-app/src/frontend/src/pages/PortalAluna/",
+          "apps/web-app/src/frontend/src/pages/Nexus/"
+        ]
+      }
+    ],
+    "features": []
+  }
+}

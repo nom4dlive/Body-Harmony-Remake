@@ -1,0 +1,44 @@
+{
+  "spec_impact_matrix": [
+    {
+      "spec_file": "openspec/master/01-architecture-v6.md",
+      "description": "Especificação Geral da Arquitetura do Sistema",
+      "impacted_paths": [
+        "apps/web-app/src/backend/api/v1/",
+        "apps/web-app/src/frontend/src/"
+      ]
+    },
+    {
+      "spec_file": "openspec/master/12-database-schema.md",
+      "description": "Especificação do Banco de Dados Relacional",
+      "impacted_paths": [
+        "infrastructure/database/DATABASE_MASTER_V36_1.sql",
+        "infrastructure/database/migrations/"
+      ]
+    },
+    {
+      "spec_file": "openspec/master/09-lms-system-master.md",
+      "description": "Especificação do Módulo de LMS / Aulas",
+      "impacted_paths": [
+        "apps/web-app/src/frontend/src/components/LessonPlayer.jsx",
+        "apps/web-app/src/frontend/src/components/LMSDashboard.jsx"
+      ]
+    },
+    {
+      "spec_file": "openspec/master/visual-identity-v3.md",
+      "description": "Especificação da Identidade Visual e Temas V3.1",
+      "impacted_paths": [
+        "apps/web-app/src/frontend/src/assets/styles/",
+        "apps/web-app/src/frontend/src/theme.js"
+      ]
+    },
+    {
+      "spec_file": "openspec/master/spec_pages_routes_glossary.md",
+      "description": "Glossário Geral de Rotas e Páginas do Portal",
+      "impacted_paths": [
+        "apps/web-app/src/frontend/src/routes/",
+        "apps/web-app/src/backend/api/v1/routes.php"
+      ]
+    }
+  ]
+}

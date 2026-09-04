@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContractsCreateContract",
+  "description": "Contrato de criação e geração de novo contrato com substituição de variáveis e compilação de PDF",
+  "endpoints": {
+    "/v1/admin/contracts/create": {
+      "POST": {
+        "summary": "Cria um novo contrato, preenche as variáveis dinâmicas, gera o HTML estático e compila o PDF",
+        "security": ["AdminToken"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "template_slug": { "type": "string" },
+                  "licenciada_id": { "type": ["integer", "null"] },
+                  "title": { "type": "string" },
+                  "variables": {
+                    "type": "object",
+                    "description": "Mapa de chave/valor para substituição das tags {{VARIAVEL}}",
+                    "additionalProperties": { "type": "string" }
+                  },
+                  "status": { "type": "string", "enum": ["DRAFT", "GENERATED", "PENDING_SIGNATURE"], "default": "GENERATED" }
+                },
+                "required": ["template_slug", "title", "variables"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contrato gerado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "contract": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "integer" },
+                        "uuid": { "type": "string" },
+                        "title": { "type": "string" },
+                        "status": { "type": "string" },
+                        "sha256_hash": { "type": "string" },
+                        "sign_token": { "type": "string" },
+                        "sign_url": { "type": "string" },
+                        "pdf_url": { "type": "string" }
+                      },
+                      "required": ["id", "uuid", "title", "status", "sha256_hash", "pdf_url"]
+                    }
+                  },
+                  "required": ["ok", "message", "contract"]
+                }
+              }
+            }
+          },
+          "400": { "description": "Dados inválidos ou campos obrigatórios ausentes" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    }
+  }
+}

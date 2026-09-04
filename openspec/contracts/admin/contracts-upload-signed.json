@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContractsUploadSignedContract",
+  "description": "Contrato para upload multipart de contrato ou termo assinado externamente (gov.br, cartório ou físico digitalizado)",
+  "endpoints": {
+    "/v1/admin/contracts/upload-signed": {
+      "POST": {
+        "summary": "Recebe o PDF do contrato assinado externamente pela Licenciada, valida a integridade, arquiva e atualiza status para SIGNED com sincronização em licenciada_taxas",
+        "security": ["AdminToken"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contract_uuid": { "type": "string" },
+                  "licenciada_id": { "type": "integer" },
+                  "file": { "type": "string", "format": "binary", "description": "Arquivo PDF válido contendo assinaturas" },
+                  "notes": { "type": "string", "description": "Ex: 'Assinado via gov.br' ou 'Reconhecido em cartório'" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Documento assinado recebido e arquivado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "contract_status": { "type": "string" },
+                    "contract_uuid": { "type": "string" },
+                    "pdf_url": { "type": "string" },
+                    "sha256_hash": { "type": "string" }
+                  },
+                  "required": ["ok", "message", "contract_status", "pdf_url"]
+                }
+              }
+            }
+          },
+          "400": { "description": "Arquivo inválido ou não é um PDF legítimo" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    }
+  }
+}

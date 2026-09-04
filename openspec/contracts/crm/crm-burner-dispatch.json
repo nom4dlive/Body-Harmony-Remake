@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMBurnerDispatchContract",
+  "description": "Contrato de API para Motor de Disparos em Massa com Rotação de Burners e Handoff de Leads (PLAN-155 - Bloco 5)",
+  "type": "object",
+  "properties": {
+    "enqueue_campaign": {
+      "type": "object",
+      "properties": {
+        "recipients": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "message_template": { "type": "string" },
+        "options": {
+          "type": "object",
+          "properties": {
+            "min_delay": { "type": "integer", "default": 30 },
+            "max_delay": { "type": "integer", "default": 70 },
+            "burner_pool": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      },
+      "required": ["recipients", "message_template"]
+    },
+    "burner_reply_handoff": {
+      "type": "object",
+      "properties": {
+        "burner_instance": { "type": "string" },
+        "from_phone": { "type": "string" },
+        "message_text": { "type": "string" },
+        "sender_name": { "type": ["string", "null"] },
+        "lead_created": { "type": "boolean" },
+        "commercial_inbox_id": { "type": "integer" },
+        "ticket_status": { "type": "string" }
+      },
+      "required": ["burner_instance", "from_phone", "message_text", "lead_created", "commercial_inbox_id"]
+    }
+  },
+  "required": ["enqueue_campaign", "burner_reply_handoff"]
+}

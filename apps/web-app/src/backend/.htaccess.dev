@@ -1,0 +1,55 @@
+# Enable Rewrite Engine
+# Enable Rewrite Engine
+RewriteEngine On
+DirectoryIndex index.html index.php
+
+# Security: Block access to .env file
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Force HTTPS (DISABLED FOR LOCAL DOCKER)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Increase PHP Limits for Large JSON Payloads
+<IfModule mod_php.c>
+    php_value upload_max_filesize 64M
+    php_value post_max_size 64M
+    php_value memory_limit 256M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Fix Authorization Header Stripping
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+# Handle WebSocket Handshake (HMR)
+RewriteCond %{HTTP:Upgrade} websocket [NC]
+RewriteCond %{HTTP:Connection} upgrade [NC]
+RewriteRule .* ws://frontend-dev:5173%{REQUEST_URI} [P,L]
+
+# Handle Vite Dev Server Proxy (HMR support)
+RewriteCond %{REQUEST_URI} ^/(@vite|@react-refresh|src|node_modules|assets|fonts|images|mentors|uploads)/ [OR]
+RewriteCond %{REQUEST_URI} ^/(index\.html|$) [OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteRule ^(.*)$ http://frontend-dev:5173/$1 [P,L]
+
+# Handle API requests (Existing logic)
+RewriteCond %{REQUEST_URI} ^/api/v1/
+RewriteRule ^api/v1/(.*)$ api/v1/index.php [QSA,L]
+
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteRule ^api/(.*)$ api/$1 [L]
+
+# Handle static assets pass through (Normal PHP/Fallback)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteCond %{DOCUMENT_ROOT}/index.php -f
+RewriteRule ^ index.php [L]

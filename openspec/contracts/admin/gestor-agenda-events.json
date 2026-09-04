@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gestor Agenda Events Contract",
+  "description": "Contrato de API para gestão de agenda compartilhada, pendências e urgências do Portal do Gestor (V3.1)",
+  "endpoints": {
+    "GET /admin/agenda/events": {
+      "request_query": {
+        "type": "object",
+        "properties": {
+          "start_date": { "type": "string", "format": "date" },
+          "end_date": { "type": "string", "format": "date" },
+          "event_type": { "type": "string", "enum": ["agendamento_cliente", "pendencia", "urgencia", "evento_geral"] },
+          "priority": { "type": "string", "enum": ["baixa", "media", "alta", "critica"] },
+          "status": { "type": "string", "enum": ["pendente", "em_andamento", "concluido", "cancelado", "adiado"] },
+          "assigned_to": { "type": "integer" }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "event_type": { "type": "string" },
+                "title": { "type": "string" },
+                "description": { "type": ["string", "null"] },
+                "start_datetime": { "type": "string" },
+                "end_datetime": { "type": ["string", "null"] },
+                "priority": { "type": "string" },
+                "status": { "type": "string" },
+                "client_id": { "type": ["integer", "null"] },
+                "client_type": { "type": ["string", "null"] },
+                "created_by_admin_id": { "type": "integer" },
+                "created_by_name": { "type": ["string", "null"] },
+                "assigned_to_admin_id": { "type": ["integer", "null"] },
+                "assigned_to_name": { "type": ["string", "null"] },
+                "updated_by_admin_id": { "type": ["integer", "null"] },
+                "updated_by_name": { "type": ["string", "null"] },
+                "color": { "type": ["string", "null"] },
+                "metadata": { "type": ["object", "null"] },
+                "created_at": { "type": "string" },
+                "updated_at": { "type": "string" }
+              },
+              "required": ["id", "event_type", "title", "start_datetime", "priority", "status", "created_by_admin_id"]
+            }
+          }
+        },
+        "required": ["success", "events"]
+      }
+    },
+    "POST /admin/agenda/events": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "event_type": { "type": "string", "enum": ["agendamento_cliente", "pendencia", "urgencia", "evento_geral"] },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "start_datetime": { "type": "string" },
+          "end_datetime": { "type": "string" },
+          "priority": { "type": "string", "enum": ["baixa", "media", "alta", "critica"] },
+          "status": { "type": "string", "enum": ["pendente", "em_andamento", "concluido", "cancelado", "adiado"] },
+          "client_id": { "type": "integer" },
+          "client_type": { "type": "string", "enum": ["licenciada", "aluna", "externo"] },
+          "assigned_to_admin_id": { "type": "integer" },
+          "color": { "type": "string" },
+          "metadata": { "type": "object" }
+        },
+        "required": ["event_type", "title", "start_datetime"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "event_id": { "type": "integer" }
+        },
+        "required": ["success", "message", "event_id"]
+      }
+    },
+    "PATCH /admin/agenda/events/{id}/status": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["pendente", "em_andamento", "concluido", "cancelado", "adiado"] }
+        },
+        "required": ["status"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" }
+        },
+        "required": ["success", "message"]
+      }
+    },
+    "DELETE /admin/agenda/events/{id}": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" }
+        },
+        "required": ["success", "message"]
+      }
+    },
+    "GET /admin/agenda/summary": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "summary": {
+            "type": "object",
+            "properties": {
+              "total_urgencias_ativas": { "type": "integer" },
+              "total_pendencias_hoje": { "type": "integer" },
+              "total_agendamentos_hoje": { "type": "integer" },
+              "total_pendentes": { "type": "integer" }
+            },
+            "required": ["total_urgencias_ativas", "total_pendencias_hoje", "total_agendamentos_hoje", "total_pendentes"]
+          }
+        },
+        "required": ["success", "summary"]
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmEvolutionWebhookPayload",
+  "description": "Contrato de Ingestão de Webhooks da Evolution API v2 para o CRM Body Harmony",
+  "type": "object",
+  "required": ["event", "instance"],
+  "properties": {
+    "event": {
+      "type": "string",
+      "enum": [
+        "messages.upsert",
+        "messages.update",
+        "connection.update",
+        "chats.upsert",
+        "contacts.upsert",
+        "qrcode.updated"
+      ]
+    },
+    "instance": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "object",
+          "required": ["remoteJid", "id"],
+          "properties": {
+            "remoteJid": { "type": "string" },
+            "fromMe": { "type": "boolean" },
+            "id": { "type": "string" },
+            "participant": { "type": ["string", "null"] }
+          }
+        },
+        "pushName": { "type": ["string", "null"] },
+        "message": { "type": "object" },
+        "messageType": { "type": "string" },
+        "messageTimestamp": { "type": ["integer", "string"] },
+        "status": { "type": "string" }
+      }
+    }
+  }
+}

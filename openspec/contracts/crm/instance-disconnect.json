@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMInstanceDisconnectContract",
+  "description": "Contrato para desconexão (logout) de uma linha de WhatsApp",
+  "type": "object",
+  "required": ["success", "instance_key", "message"],
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "instance_key": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    }
+  }
+}

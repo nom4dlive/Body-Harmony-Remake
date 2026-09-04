@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMInstancesStatusContract",
+  "description": "Contrato para consulta do status em tempo real das instâncias de WhatsApp e canais de atendimento",
+  "type": "object",
+  "required": ["success", "instances"],
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "key", "title", "status", "is_connected", "phone_number", "profile_name"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["open", "connecting", "close", "disconnected", "unknown"]
+          },
+          "is_connected": {
+            "type": "boolean"
+          },
+          "phone_number": {
+            "type": ["string", "null"]
+          },
+          "profile_name": {
+            "type": ["string", "null"]
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

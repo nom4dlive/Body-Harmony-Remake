@@ -1,0 +1,27 @@
+-- Migration V2 (Name Matching)
+UPDATE `students` SET `cpf` = '669.197.382-87' WHERE `id` = 1;
+UPDATE `students` SET `cpf` = '349.258.148-00' WHERE `id` = 7;
+UPDATE `students` SET `cpf` = '119.860.817-62' WHERE `id` = 9;
+UPDATE `students` SET `cpf` = '012.559.894-75' WHERE `id` = 10;
+UPDATE `students` SET `cpf` = '346.241.388-05' WHERE `id` = 11;
+UPDATE `students` SET `cpf` = '321.475.438-61' WHERE `id` = 13;
+UPDATE `students` SET `cpf` = '022.157.529-47' WHERE `id` = 15;
+UPDATE `students` SET `cpf` = '724.401.041-91' WHERE `id` = 16;
+UPDATE `students` SET `cpf` = '051.454.769-30' WHERE `id` = 19;
+UPDATE `students` SET `cpf` = '555.435.885-34' WHERE `id` = 20;
+UPDATE `students` SET `cpf` = '156.682.678-06' WHERE `id` = 21;
+UPDATE `students` SET `cpf` = '031.169.781-07' WHERE `id` = 22;
+UPDATE `students` SET `cpf` = '967.902.452-00' WHERE `id` = 24;
+UPDATE `students` SET `cpf` = '017.535.129-56' WHERE `id` = 25;
+UPDATE `students` SET `cpf` = '431.208.238-30' WHERE `id` = 26;
+UPDATE `students` SET `cpf` = '215.831.578-40' WHERE `id` = 27;
+UPDATE `students` SET `cpf` = '068.804.426-33' WHERE `id` = 28;
+UPDATE `students` SET `cpf` = '265.114.438-09' WHERE `id` = 29;
+UPDATE `students` SET `cpf` = '051.353.297-81' WHERE `id` = 30;
+UPDATE `students` SET `cpf` = '414.704.568-50' WHERE `id` = 33;
+UPDATE `students` SET `cpf` = '019.165.945-22' WHERE `id` = 34;
+UPDATE `students` SET `cpf` = '798.380.575-68' WHERE `id` = 36;
+UPDATE `students` SET `cpf` = '516.661.891-20' WHERE `id` = 40;
+UPDATE `students` SET `cpf` = '850.306.271-20' WHERE `id` = 41;
+UPDATE `students` SET `cpf` = '329.412.988-27' WHERE `id` = 45;
+UPDATE `students` SET `cpf` = '026.495.639-74' WHERE `id` = 47;

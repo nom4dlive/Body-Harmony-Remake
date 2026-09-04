@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RBAC Roles & Departments Contract",
+  "description": "Contrato de dados para listagem e gerenciamento de Departamentos e Roles customizadas no ecossistema Body Harmony Nexus V3.1",
+  "type": "object",
+  "properties": {
+    "departments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "slug", "color"],
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "description": { "type": ["string", "null"] },
+          "color": { "type": "string" },
+          "members_count": { "type": "integer" }
+        }
+      }
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "department_id", "name", "slug", "hierarchy_level", "permissions"],
+        "properties": {
+          "id": { "type": "integer" },
+          "department_id": { "type": "integer" },
+          "department_name": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "hierarchy_level": { "type": "integer", "description": "1: Superadmin, 2: Admin/Gestor, 3: Supervisor, 4: Operacional/Vendas, 5: Atendimento" },
+          "permissions": {
+            "type": "object",
+            "properties": {
+              "agenda": { "type": "string", "enum": ["all", "team", "own", "none"] },
+              "onboarding": { "type": "string", "enum": ["manage", "view", "none"] },
+              "contracts": { "type": "string", "enum": ["manage", "view", "none"] },
+              "licenciadas": { "type": "string", "enum": ["manage", "view", "none"] },
+              "financial": { "type": "string", "enum": ["manage", "view", "none"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

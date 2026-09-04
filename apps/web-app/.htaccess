@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Force HTTPS (Nexus Guard SSL Redirect)
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # API Routing
+    # Map /api/v1/* to src/backend/api/v1/index.php
+    RewriteRule ^api/v1/(.*)$ src/backend/api/v1/index.php [QSA,L]
+
+    # React Routing (SPA Fallback)
+    # Serve index.html for any request that is NOT an API call and NOT a file/dir
+    RewriteCond %{REQUEST_URI} !^/api/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [L]
+</IfModule>

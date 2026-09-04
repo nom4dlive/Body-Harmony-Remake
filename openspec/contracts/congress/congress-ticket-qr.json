@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CongressTicketQrContract",
+  "description": "Contrato de consulta de ingresso e credenciamento com QR Code do Congresso Body Harmony",
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/v1/congress/ticket/{token}",
+      "summary": "Consulta os detalhes da inscrição/ingresso e dados para validação na recepção física",
+      "request": {
+        "headers": {},
+        "params": {
+          "token": { "type": "string" }
+        }
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ok": { "type": "boolean" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "ticket_token": { "type": "string" },
+                "tier_name": { "type": "string" },
+                "tier_slug": { "type": "string" },
+                "customer_name": { "type": "string" },
+                "customer_cpf_masked": { "type": "string" },
+                "category": { "type": "string" },
+                "payment_status": { "type": "string" },
+                "checked_in": { "type": "boolean" },
+                "checked_in_at": { "type": ["string", "null"] },
+                "event_name": { "type": "string" },
+                "event_date": { "type": "string" },
+                "event_location": { "type": "string" },
+                "qr_payload": { "type": "string" },
+                "qr_code_url": { "type": "string" }
+              },
+              "required": ["ticket_token", "tier_name", "customer_name", "payment_status", "checked_in", "event_name", "event_date", "qr_payload", "qr_code_url"]
+            }
+          },
+          "required": ["ok", "data"]
+        }
+      }
+    }
+  ]
+}

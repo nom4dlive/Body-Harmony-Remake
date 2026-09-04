@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContractRectificationContract",
+  "description": "Contrato de API para retificação e atualização de contratos assinados no Portal do Gestor",
+  "type": "object",
+  "properties": {
+    "uuid": { "type": "string" },
+    "variables": { "type": "object" },
+    "rendered_html": { "type": "string" },
+    "reason": { "type": "string" },
+    "preserve_signatures": { "type": "boolean" }
+  },
+  "required": ["uuid", "variables"]
+}

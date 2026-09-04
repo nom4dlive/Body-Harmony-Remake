@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmDefensiveRenderingContract",
+  "description": "Contrato de blindagem defensiva para renderização e payloads do CRM V4 (PLAN-185)",
+  "type": "object",
+  "properties": {
+    "conversationPayload": {
+      "type": "object",
+      "required": ["id", "name", "phone", "channel", "status"],
+      "properties": {
+        "id": { "type": ["string", "integer"] },
+        "name": { "type": "string", "minLength": 1 },
+        "phone": { "type": "string", "minLength": 1 },
+        "channel": { "type": "string" },
+        "status": { "type": "string" },
+        "isGroup": { "type": "boolean" },
+        "avatar": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

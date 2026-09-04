@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsNotebookSyncContract",
+  "type": "object",
+  "description": "Contrato de API para sincronização de módulos e aulas do LMS para o IA Notebook",
+  "request": {
+    "type": "object",
+    "required": [
+      "course_id"
+    ],
+    "properties": {
+      "course_id": {
+        "type": "integer",
+        "description": "ID do curso no MySQL do LMS"
+      },
+      "module_ids": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        },
+        "description": "Lista opcional de IDs de módulos a sincronizar"
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "required": [
+      "success",
+      "modules_synced",
+      "lessons_enqueued"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "modules_synced": {
+        "type": "integer"
+      },
+      "lessons_enqueued": {
+        "type": "integer"
+      },
+      "notebooks": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "module_id": {
+              "type": "integer"
+            },
+            "module_name": {
+              "type": "string"
+            },
+            "notebook_id": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

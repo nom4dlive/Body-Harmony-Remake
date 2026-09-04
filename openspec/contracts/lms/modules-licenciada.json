@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GET /v1/lms/modules — Licenciada Portal (PLAN-011)",
+  "description": "Retorna todos os módulos LMS ativos para licenciadas autenticadas. Módulos exclusivos aparecem com is_exclusive=true e has_access=false se a licenciada não tiver autorização — expondo a vitrine sem conceder acesso ao conteúdo.",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/lms/modules",
+    "headers": {
+      "X-Device-Token": "string (token de sessão da licenciada)"
+    }
+  },
+  "response": {
+    "success": {
+      "status": 200,
+      "body_array_of": {
+        "id": "integer",
+        "title": "string",
+        "description": "string | null",
+        "is_exclusive": "boolean",
+        "has_access": "boolean — true se is_exclusive=false OU se licenciada tiver acesso concedido ativo",
+        "lessons": [
+          {
+            "id": "integer",
+            "title": "string",
+            "video_type": "string",
+            "video_ref": "string",
+            "duration_seconds": "integer | null",
+            "thumbnail_ref": "string | null",
+            "thumbnail_base64": "string | null",
+            "is_completed": "boolean",
+            "progress_percent": "integer"
+          }
+        ]
+      }
+    }
+  },
+  "breaking_change": "Campo is_exclusive e has_access adicionados. Módulos exclusivos sem acesso agora aparecem no array (antes eram filtrados). Lessons de módulos exclusivos sem acesso retornam array vazio.",
+  "plan_ref": "PLAN-011",
+  "updated_at": "2026-06-05"
+}

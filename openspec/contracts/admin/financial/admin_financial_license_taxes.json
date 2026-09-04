@@ -1,0 +1,61 @@
+{
+  "endpoint": "GET /api/v1/admin/financial/license-taxes",
+  "description": "Lista taxas de licenciamento com filtros, busca e paginação, sem valores fictícios e com diagnóstico documental",
+  "query_params": {
+    "status": "pending_payment|paid|contract_signed|cancelled",
+    "status_documental": "regularizado|em_analise|aguardando_anexos",
+    "method": "pix|card|transfer|manual",
+    "search": "string (nome, cpf, doc)",
+    "page": "int (default 1)",
+    "per_page": "int (default 20)"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "data": [
+        {
+          "id": "int",
+          "licenciada_id": "int",
+          "licenciada_name": "string",
+          "licenciada_cpf": "string|null",
+          "licenciada_cnpj": "string|null",
+          "documento_formatado": "string",
+          "licenciada_location": "string|null",
+          "valor_cents": "int|null",
+          "valor_display": "string|null",
+          "valor_extenso": "string|null",
+          "payment_method": "string|null",
+          "payment_condition": "string|null",
+          "installments": "int",
+          "status": "string",
+          "status_documental": "regularizado|em_analise|aguardando_anexos",
+          "has_contract": "boolean",
+          "has_receipt": "boolean",
+          "contract_signed_at": "datetime|null",
+          "payment_confirmed_at": "datetime|null",
+          "notes": "string|null",
+          "source": "onboarding|manual|imported",
+          "created_at": "datetime",
+          "photo_url": "string|null"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "per_page": 20,
+        "total": 104,
+        "total_pages": 6
+      },
+      "summary": {
+        "total_active_licensees": 104,
+        "total_contracted_cents": 0,
+        "total_formatted": "R$ 0,00",
+        "total_paid_cents": 0,
+        "total_paid_formatted": "R$ 0,00",
+        "total_regularized": 15,
+        "total_pending_contract": 89,
+        "total_pending_receipt": 0,
+        "regularity_rate_pct": 14.4
+      }
+    }
+  }
+}

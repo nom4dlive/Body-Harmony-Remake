@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  qwenproxy:
+    image: mcr.microsoft.com/playwright:v1.60.0-noble
+    container_name: bodyharmony-qwenproxy
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - /opt/qwenproxy/data:/app/data
+      - /opt/qwenproxy/qwen_profiles:/app/qwen_profiles
+      - /opt/qwenproxy:/app
+    tmpfs:
+      - /tmp:size=512M
+    shm_size: 1g
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - BROWSER=chromium
+      - HEADLESS=true
+      - API_KEY=${QWENPROXY_API_KEY:-bh_qwen_local_secret}
+      - QWEN_GUEST_MODE_ONLY=false
+      - ACCOUNT_LANES=2
+      - NAVIGATION_TIMEOUT=45000
+      - PAGE_TIMEOUT=30000
+      - CHAT_TIMEOUT=120000
+    networks:
+      - default
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
+          cpus: '2.0'
+        reservations:
+          memory: 1024M
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

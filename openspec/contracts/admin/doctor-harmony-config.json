@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Doctor Harmony Neural Config Contract",
+  "description": "Contrato de API para carregar e atualizar a configuração neural e chaves de IA do Doctor Harmony (V3.1)",
+  "endpoints": {
+    "GET /admin/doctor-harmony/config": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "config": {
+            "type": "object",
+            "properties": {
+              "doctor_harmony_system_prompt": { "type": "string" },
+              "gemini_model": { "type": "string" },
+              "confidence_threshold": { "type": "number" },
+              "gemini_api_key": { "type": "string" },
+              "ai_provider": { "type": "string", "enum": ["gemini", "nvidia"] },
+              "nvidia_api_key": { "type": "string" },
+              "nvidia_model": { "type": "string" }
+            },
+            "required": ["doctor_harmony_system_prompt", "gemini_model", "confidence_threshold", "gemini_api_key", "ai_provider", "nvidia_api_key", "nvidia_model"]
+          }
+        },
+        "required": ["success", "config"]
+      }
+    },
+    "POST /admin/doctor-harmony/config": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "doctor_harmony_system_prompt": { "type": "string" },
+          "gemini_model": { "type": "string" },
+          "confidence_threshold": { "type": "number" },
+          "gemini_api_key": { "type": "string" },
+          "ai_provider": { "type": "string", "enum": ["gemini", "nvidia"] },
+          "nvidia_api_key": { "type": "string" },
+          "nvidia_model": { "type": "string" }
+        },
+        "required": ["doctor_harmony_system_prompt", "confidence_threshold"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" }
+        },
+        "required": ["success", "message"]
+      }
+    }
+  }
+}

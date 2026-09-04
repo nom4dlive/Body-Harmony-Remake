@@ -1,0 +1,79 @@
+{
+  "endpoint": "POST /api/v1/admin/congresso/gallery/upload",
+  "auth": "Admin JWT Bearer Token",
+  "description": "Upload de foto para a galeria do Espaco Full Sales no carrossel da landing page /congresso.",
+  "input": {
+    "type": "multipart/form-data",
+    "fields": {
+      "file": {
+        "type": "binary",
+        "required": true,
+        "description": "Arquivo de imagem (JPEG, PNG ou WEBP)",
+        "validations": {
+          "mime_types": [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+          ],
+          "extensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp"
+          ],
+          "max_size_bytes": 5242880
+        }
+      }
+    }
+  },
+  "output": {
+    "success": {
+      "http_status": 200,
+      "body": {
+        "success": true,
+        "url": "/uploads/congresso/cong_1722820000.webp",
+        "filename": "cong_1722820000.webp",
+        "message": "Foto enviada com sucesso!"
+      }
+    },
+    "error_no_file": {
+      "http_status": 400,
+      "body": {
+        "success": false,
+        "message": "Nenhum arquivo enviado."
+      }
+    },
+    "error_invalid_format": {
+      "http_status": 400,
+      "body": {
+        "success": false,
+        "message": "Formato invalido. Formatos permitidos: JPG, PNG, WEBP."
+      }
+    },
+    "error_size": {
+      "http_status": 400,
+      "body": {
+        "success": false,
+        "message": "Arquivo muito grande. Limite: 5MB."
+      }
+    },
+    "error_disk": {
+      "http_status": 500,
+      "body": {
+        "success": false,
+        "message": "Falha ao gravar arquivo no disco."
+      }
+    }
+  },
+  "storage": {
+    "directory": "public_html/uploads/congresso/",
+    "filename_pattern": "cong_{timestamp}.{ext}",
+    "public_url_pattern": "/uploads/congresso/cong_{timestamp}.{ext}"
+  },
+  "security": {
+    "basename": true,
+    "mime_validation": true,
+    "extension_whitelist": true,
+    "size_limit": true
+  }
+}

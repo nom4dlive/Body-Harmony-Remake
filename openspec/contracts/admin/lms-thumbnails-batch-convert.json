@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsThumbnailsBatchConvertResponse",
+  "description": "POST /admin/lms/lessons/generate-thumbnails-batch — Inicia a extração em lote de miniaturas via FFmpeg na VPS.",
+  "path": "/admin/lms/lessons/generate-thumbnails-batch",
+  "method": "POST",
+  "status": 200,
+  "request": {
+    "type": "object",
+    "properties": {
+      "force": {
+        "type": "boolean",
+        "description": "Se verdadeiro, força a regeneração de todas as miniaturas, mesmo se já existirem."
+      }
+    },
+    "required": []
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string"
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "Identificador único do processo de extração em lote iniciado"
+          },
+          "total_queued": {
+            "type": "integer",
+            "description": "Número de aulas elegíveis para extração de miniatura"
+          }
+        },
+        "required": ["job_id", "total_queued"]
+      }
+    },
+    "required": ["success", "message", "data"]
+  }
+}

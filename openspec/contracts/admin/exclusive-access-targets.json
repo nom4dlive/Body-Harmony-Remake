@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GET /v1/admin/lms/exclusive-access/targets — Contrato V3.1 (PLAN-010)",
+  "description": "Lista alunas, licenciadas ativas e módulos exclusivos disponíveis para concessão de acesso. Utiliza CPF como identificador primário.",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/admin/lms/exclusive-access/targets",
+    "auth": "Bearer admin token (X-Admin-Token ou Cookie de sessão)"
+  },
+  "response": {
+    "success": {
+      "status": 200,
+      "body": {
+        "alunas": [
+          {
+            "id": "integer",
+            "name": "string",
+            "cpf": "string (11 dígitos numéricos) | null"
+          }
+        ],
+        "licenciadas": [
+          {
+            "id": "integer",
+            "name": "string",
+            "cpf": "string (11 dígitos numéricos) | null"
+          }
+        ],
+        "modules": [
+          {
+            "id": "integer",
+            "title": "string",
+            "is_exclusive": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  "breaking_change": "Campo 'email' removido e substituído por 'cpf' para alinhamento com a realidade do cadastro.",
+  "plan_ref": "PLAN-010",
+  "updated_at": "2026-06-05"
+}

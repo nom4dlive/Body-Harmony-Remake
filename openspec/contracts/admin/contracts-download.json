@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContractsDownloadContract",
+  "description": "Contrato para streaming seguro de download do arquivo PDF do contrato gerado ou assinado",
+  "endpoints": {
+    "/v1/contracts/download": {
+      "GET": {
+        "summary": "Serve o PDF do contrato em modo seguro validando JWT de administrador ou token de signatário",
+        "security": ["AdminTokenOrSignToken"],
+        "parameters": [
+          { "name": "uuid", "in": "query", "type": "string", "required": true },
+          { "name": "token", "in": "query", "type": "string", "description": "Token de assinatura caso seja acesso público" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Binário do PDF com cabeçalhos de Content-Type: application/pdf e Content-Disposition",
+            "content": {
+              "application/pdf": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "401": { "description": "Não autorizado" },
+          "404": { "description": "Arquivo PDF não encontrado" }
+        }
+      }
+    }
+  }
+}

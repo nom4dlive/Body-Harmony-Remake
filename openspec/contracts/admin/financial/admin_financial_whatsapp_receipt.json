@@ -1,0 +1,48 @@
+{
+  "endpoint": "GET /api/v1/admin/financial/license-taxes/{id}/receipt-whatsapp",
+  "plan": "PLAN-138",
+  "description": "Compila o recibo oficial de quitação (template recibo-oficial-quitacao-padrao, Categoria Recibos V103) via ContractPdfService e gera link WhatsApp com texto compilado",
+  "template": {
+    "slug": "recibo-oficial-quitacao-padrao",
+    "category": "Recibos",
+    "source_migration": "V103_Seed_All_Categories_Templates.sql (L660-720)",
+    "compilation_service": "ContractPdfService::renderTemplate()",
+    "fallback": "Texto ad-hoc legado se template não encontrado no banco"
+  },
+  "licenciante_data_hardcoded": {
+    "regra": "REGRA 11 — Invariant de Dados Oficiais da Licenciante",
+    "EMISSOR_NOME_RAZAO": "BODY HARMONY ELETROESTIMULAÇÃO LTDA.",
+    "EMISSOR_CPF_CNPJ": "68.016.506/0001-22"
+  },
+  "variables_injected": {
+    "RECIBO_NUMERO": "YYYY/NNN (auto-gerado: ano + ID da taxa zero-padded)",
+    "CIDADE_EMISSAO": "Assis/SP",
+    "DATA_EMISSAO_EXTENSO": "auto-gerado via dataExtenso()",
+    "PAGADOR_NOME_RAZAO": "licenciada_name da taxa",
+    "PAGADOR_CPF_CNPJ": "licenciada_cpf ou licenciada_cnpj da taxa",
+    "PAGADOR_ENDERECO": "licenciada_location da taxa",
+    "VALOR_TOTAL_NUM": "formatCurrency(valor_cents)",
+    "VALOR_TOTAL_EXTENSO": "valor_extenso da taxa",
+    "FORMA_PAGAMENTO_DESCRICAO": "payment_method ucfirst()",
+    "DESCRICAO_SERVICOS_TAXAS": "Taxa de Licenciamento Body Harmony®"
+  },
+  "security": {
+    "audit": {
+      "table": "financial_audit_log",
+      "action": "receipt_sent",
+      "fields_logged": ["admin_id", "tax_id", "licenciada_name", "valor", "phone", "timestamp"]
+    }
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "phone": "string (55XXXXXXXXXXX)",
+      "licenciada_name": "string",
+      "valor_display": "string (R$ X.XXX,XX)",
+      "message": "string (texto limpo para WhatsApp, derivado do HTML compilado via strip_tags + formatação)",
+      "whatsapp_url": "string (https://wa.me/...?text=...)",
+      "receipt_number": "string (YYYY/NNN)",
+      "rendered_html": "string (HTML compilado do recibo para preview no modal do frontend)"
+    }
+  }
+}

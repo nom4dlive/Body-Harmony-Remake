@@ -1,0 +1,150 @@
+{
+  "grant": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["aluna", "licenciada"]
+        },
+        "target_id": {
+          "type": "integer"
+        },
+        "module_id": {
+          "type": "integer"
+        },
+        "expires_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      },
+      "required": ["type", "target_id", "module_id"]
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": ["success", "message"]
+    }
+  },
+  "revoke": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["aluna", "licenciada"]
+        },
+        "target_id": {
+          "type": "integer"
+        },
+        "module_id": {
+          "type": "integer"
+        }
+      },
+      "required": ["type", "target_id", "module_id"]
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": ["success", "message"]
+    }
+  },
+  "list": {
+    "response": {
+      "type": "object",
+      "properties": {
+        "alunas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "aluna_id": { "type": "integer" },
+              "aluna_name": { "type": "string" },
+              "module_id": { "type": "integer" },
+              "module_title": { "type": "string" },
+              "granted_at": { "type": "string" },
+              "expires_at": { "type": ["string", "null"] }
+            },
+            "required": ["id", "aluna_id", "aluna_name", "module_id", "module_title", "granted_at"]
+          }
+        },
+        "licenciadas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "licenciada_id": { "type": "integer" },
+              "licenciada_name": { "type": "string" },
+              "module_id": { "type": "integer" },
+              "module_title": { "type": "string" },
+              "granted_at": { "type": "string" },
+              "expires_at": { "type": ["string", "null"] }
+            },
+            "required": ["id", "licenciada_id", "licenciada_name", "module_id", "module_title", "granted_at"]
+          }
+        }
+      },
+      "required": ["alunas", "licenciadas"]
+    }
+  },
+  "targets": {
+    "response": {
+      "type": "object",
+      "properties": {
+        "alunas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "name": { "type": "string" },
+              "email": { "type": "string" }
+            },
+            "required": ["id", "name", "email"]
+          }
+        },
+        "licenciadas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "name": { "type": "string" },
+              "email": { "type": ["string", "null"] }
+            },
+            "required": ["id", "name"]
+          }
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "title": { "type": "string" },
+              "is_exclusive": { "type": "boolean" }
+            },
+            "required": ["id", "title", "is_exclusive"]
+          }
+        }
+      },
+      "required": ["alunas", "licenciadas", "modules"]
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FinancialReportsDreContract",
+  "description": "Contrato de relatorio DRE (Demonstracao de Resultados) por evento. Cruza receitas vinculadas a tag do evento com despesas do centro de custo correspondente.",
+  "type": "object",
+  "properties": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "event_tag": { "type": "string", "description": "Tag do evento para filtrar DRE isolado" },
+        "date_from": { "type": "string", "format": "date" },
+        "date_to": { "type": "string", "format": "date" }
+      }
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "dre": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "event_tag": { "type": "string" },
+                  "event_name": { "type": ["string", "null"] },
+                  "revenue": {
+                    "type": "object",
+                    "properties": {
+                      "total_cents": { "type": "integer" },
+                      "total_formatted": { "type": "string" },
+                      "sources": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "source_type": { "type": "string" },
+                            "count": { "type": "integer" },
+                            "total_cents": { "type": "integer" }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "expenses": {
+                    "type": "object",
+                    "properties": {
+                      "total_cents": { "type": "integer" },
+                      "total_formatted": { "type": "string" },
+                      "by_category": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "category": { "type": "string" },
+                            "total_cents": { "type": "integer" }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "gross_profit_cents": { "type": "integer" },
+                  "gross_profit_formatted": { "type": "string" },
+                  "margin_pct": { "type": "number" },
+                  "status": { "type": "string", "enum": ["profit", "loss", "break_even"] }
+                }
+              }
+            },
+            "summary": {
+              "type": "object",
+              "properties": {
+                "total_revenue_cents": { "type": "integer" },
+                "total_expenses_cents": { "type": "integer" },
+                "total_gross_profit_cents": { "type": "integer" },
+                "avg_margin_pct": { "type": "number" },
+                "events_count": { "type": "integer" }
+              }
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "from": { "type": "string" },
+                "to": { "type": "string" }
+              }
+            }
+          },
+          "required": ["dre", "summary", "period"]
+        }
+      },
+      "required": ["success", "data"]
+    }
+  }
+}

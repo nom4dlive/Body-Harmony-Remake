@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsNotebookModulesListContract",
+  "type": "object",
+  "description": "Listagem de módulos do curso com status de sincronização no IA Notebook",
+  "request": {
+    "type": "object",
+    "properties": {
+      "course_id": {
+        "type": "integer",
+        "description": "ID do curso (padrão: 1)"
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "required": [
+      "success",
+      "modules"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "course_id": {
+        "type": "integer"
+      },
+      "modules": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "title",
+            "lessons_count",
+            "notebook_id",
+            "status"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "order_index": {
+              "type": "integer"
+            },
+            "lessons_count": {
+              "type": "integer"
+            },
+            "notebook_id": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "synced",
+                "pending",
+                "not_created"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMStackHealthContract",
+  "description": "Contrato de verificação de integridade e healthcheck da Stack CRM na VPS Dedicada (Nexus V3.1 - PLAN-151)",
+  "type": "object",
+  "properties": {
+    "evolution_api": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "enum": ["https://evolution.bodyharmony.com.br/", "https://evolution.bodyharmony.com.br/health"]
+        },
+        "method": {
+          "type": "string",
+          "enum": ["GET"]
+        },
+        "expected_status": {
+          "type": "integer",
+          "enum": [200]
+        },
+        "response_schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer",
+              "enum": [200]
+            },
+            "message": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          },
+          "required": ["status"]
+        }
+      },
+      "required": ["endpoint", "method", "expected_status"]
+    },
+    "chatwoot": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "enum": ["https://crm.bodyharmony.com.br/health_check", "https://crm.bodyharmony.com.br/"]
+        },
+        "method": {
+          "type": "string",
+          "enum": ["GET"]
+        },
+        "expected_status": {
+          "type": "integer",
+          "enum": [200, 302]
+        },
+        "response_schema": {
+          "type": "object",
+          "properties": {
+            "all_ok": {
+              "type": "boolean"
+            },
+            "database": {
+              "type": "boolean"
+            },
+            "redis": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "required": ["endpoint", "method", "expected_status"]
+    }
+  },
+  "required": ["evolution_api", "chatwoot"]
+}

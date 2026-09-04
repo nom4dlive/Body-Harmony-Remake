@@ -1,0 +1,55 @@
+{
+  "endpoint": "POST /api/v1/admin/financial/license-taxes/upload",
+  "plan": "PLAN-138",
+  "description": "Upload seguro de comprovantes financeiros para private_uploads/ com download via URL assinada HMAC",
+  "security": {
+    "storage": "private_uploads/financial/ (FORA de public_html)",
+    "htaccess": "Deny from all (Apache) + path fora de document_root",
+    "access": "Exclusivamente via GET /attachments/{id}/download com HMAC signed URL",
+    "naming": "bin2hex(random_bytes(16))_parentId.ext — ZERO dados pessoais no filename",
+    "ttl_seconds": 300,
+    "hmac_algorithm": "sha256",
+    "hmac_payload": "attachmentId:expires"
+  },
+  "request_type": "multipart/form-data",
+  "body": {
+    "file": "binary",
+    "parent_type": "license_tax|transaction",
+    "parent_id": "int"
+  },
+  "validations": {
+    "extensions_whitelist": ["pdf", "jpg", "jpeg", "png", "webp"],
+    "mime_whitelist": ["application/pdf", "image/jpeg", "image/png", "image/webp"],
+    "max_size_bytes": 10485760,
+    "mime_check_method": "finfo_open() (magic bytes, não extensão)"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "id": "int",
+      "file_name": "string (hash seguro, sem dados pessoais)",
+      "signed_url": "string (/api/v1/admin/financial/attachments/{id}/download?expires=X&signature=Y)",
+      "file_size_bytes": "int",
+      "mime_type": "string",
+      "created_at": "datetime"
+    }
+  },
+  "download_endpoint": {
+    "method": "GET",
+    "path": "/api/v1/admin/financial/attachments/{id}/download",
+    "query_params": {
+      "expires": "int (unix timestamp)",
+      "signature": "string (HMAC SHA-256)"
+    },
+    "error_codes": {
+      "403": "Assinatura inválida ou ausente",
+      "404": "Anexo não encontrado",
+      "410": "URL expirada"
+    },
+    "audit": "Registra download_count, last_downloaded_at, last_downloaded_by + financial_audit_log"
+  },
+  "pergunta_guia": {
+    "pergunta": "Se a URL de um comprovante vazar, um terceiro não autenticado consegue abrir?",
+    "resposta": "NÃO — arquivo reside em private_uploads/ (Deny from all). Download somente via HMAC signed URL com TTL de 300s. URL expirada retorna 410. Assinatura inválida retorna 403."
+  }
+}

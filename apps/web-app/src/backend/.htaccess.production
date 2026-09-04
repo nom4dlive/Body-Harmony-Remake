@@ -1,0 +1,75 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# 🛡️ Force HTTPS (301 Redirect for Direct & Edge Proxy CDN)
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 🛡️ Security & SSL Hardening Headers
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Content-Security-Policy "upgrade-insecure-requests; frame-ancestors 'self' https://crm.bodyharmony.com.br;"
+</IfModule>
+
+# 🛡️ Anti-Cache Policy for index.html (STABILITY FIX V44.0.2)
+# Ensures clients always get the latest asset manifest
+<FilesMatch "index\.html$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </IfModule>
+</FilesMatch>
+
+DirectoryIndex index.html index.php
+
+# Security: Block access to .env file
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Increase PHP Limits for Large JSON Payloads
+<IfModule mod_php.c>
+    php_value upload_max_filesize 64M
+    php_value post_max_size 64M
+    php_value memory_limit 256M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Fix Authorization Header Stripping
+CGIPassAuth On
+
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# ----------------------------------------------------------------------
+# API ROUTES (Backend)
+# ----------------------------------------------------------------------
+
+# Handle API V1
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^/api/v1/
+RewriteRule ^api/v1/(.*)$ api/v1/index.php [QSA,L]
+
+# General API Fallback
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteRule ^api/(.*)$ api/$1 [L]
+
+# ----------------------------------------------------------------------
+# FRONTEND ROUTES (React SPA)
+# ----------------------------------------------------------------------
+
+# Serve existing files/directories directly (Assets, Images, API files)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 🛡️ Hardened SPA Routing: Redirect everything else to index.html
+RewriteRule ^ index.html [L]

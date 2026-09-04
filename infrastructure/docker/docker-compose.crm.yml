@@ -1,0 +1,156 @@
+# ==============================================================================
+# Body Harmony Nexus V3.1 — CRM Stack (PLAN-151)
+# Evolution API v2 + Chatwoot + PostgreSQL 16 + Redis 7 on Dedicated VPS (2.25.156.25)
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. PostgreSQL 16 (Isolated CRM Database: Chatwoot + Evolution v2)
+  # ----------------------------------------------------------------------------
+  crm-postgres:
+    image: pgvector/pgvector:pg16
+    container_name: bodyharmony-crm-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-bodyharmony_crm}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bh_crm_postgres_secure_2026!}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - /opt/crm/postgres_data:/var/lib/postgresql/data
+      - /opt/crm/init-databases.sh:/docker-entrypoint-initdb.d/init-databases.sh:ro
+    networks:
+      - crm-internal-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bodyharmony_crm} -d ${POSTGRES_DB:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ----------------------------------------------------------------------------
+  # 2. Redis 7 (Queues, Sidekiq, Caching, Session Locks)
+  # ----------------------------------------------------------------------------
+  crm-redis:
+    image: redis:7-alpine
+    container_name: bodyharmony-crm-redis
+    restart: always
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-bh_crm_redis_secure_2026!}", "--appendonly", "yes"]
+    volumes:
+      - /opt/crm/redis_data:/data
+    networks:
+      - crm-internal-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-bh_crm_redis_secure_2026!}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # ----------------------------------------------------------------------------
+  # 3. Evolution API v2 (WhatsApp Engine & Webhook Dispatcher)
+  # ----------------------------------------------------------------------------
+  evolution-api:
+    image: evoapicloud/evolution-api:latest
+    container_name: bodyharmony-evolution-api
+    restart: always
+    depends_on:
+      crm-postgres:
+        condition: service_healthy
+      crm-redis:
+        condition: service_healthy
+    networks:
+      - crm-internal-net
+      - traefik-net
+    ports:
+      - "127.0.0.1:8085:8080"
+    environment:
+      SERVER_URL: ${EVOLUTION_SERVER_URL:-https://evolution.bodyharmony.com.br}
+      SERVER_PORT: ${EVOLUTION_PORT:-8080}
+      SERVER_TYPE: http
+      AUTHENTICATION_TYPE: ${AUTHENTICATION_TYPE:-apikey}
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY:-bh_evo_global_key_v31_2026_secure}
+      AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES: "true"
+
+      # PostgreSQL Persistence
+      DATABASE_ENABLED: "true"
+      DATABASE_PROVIDER: postgresql
+      DATABASE_CONNECTION_URI: postgresql://${POSTGRES_USER:-bodyharmony_crm}:${POSTGRES_PASSWORD:-bh_crm_postgres_secure_2026!}@crm-postgres:5432/evolution_v2
+      DATABASE_CONNECTION_CLIENT_NAME: evolution_v2
+      DATABASE_SAVE_DATA_INSTANCE: "true"
+      DATABASE_SAVE_DATA_NEW_MESSAGE: "true"
+      DATABASE_SAVE_MESSAGE_UPDATE: "true"
+      DATABASE_SAVE_DATA_CONTACTS: "true"
+      DATABASE_SAVE_DATA_CHATS: "true"
+
+      # Redis Cache (DB 1)
+      CACHE_REDIS_ENABLED: "true"
+      CACHE_REDIS_URI: redis://:${REDIS_PASSWORD:-bh_crm_redis_secure_2026!}@crm-redis:6379/1
+      CACHE_REDIS_PREFIX_KEY: evolution_v2
+      CACHE_REDIS_SAVE_INSTANCES: "true"
+
+      # Chatwoot Integration (Desativado - PLAN-224: Pipeline Direto Evolution <-> PHP/MySQL)
+      CHATWOOT_ENABLED: "false"
+      CHATWOOT_MESSAGE_READ: "false"
+      CHATWOOT_MESSAGE_DELETE: "false"
+
+      # Webhooks Defaults (Apontando diretamente para o Backend PHP)
+      WEBHOOK_GLOBAL_ENABLED: "true"
+      WEBHOOK_GLOBAL_URL: ${EVOLUTION_WEBHOOK_URL:-https://bodyharmony.com.br/api/v1/crm/evolution_webhook.php}
+      WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS: "true"
+      WEBHOOK_EVENTS_APPLICATION_STARTUP: "false"
+      WEBHOOK_EVENTS_QRCODE_UPDATED: "true"
+      WEBHOOK_EVENTS_MESSAGES_SET: "true"
+      WEBHOOK_EVENTS_MESSAGES_UPSERT: "true"
+      WEBHOOK_EVENTS_MESSAGES_UPDATE: "true"
+      WEBHOOK_EVENTS_SEND_MESSAGE: "true"
+      WEBHOOK_EVENTS_CONTACTS_SET: "true"
+      WEBHOOK_EVENTS_CONTACTS_UPSERT: "true"
+      WEBHOOK_EVENTS_CONTACTS_UPDATE: "true"
+      WEBHOOK_EVENTS_PRESENCE_UPDATE: "true"
+      WEBHOOK_EVENTS_CHATS_SET: "true"
+      WEBHOOK_EVENTS_CHATS_UPSERT: "true"
+      WEBHOOK_EVENTS_CHATS_UPDATE: "true"
+      WEBHOOK_EVENTS_CHATS_DELETE: "true"
+      WEBHOOK_EVENTS_GROUPS_UPSERT: "true"
+      WEBHOOK_EVENTS_GROUP_UPDATE: "true"
+      WEBHOOK_EVENTS_GROUP_PARTICIPANTS_UPDATE: "true"
+      WEBHOOK_EVENTS_CONNECTION_UPDATE: "true"
+      WEBHOOK_EVENTS_STATUS_INSTANCE: "true"
+    volumes:
+      - /opt/crm/evolution_instances:/evolution/instances
+      - /opt/crm/evolution_store:/evolution/store
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.evolution.rule=Host(`evolution.bodyharmony.com.br`)"
+      - "traefik.http.routers.evolution.entrypoints=websecure"
+      - "traefik.http.routers.evolution.tls=true"
+      - "traefik.http.routers.evolution.tls.certresolver=letsencrypt"
+      - "traefik.http.services.evolution.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.evolution-cors.headers.accesscontrolalloworiginlist=https://bodyharmony.com.br,https://www.bodyharmony.com.br,https://crm.bodyharmony.com.br"
+      - "traefik.http.middlewares.evolution-cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS,PATCH"
+      - "traefik.http.middlewares.evolution-cors.headers.accesscontrolallowheaders=*"
+      - "traefik.http.routers.evolution.middlewares=evolution-cors"
+
+  # ----------------------------------------------------------------------------
+  # 4. Chatwoot Web (DESATIVADO - PLAN-224: Extirpação Completa)
+  # ----------------------------------------------------------------------------
+  # chatwoot-web:
+  #   image: chatwoot/chatwoot:latest
+  #   container_name: bodyharmony-chatwoot-web
+  #   restart: "no"
+  #   ...
+
+  # ----------------------------------------------------------------------------
+  # 5. Chatwoot Sidekiq Worker (DESATIVADO - PLAN-224: Extirpação Completa)
+  # ----------------------------------------------------------------------------
+  # chatwoot-worker:
+  #   image: chatwoot/chatwoot:latest
+  #   container_name: bodyharmony-chatwoot-worker
+  #   restart: "no"
+
+networks:
+  traefik-net:
+    external: true
+  crm-internal-net:
+    driver: bridge

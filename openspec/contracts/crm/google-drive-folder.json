@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRM Google Drive Folder Contract",
+  "description": "Especificação do contrato de criação e acesso a pastas de prontuários no Google Drive (PLAN-177)",
+  "type": "object",
+  "endpoints": {
+    "ensure_folder": {
+      "method": "POST",
+      "path": "/api/v1/crm/google/drive/folders",
+      "auth_required": true,
+      "request": {
+        "type": "object",
+        "required": ["patient_name"],
+        "properties": {
+          "patient_name": { "type": "string" },
+          "cpf": { "type": "string" },
+          "folder_type": { 
+            "type": "string",
+            "enum": ["PRONTUARIO", "CONTRATO", "FOTOS"]
+          }
+        }
+      },
+      "response": {
+        "type": "object",
+        "required": ["success", "folder_id", "folder_url"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "folder_id": { "type": "string" },
+          "folder_url": { "type": "string" },
+          "folder_path": { "type": "string" }
+        }
+      }
+    }
+  }
+}

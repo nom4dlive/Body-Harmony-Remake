@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShopCheckoutStoneContract",
+  "description": "Contrato de processamento de checkout de produtos com a API Stone",
+  "type": "object",
+  "properties": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "product_id": { "type": "integer" },
+        "customer": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "email": { "type": "string" },
+            "phone": { "type": "string" },
+            "cpf": { "type": "string" },
+            "city": { "type": "string" },
+            "neighborhood": { "type": "string" }
+          },
+          "required": ["name", "email", "phone"]
+        },
+        "payment": {
+          "type": "object",
+          "properties": {
+            "method": { "type": "string", "enum": ["card", "pix"] },
+            "installments": { "type": "integer", "minimum": 1, "maximum": 12 },
+            "card": {
+              "type": "object",
+              "properties": {
+                "holder_name": { "type": "string" },
+                "number": { "type": "string" },
+                "expiration_date": { "type": "string" },
+                "cvv": { "type": "string" }
+              }
+            }
+          },
+          "required": ["method"]
+        }
+      },
+      "required": ["product_id", "customer", "payment"]
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "order_id": { "type": "integer" },
+        "lead_id": { "type": "integer" },
+        "status": { "type": "string", "enum": ["PAID", "PENDING", "FAILED"] },
+        "message": { "type": "string" },
+        "stone_charge_id": { "type": ["string", "null"] },
+        "pix_qr_code": { "type": ["string", "null"] },
+        "pix_copy_paste": { "type": ["string", "null"] }
+      },
+      "required": ["success", "status"]
+    }
+  }
+}

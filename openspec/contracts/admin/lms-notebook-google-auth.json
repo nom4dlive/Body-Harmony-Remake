@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsNotebookGoogleAuthContract",
+  "description": "Contrato para autenticação 1-Clique com Google NotebookLM no Portal do Gestor LMS",
+  "type": "object",
+  "properties": {
+    "authenticated": { "type": "boolean" },
+    "connected_email": { "type": ["string", "null"] },
+    "auth_url": { "type": "string" },
+    "auto_refresh_active": { "type": "boolean" }
+  },
+  "required": ["authenticated"],
+  "additionalProperties": true
+}

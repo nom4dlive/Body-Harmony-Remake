@@ -1,0 +1,1 @@
+RCA: Text located in FounderSectionV2.jsx. Strategy: Remove component content or usage.

@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LMSMediaTranscriptionWebhookContract",
+  "description": "Contrato de disparo assíncrono do Portal do Gestor (PHP) para o worker de transcrição e ingestão do Open Notebook (FastAPI)",
+  "type": "object",
+  "required": [
+    "lesson_id",
+    "module_id",
+    "module_name",
+    "title",
+    "video_path",
+    "triggered_by"
+  ],
+  "properties": {
+    "lesson_id": {
+      "type": "integer",
+      "description": "ID numérico da aula na tabela lms_lessons"
+    },
+    "module_id": {
+      "type": "integer",
+      "description": "ID numérico do módulo da aula"
+    },
+    "module_name": {
+      "type": "string",
+      "description": "Nome do módulo para identificação ou criação de notebook no SurrealDB"
+    },
+    "title": {
+      "type": "string",
+      "description": "Título oficial da videoaula"
+    },
+    "video_path": {
+      "type": "string",
+      "description": "Caminho relativo ou absoluto do arquivo de mídia em /opt/bodyharmony/private_uploads/lessons/"
+    },
+    "force_reprocess": {
+      "type": "boolean",
+      "default": false,
+      "description": "Se verdadeiro, reprocessa o áudio e substitui a transcrição existente"
+    },
+    "triggered_by": {
+      "type": "string",
+      "description": "Identificador ou username do administrador que disparou o evento"
+    }
+  },
+  "response": {
+    "type": "object",
+    "required": [
+      "status",
+      "job_id",
+      "lesson_id",
+      "message"
+    ],
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["QUEUED", "ALREADY_PROCESSED", "ERROR"]
+      },
+      "job_id": {
+        "type": "string",
+        "description": "Identificador único do job de transcrição"
+      },
+      "lesson_id": {
+        "type": "integer"
+      },
+      "message": {
+        "type": "string"
+      }
+    }
+  }
+}

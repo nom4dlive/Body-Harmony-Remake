@@ -1,0 +1,59 @@
+{
+  "$schema": "https://bodyharmony.com.br/openspec/v3.1/contract-schema.json",
+  "plan": "PLAN-067",
+  "endpoint": "POST /api/v1/admin/onboarding/{id}/approve-and-integrate | GET /api/v1/admin/onboarding/{id}/download-zip",
+  "description": "Contratos para aprovação completa de pré-cadastro de licenciada com migração de todos os dados (CNPJ, Instagram, Endereço, Anexos) para a tabela licenciadas, emissão do contrato DRAFT e geração de arquivo ZIP com todos os documentos anexados.",
+  "auth": "admin | superadmin",
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/onboarding/{id}/approve-and-integrate",
+      "request": {
+        "body": {
+          "nome": { "type": "string", "required": true },
+          "cpf": { "type": "string", "required": true },
+          "rg": { "type": "string" },
+          "email": { "type": "string", "required": true },
+          "telefone_whatsapp": { "type": "string", "required": true },
+          "instagram": { "type": "string" },
+          "cnpj": { "type": "string" },
+          "razao_social": { "type": "string" },
+          "nome_fantasia": { "type": "string" },
+          "is_cnpj_em_abertura": { "type": "boolean", "default": false },
+          "cep": { "type": "string" },
+          "endereco": { "type": "string" },
+          "numero": { "type": "string" },
+          "complemento": { "type": "string" },
+          "bairro": { "type": "string" },
+          "cidade": { "type": "string" },
+          "estado": { "type": "string" },
+          "categoria": { "type": "string", "default": "Licenciamento" },
+          "taxa_inicial_num": { "type": "string", "default": "7.000,00" },
+          "condicoes_pagamento": { "type": "string", "default": "à vista via PIX" },
+          "admin_notes": { "type": "string" }
+        }
+      },
+      "response": {
+        "200": {
+          "success": true,
+          "message": "Licenciada criada e contrato DRAFT gerado com sucesso.",
+          "licenciada_id": "integer",
+          "contract_uuid": "string",
+          "sign_url": "string"
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/onboarding/{id}/download-zip",
+      "response": {
+        "200": {
+          "headers": {
+            "Content-Type": "application/zip",
+            "Content-Disposition": "attachment; filename=documentos-onboarding-{nome}-{id}.zip"
+          }
+        }
+      }
+    }
+  ]
+}

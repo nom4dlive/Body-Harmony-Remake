@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agenda Multi-User & Sharing Contract",
+  "description": "Contrato de dados para consulta e gestão de agendas isoladas, compartilhadas e supervisionadas",
+  "type": "object",
+  "properties": {
+    "scope": {
+      "type": "string",
+      "enum": ["mine", "team", "user", "department"]
+    },
+    "current_user": {
+      "type": "object",
+      "required": ["id", "username", "role_name", "department_name", "hierarchy_level"],
+      "properties": {
+        "id": { "type": "integer" },
+        "username": { "type": "string" },
+        "role_name": { "type": "string" },
+        "department_name": { "type": "string" },
+        "hierarchy_level": { "type": "integer" }
+      }
+    },
+    "accessible_users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "username", "department_name", "can_edit"],
+        "properties": {
+          "id": { "type": "integer" },
+          "username": { "type": "string" },
+          "department_name": { "type": "string" },
+          "role_name": { "type": "string" },
+          "can_edit": { "type": "boolean" },
+          "share_type": { "type": "string", "enum": ["subordinate", "delegation", "peer"] }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "start_datetime", "status", "priority", "created_by_admin_id", "owner_name", "can_user_edit"],
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" },
+          "description": { "type": ["string", "null"] },
+          "start_datetime": { "type": "string" },
+          "end_datetime": { "type": ["string", "null"] },
+          "status": { "type": "string" },
+          "priority": { "type": "string" },
+          "color": { "type": "string" },
+          "created_by_admin_id": { "type": "integer" },
+          "assigned_to_admin_id": { "type": ["integer", "null"] },
+          "owner_name": { "type": "string" },
+          "assigned_to_name": { "type": ["string", "null"] },
+          "is_private": { "type": "boolean" },
+          "can_user_edit": { "type": "boolean" },
+          "participants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "admin_id": { "type": "integer" },
+                "username": { "type": "string" },
+                "role_type": { "type": "string", "enum": ["co_responsible", "invited"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

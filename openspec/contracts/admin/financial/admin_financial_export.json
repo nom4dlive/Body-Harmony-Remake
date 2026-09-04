@@ -1,0 +1,43 @@
+{
+  "endpoint": "GET /api/v1/admin/financial/license-taxes/export",
+  "plan": "PLAN-138",
+  "description": "Exporta dados financeiros consolidados em CSV com sanitização anti-fórmula e audit trail LGPD",
+  "query_params": {
+    "format": "csv (padrão)",
+    "status": "pending_payment|paid|contract_signed|cancelled|null (todos)",
+    "method": "pix|card|transfer|manual|boleto|null (todos)",
+    "search": "string|null (busca por nome)",
+    "source": "imported|onboarding|manual|null (todos)"
+  },
+  "security": {
+    "csv_formula_injection": {
+      "protection": "Prefixar com apóstrofo (') valores iniciando em = + - @ \\t \\r",
+      "method": "sanitizeCsvCell() aplicado a TODOS os campos antes de fputcsv()",
+      "dangerous_prefixes": ["=", "+", "-", "@", "\\t", "\\r"]
+    },
+    "audit_trail": {
+      "table": "financial_audit_log",
+      "action": "export_csv",
+      "fields_logged": ["admin_id", "admin_username", "filters_json", "records_affected", "ip_address", "user_agent", "created_at"],
+      "retention": "Indefinido (log permanente)"
+    },
+    "rbac": {
+      "required_permission": "financial_view (leitura) — export é operação de leitura",
+      "data_sensitivity": "Contém CPF/CNPJ — LGPD Art. 7 (consentimento/execução contratual)"
+    }
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "filename": "string (relatorio_taxas_licenciadas_YYYY-MM-DD_HHmmss.csv)",
+      "records_count": "int",
+      "csv_content": "string (UTF-8, separador ;, enclosure \", sanitizado)",
+      "audit_log_id": "int (ID do registro de auditoria criado)"
+    }
+  },
+  "csv_columns": [
+    "ID", "Licenciada", "CPF", "CNPJ", "Localizacao",
+    "Valor (R$)", "Metodo", "Condicoes", "Status",
+    "Data Contrato", "Data Pagamento", "Origem"
+  ]
+}

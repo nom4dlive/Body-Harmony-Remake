@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CongressTiersContract",
+  "description": "Contrato de listagem dos lotes e ingressos oficiais do Congresso Body Harmony",
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/v1/congress/tiers",
+      "summary": "Retorna os lotes e ingressos ativos para o 1º Congresso Brasileiro de Musculação Elétrica",
+      "request": {
+        "headers": {},
+        "query": {}
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ok": { "type": "boolean" },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "integer" },
+                  "slug": { "type": "string" },
+                  "name": { "type": "string" },
+                  "price_cents": { "type": "integer" },
+                  "price_formatted": { "type": "string" },
+                  "original_price_cents": { "type": ["integer", "null"] },
+                  "max_slots": { "type": ["integer", "null"] },
+                  "remaining_slots": { "type": ["integer", "null"] },
+                  "features": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "is_active": { "type": "boolean" }
+                },
+                "required": ["id", "slug", "name", "price_cents", "price_formatted", "features", "is_active"]
+              }
+            }
+          },
+          "required": ["ok", "data"]
+        }
+      }
+    }
+  ]
+}

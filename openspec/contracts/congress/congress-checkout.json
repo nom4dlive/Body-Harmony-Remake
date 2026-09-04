@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CongressCheckoutContract",
+  "description": "Contrato de checkout e processamento de pagamentos/credenciamento do Congresso Body Harmony",
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/v1/congress/checkout",
+      "summary": "Processa a compra de ingressos ou inscrição gratuita de atletas",
+      "request": {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "tier_id": { "type": "integer" },
+            "customer_name": { "type": "string" },
+            "customer_email": { "type": "string" },
+            "customer_cpf": { "type": "string" },
+            "customer_phone": { "type": "string" },
+            "customer": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "email": { "type": "string" },
+                "cpf": { "type": "string" },
+                "phone": { "type": "string" }
+              }
+            },
+            "payment_method": { "type": "string", "enum": ["pix", "card", "free"] },
+            "coupon_code": { "type": ["string", "null"] },
+            "installments": { "type": ["integer", "null"] },
+            "card_data": {
+              "type": ["object", "null"],
+              "properties": {
+                "holder_name": { "type": "string" },
+                "number": { "type": "string" },
+                "expiry_month": { "type": "string" },
+                "expiry_year": { "type": "string" },
+                "ccv": { "type": "string" }
+              }
+            },
+            "holder_info": {
+              "type": ["object", "null"],
+              "properties": {
+                "is_same_as_attendee": { "type": "boolean" },
+                "name": { "type": "string" },
+                "cpf": { "type": "string" },
+                "cpf_cnpj": { "type": "string" },
+                "phone": { "type": "string" },
+                "postal_code": { "type": "string" },
+                "address_number": { "type": "string" },
+                "address_street": { "type": "string" },
+                "address_neighborhood": { "type": "string" },
+                "address_city": { "type": "string" },
+                "address_state": { "type": "string" },
+                "address_complement": { "type": "string" }
+              }
+            },
+            "accreditation_data": {
+              "type": ["object", "null"],
+              "properties": {
+                "athlete_category": { "type": "string" },
+                "instagram_handle": { "type": "string" },
+                "notes": { "type": "string" }
+              }
+            }
+          },
+          "required": ["tier_id", "payment_method"]
+        }
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ok": { "type": "boolean" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "ticket_token": { "type": "string" },
+                "registration_id": { "type": "integer" },
+                "tier_name": { "type": "string" },
+                "customer_name": { "type": "string" },
+                "amount_cents": { "type": "integer" },
+                "payment_method": { "type": "string" },
+                "payment_status": { "type": "string", "enum": ["PENDING", "CONFIRMED", "FREE_APPROVED"] },
+                "pix_qr_code": { "type": ["string", "null"] },
+                "pix_copy_paste": { "type": ["string", "null"] },
+                "pix_expiration": { "type": ["string", "null"] },
+                "qr_code_url": { "type": ["string", "null"] },
+                "fallback_invoice_url": { "type": ["string", "null"] },
+                "is_mock": { "type": "boolean" },
+                "message": { "type": "string" }
+              },
+              "required": ["ticket_token", "registration_id", "tier_name", "amount_cents", "payment_status"]
+            }
+          },
+          "required": ["ok", "data"]
+        }
+      }
+    }
+  ]
+}

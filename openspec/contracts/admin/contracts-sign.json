@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContractsSignContract",
+  "description": "Contrato para assinatura digital (em tela / touch / consentimento formal) de contratos",
+  "endpoints": {
+    "/v1/contracts/sign": {
+      "POST": {
+        "summary": "Processa a assinatura digital, registra a trilha de auditoria (IP, User-Agent, SHA-256) e anexa folha de chancela jurídica ao PDF",
+        "security": ["SignTokenOrAdmin"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sign_token": { "type": "string", "description": "Token único da página de assinatura ou UUID do contrato autenticado" },
+                  "signer_type": { "type": "string", "enum": ["LICENCIADA", "LICENCIANTE", "TESTEMUNHA_1", "TESTEMUNHA_2"], "default": "LICENCIADA" },
+                  "signer_name": { "type": "string" },
+                  "signer_document": { "type": "string", "description": "CPF ou CNPJ" },
+                  "signer_email": { "type": "string", "format": "email" },
+                  "signature_mode": { "type": "string", "enum": ["DRAWN_CANVAS", "TYPED_SIGNATURE", "UPLOAD_IMAGE"], "default": "DRAWN_CANVAS" },
+                  "signature_data_base64": { "type": "string", "description": "Data URL (PNG/SVG) da assinatura desenhada ou digitada" },
+                  "accepted_terms": { "type": "boolean", "description": "Consentimento expresso conforme Lei 14.063/2020 e LGPD" }
+                },
+                "required": ["sign_token", "signer_name", "signer_document", "signature_data_base64", "accepted_terms"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assinatura processada e registrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "contract_status": { "type": "string" },
+                    "signed_pdf_url": { "type": "string" },
+                    "audit_checksum": { "type": "string" }
+                  },
+                  "required": ["ok", "message", "contract_status", "signed_pdf_url", "audit_checksum"]
+                }
+              }
+            }
+          },
+          "400": { "description": "Dados de assinatura inválidos ou termos não aceitos" },
+          "403": { "description": "Token expirado ou já utilizado" },
+          "404": { "description": "Contrato não localizado" }
+        }
+      }
+    }
+  }
+}

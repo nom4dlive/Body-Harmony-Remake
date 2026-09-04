@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SmartBook Instance Studio Content Contract",
+  "description": "Contrato estrito para geração, listagem e recuperação de materiais do estúdio isolados por instância e licenciada, com metadados de auditoria e transparência de IA",
+  "endpoints": {
+    "list_studio_content": {
+      "method": "GET",
+      "path": "/api/v1/smartbook/instances/{instance_id}/studio",
+      "query_params": {
+        "user_id": { "type": "string", "required": true },
+        "type": { "type": "string" }
+      },
+      "response": {
+        "status_code": 200,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "instance_id", "user_id", "type", "title", "status", "created_at"],
+          "properties": {
+            "id": { "type": "string" },
+            "instance_id": { "type": "string" },
+            "user_id": { "type": "string" },
+            "type": { "type": "string" },
+            "title": { "type": "string" },
+            "content_data": { "type": "object" },
+            "result": { "type": "string" },
+            "file_url": { "type": "string" },
+            "ai_metadata": {
+              "type": "object",
+              "properties": {
+                "model": { "type": "string" },
+                "action_description": { "type": "string" },
+                "transformation_key": { "type": "string" },
+                "prompt_used": {
+                  "type": "object",
+                  "properties": {
+                    "system_prompt": { "type": "string" },
+                    "user_prompt": { "type": "string" }
+                  }
+                },
+                "clinical_rationale": { "type": "string" },
+                "generation_metrics": {
+                  "type": "object",
+                  "properties": {
+                    "latency_seconds": { "type": "number" },
+                    "provider": { "type": "string" },
+                    "timestamp": { "type": "string" }
+                  }
+                }
+              }
+            },
+            "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+            "created_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    },
+    "generate_studio_content": {
+      "method": "POST",
+      "path": "/api/v1/smartbook/instances/{instance_id}/studio/generate",
+      "request": {
+        "type": "object",
+        "required": ["user_id", "type"],
+        "properties": {
+          "user_id": { "type": "string" },
+          "type": { "type": "string" },
+          "title": { "type": "string" },
+          "custom_instructions": { "type": "string" },
+          "async_mode": { "type": "boolean", "default": false }
+        },
+        "additionalProperties": false
+      },
+      "response": {
+        "status_code": 200,
+        "type": "object",
+        "required": ["id", "instance_id", "user_id", "type", "status", "created_at"],
+        "properties": {
+          "id": { "type": "string" },
+          "instance_id": { "type": "string" },
+          "user_id": { "type": "string" },
+          "type": { "type": "string" },
+          "title": { "type": "string" },
+          "status": { "type": "string" },
+          "result": { "type": "string" },
+          "file_url": { "type": "string" },
+          "ai_metadata": { "type": "object" },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

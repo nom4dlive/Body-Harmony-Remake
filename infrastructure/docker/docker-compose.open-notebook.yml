@@ -1,0 +1,80 @@
+# docker-compose.open-notebook.yml
+# Nexus Protocol V3.1 — PLAN-106: Open Notebook Stack on Dedicated VPS (2.25.156.25)
+
+services:
+  # 1. SurrealDB v2 (Vector Store & Knowledge Graph)
+  surrealdb:
+    image: surrealdb/surrealdb:v2
+    container_name: bodyharmony-surrealdb
+    command: ["start", "--log", "info", "--user", "${SURREAL_USER:-bodyharmony_admin}", "--pass", "${SURREAL_PASSWORD:-bh_surreal_secure_pass_2026}", "rocksdb:/mydata/mydatabase.db"]
+    user: root
+    networks:
+      - traefik-net
+      - internal-net
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - /opt/open-notebook/surreal_data:/mydata
+    environment:
+      - SURREAL_EXPERIMENTAL_GRAPHQL=true
+    restart: always
+
+  # 2. Open Notebook (Next.js 15 Frontend, FastAPI 5055, Workers)
+  open_notebook:
+    image: lfnovo/open_notebook:v1-latest
+    container_name: bodyharmony-open-notebook
+    depends_on:
+      - surrealdb
+    networks:
+      - traefik-net
+      - internal-net
+    ports:
+      - "127.0.0.1:8502:8502"
+      - "127.0.0.1:5055:5055"
+    environment:
+      - OPEN_NOTEBOOK_ENCRYPTION_KEY=${OPEN_NOTEBOOK_ENCRYPTION_KEY:-bh_open_notebook_encryption_key_v31_secure_2026}
+      - SURREAL_URL=ws://surrealdb:8000/rpc
+      - SURREAL_USER=${SURREAL_USER:-bodyharmony_admin}
+      - SURREAL_PASSWORD=${SURREAL_PASSWORD:-bh_surreal_secure_pass_2026}
+      - SURREAL_NAMESPACE=bodyharmony_lms
+      - SURREAL_DATABASE=notebooks
+      - OPENAI_API_BASE=http://qwen-proxy:8000/v1
+      - OPENAI_API_KEY=qwen-local-key
+      - DEFAULT_MODEL=Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4
+      - OPEN_NOTEBOOK_WORKER_MAX_TASKS=2
+    volumes:
+      - /opt/open-notebook/notebook_data:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.open-notebook.rule=Host(`notebook.bodyharmony.com.br`)"
+      - "traefik.http.routers.open-notebook.entrypoints=websecure"
+      - "traefik.http.routers.open-notebook.tls=true"
+      - "traefik.http.routers.open-notebook.tls.certresolver=letsencrypt"
+      - "traefik.http.services.open-notebook.loadbalancer.server.port=8502"
+      - "traefik.http.middlewares.open-notebook-cors.headers.accesscontrolalloworiginlist=https://bodyharmony.com.br,https://www.bodyharmony.com.br"
+      - "traefik.http.middlewares.open-notebook-cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS"
+      - "traefik.http.middlewares.open-notebook-cors.headers.accesscontrolallowheaders=*"
+      - "traefik.http.routers.open-notebook.middlewares=open-notebook-cors"
+    restart: always
+
+  # 3. Qwen Proxy (Local LLM Inference Engine on Dedicated VPS)
+  qwen-proxy:
+    image: vllm/vllm-openai:latest
+    container_name: bodyharmony-qwen-proxy
+    networks:
+      - internal-net
+    ports:
+      - "127.0.0.1:8001:8000"
+    environment:
+      - MODEL=Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4
+      - MAX_MODEL_LEN=8192
+      - GPU_MEMORY_UTILIZATION=0.90
+    volumes:
+      - /opt/models/qwen:/root/.cache/huggingface
+    restart: always
+
+networks:
+  traefik-net:
+    external: true
+  internal-net:
+    driver: bridge

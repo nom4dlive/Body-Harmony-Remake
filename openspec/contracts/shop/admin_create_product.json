@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShopAdminCreateProductContract",
+  "description": "Contrato de criação de produto pelo Gestor no ecossistema Body Harmony",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "slug": { "type": "string" },
+    "category": { "type": "string" },
+    "tagline": { "type": "string" },
+    "description": { "type": "string" },
+    "long_description": { "type": "string" },
+    "price_cents": { "type": "integer" },
+    "payment_link_url": { "type": ["string", "null"] },
+    "stock_limit": { "type": ["integer", "null"] },
+    "image_url": { "type": ["string", "null"] },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "is_active": { "type": "integer", "enum": [0, 1] },
+    "sort_order": { "type": "integer" }
+  },
+  "required": ["name", "price_cents", "category"]
+}

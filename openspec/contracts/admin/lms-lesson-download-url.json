@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AdminLmsLessonDownloadUrl",
+  "description": "Contrato para geração de URL segura temporária para download de vídeo de aula no LMS do Gestor",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "URL assinada temporária com HMAC e expiração para download do arquivo bruto"
+    }
+  },
+  "required": ["url"],
+  "additionalProperties": false
+}

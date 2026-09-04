@@ -1,0 +1,18 @@
+---
+id: save-state-object-permanence
+trigger: "when responding to user requests or transitioning tasks"
+confidence: 0.95
+domain: "communication"
+source: "session-observation"
+scope: global
+---
+
+# Save State & Object Permanence
+
+## Action
+Maintain the visible state header at the top of every response:
+`[ESTADO ATUAL] ➔ [PENDÊNCIA IMEDIATA] ➔ [PRÓXIMO PASSO]`
+
+## Evidence
+- Critical for eliminating context loss and time-blindness in TDAH-friendly workflows.
+- User mandated continuous visible state anchors.

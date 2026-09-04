@@ -1,0 +1,183 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HermesQwenProxyExclusiveConfigSchema",
+  "description": "Especificação do contrato de configuração (config.yaml) para a Sentinela Hermony com QwenProxy exclusivo.",
+  "type": "object",
+  "properties": {
+    "agent": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "system_prompt_file": {
+          "type": "string"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "max_tokens": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model",
+        "system_prompt_file"
+      ]
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": [
+            "custom"
+          ]
+        },
+        "default": {
+          "type": "string"
+        },
+        "base_url": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "default",
+        "base_url",
+        "api_key"
+      ]
+    },
+    "fallback_providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "custom"
+            ]
+          },
+          "model": {
+            "type": "string"
+          },
+          "base_url": {
+            "type": "string"
+          },
+          "api_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "provider",
+          "model"
+        ]
+      }
+    },
+    "auxiliary_model": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": [
+            "custom"
+          ]
+        },
+        "model": {
+          "type": "string"
+        },
+        "base_url": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model"
+      ]
+    },
+    "mcp_servers": {
+      "type": "object",
+      "properties": {
+        "mysql_db": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "env": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "command",
+            "args"
+          ]
+        },
+        "docker_node": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "command",
+            "args"
+          ]
+        },
+        "hostinger_mcp": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "env": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "command",
+            "args"
+          ]
+        }
+      },
+      "required": [
+        "mysql_db",
+        "docker_node",
+        "hostinger_mcp"
+      ]
+    }
+  },
+  "required": [
+    "agent",
+    "model",
+    "fallback_providers",
+    "auxiliary_model",
+    "mcp_servers"
+  ]
+}

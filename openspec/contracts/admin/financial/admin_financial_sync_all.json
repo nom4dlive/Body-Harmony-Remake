@@ -1,0 +1,70 @@
+{
+  "endpoint": "POST /api/v1/admin/financial/license-taxes/sync-all",
+  "plan": "PLAN-138",
+  "description": "Sincronização idempotente e determinística de dados históricos, contratos e transações financeiras. Restrita a superadmin com confirmação explícita",
+  "security": {
+    "access_control": {
+      "required_role": "superadmin",
+      "required_permission": "financial_manage",
+      "confirmation_required": true,
+      "confirmation_payload": {"confirm": "CONFIRMAR_SYNC_PRODUCAO"},
+      "error_403": "Operação restrita a Superadmins",
+      "error_400": "Confirmação explícita obrigatória"
+    },
+    "audit_trail": {
+      "table": "financial_audit_log",
+      "action": "sync_all",
+      "fields_logged": ["admin_id", "seed_inserted", "licenciadas_linked", "transactions_created", "ip_address", "timestamp"]
+    }
+  },
+  "body": {
+    "confirm": "string (obrigatório: 'CONFIRMAR_SYNC_PRODUCAO')"
+  },
+  "algorithm": {
+    "step_1_seed": {
+      "description": "Inserir 13 registros históricos se tabela vazia (idempotente: verifica source='imported')",
+      "guard": "SELECT COUNT(*) FROM licenciada_taxas WHERE source = 'imported'"
+    },
+    "step_2_link": {
+      "description": "Parear taxas sem licenciada_id com tabela licenciadas",
+      "matching": {
+        "primary": "CPF/CNPJ normalizado (somente dígitos): preg_replace('/\\D/', '', value)",
+        "fallback": "LIKE por nome completo",
+        "note": "Normalização determinística garante resultado consistente entre execuções"
+      }
+    },
+    "step_3_contracts": {
+      "description": "Parear contratos com assinatura bidirecional completa (REGRA 10) com taxas",
+      "query": "SELECT c.* FROM contracts c JOIN contract_signatures cs1 ON ... AND cs1.signer_type='LICENCIANTE' JOIN contract_signatures cs2 ON ... AND cs2.signer_type='LICENCIADA' WHERE c.status='SIGNED' AND c.category='Licenciamento'",
+      "matching": "CPF/CNPJ normalizado extraído de variables_json do contrato vs licenciada_taxas.licenciada_cpf",
+      "regra_10": "Somente contratos com AMBAS assinaturas (Licenciante + Licenciada) são sincronizáveis"
+    },
+    "step_4_transactions": {
+      "description": "Criar financial_transactions para taxas pagas/assinadas sem transação vinculada",
+      "source_type": "licenciamento"
+    }
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "seed_inserted": "int",
+      "licenciadas_linked": "int",
+      "contracts_synced": "int",
+      "transactions_created": "int",
+      "summary": {
+        "total_contracted_cents": "int",
+        "total_formatted": "string",
+        "total_signed": "int",
+        "total_pending": "int"
+      },
+      "audit_log_id": "int"
+    }
+  },
+  "seed_endpoint": {
+    "method": "POST",
+    "path": "/api/v1/admin/financial/license-taxes/seed",
+    "body": {"confirm": "CONFIRMAR_SEED_PRODUCAO"},
+    "access": "superadmin only",
+    "description": "Seed isolado dos 13 registros históricos. Mesmas restrições do sync-all"
+  }
+}

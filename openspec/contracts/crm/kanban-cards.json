@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "KanbanCardsContract",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "pipeline": { "type": "string" },
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "pipeline_type": { "type": "string" },
+          "stage": { "type": "string" },
+          "contact_phone": { "type": "string" },
+          "contact_name": { "type": "string" },
+          "value_amount": { "type": "number" },
+          "priority": { "type": "string" },
+          "assigned_agent": { "type": "string" }
+        },
+        "required": ["id", "stage", "contact_phone", "contact_name"]
+      }
+    }
+  },
+  "required": ["success", "cards"]
+}

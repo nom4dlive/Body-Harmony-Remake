@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmContactResolverContract",
+  "description": "Contrato do serviço de resolução e normalização de contatos com 9º dígito e LIDs",
+  "type": "object",
+  "properties": {
+    "remote_jid": { "type": "string" },
+    "canonical_phone": { "type": "string" },
+    "display_phone": { "type": "string" },
+    "name": { "type": "string" },
+    "source": { "type": "string", "enum": ["LICENCIADA", "ALUNA", "PATIENT", "WHATSAPP_PUSHNAME", "UNKNOWN"] },
+    "avatar_url": { "type": ["string", "null"] },
+    "is_registered": { "type": "boolean" },
+    "variants": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

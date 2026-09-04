@@ -1,0 +1,44 @@
+{
+  "endpoint": "GET /api/v1/admin/financial/audit-logs",
+  "plan": "PLAN-139",
+  "description": "Consulta paginada da trilha forense de auditoria financeira (quem, quando, o quê, diff de mutações)",
+  "query_params": {
+    "page": "int (default: 1)",
+    "per_page": "int (default: 20, max: 100)",
+    "action": "tax_create|tax_update|tax_delete|export_csv|sync_all|seed_historical|receipt_sent|attachment_upload|attachment_delete|null",
+    "target_id": "int|null",
+    "admin_id": "int|null",
+    "date_from": "string (YYYY-MM-DD)|null",
+    "date_to": "string (YYYY-MM-DD)|null"
+  },
+  "security": {
+    "required_permission": "financial_view",
+    "admin_users_column": "username (REGRA 12 - estritamente u.username, nunca u.name)"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "logs": [
+        {
+          "id": "int",
+          "admin_id": "int",
+          "admin_username": "string",
+          "action": "string",
+          "target_id": "int|null",
+          "diff_json": "object|null (contendo payload_before e payload_after)",
+          "filters_json": "object|null",
+          "records_affected": "int",
+          "ip_address": "string",
+          "user_agent": "string",
+          "created_at": "datetime (YYYY-MM-DD HH:MM:SS)"
+        }
+      ],
+      "pagination": {
+        "page": "int",
+        "per_page": "int",
+        "total": "int",
+        "total_pages": "int"
+      }
+    }
+  }
+}

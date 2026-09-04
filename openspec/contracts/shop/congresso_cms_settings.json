@@ -1,0 +1,178 @@
+{
+  "properties": {
+    "congresso_hero_cta": {
+      "type": "string",
+      "default": "Garanta Seu Ingresso Agora"
+    },
+    "congresso_hero_location_badge": {
+      "type": "string",
+      "default": "SÃO PAULO · SP"
+    },
+    "congresso_faq_title": {
+      "type": "string",
+      "default": "Perguntas Frequentes"
+    },
+    "congresso_oferta_note": {
+      "type": "string",
+      "default": "Parcelamento disponível. Oferta válida por tempo limitado."
+    },
+    "congresso_palestrante_2_name": {
+      "type": "string",
+      "default": "Kaprice"
+    },
+    "congresso_countdown_urgency": {
+      "type": "string",
+      "default": "As vagas não esperam. Garanta a sua agora."
+    },
+    "congresso_palestrante_1_desc": {
+      "type": "string"
+    },
+    "congresso_palestrante_1_name": {
+      "type": "string",
+      "default": "Joselene Silva (Josi)"
+    },
+    "congresso_hero_badge_active": {
+      "default": 1,
+      "type": "integer",
+      "enum": [
+        0,
+        1
+      ]
+    },
+    "congresso_palestrante_1_image": {
+      "type": "string",
+      "default": ""
+    },
+    "congresso_vip_subtitle": {
+      "type": "string"
+    },
+    "congresso_vip_credit_title": {
+      "type": "string",
+      "default": "💡 Como funciona o crédito?"
+    },
+    "congresso_vip_credit_desc": {
+      "type": "string"
+    },
+    "congresso_hero_title": {
+      "type": "string"
+    },
+    "congresso_espaco_title": {
+      "type": "string"
+    },
+    "congresso_palestrante_2_desc": {
+      "type": "string"
+    },
+    "congresso_espaco_label": {
+      "type": "string",
+      "default": "O Local"
+    },
+    "congresso_sobre_title": {
+      "type": "string"
+    },
+    "congresso_oferta_copy": {
+      "type": "string"
+    },
+    "congresso_oferta_title": {
+      "type": "string"
+    },
+    "congresso_hero_badge": {
+      "type": "string",
+      "default": "EVENTO PRESENCIAL · 07 DE NOVEMBRO DE 2026"
+    },
+    "congresso_footer_title": {
+      "type": "string"
+    },
+    "congresso_date_text": {
+      "type": "string",
+      "default": "07 de Novembro de 2026"
+    },
+    "congresso_oferta_badge": {
+      "type": "string",
+      "default": "Oferta Exclusiva do Congresso"
+    },
+    "congresso_vip_title": {
+      "type": "string"
+    },
+    "congresso_depoimentos_title": {
+      "type": "string"
+    },
+    "congresso_countdown_cta": {
+      "type": "string",
+      "default": "Inscrever-me Agora"
+    },
+    "congresso_footer_subtitle": {
+      "type": "string"
+    },
+    "congresso_espaco_subtitle": {
+      "type": "string"
+    },
+    "congresso_location_sub": {
+      "type": "string"
+    },
+    "congresso_palestrante_2_image": {
+      "type": "string",
+      "default": ""
+    },
+    "congresso_vip_urgency_badge": {
+      "type": "string",
+      "default": "🔴 40 vagas apenas"
+    },
+    "congresso_oferta_cta": {
+      "type": "string",
+      "default": "Quero os Dois Ingressos por R$ 697"
+    },
+    "congresso_vip_cta": {
+      "type": "string",
+      "default": "Garantir Minha Vaga VIP — R$ 1.497"
+    },
+    "congresso_palestrante_2_role": {
+      "type": "string",
+      "default": "Co-fundadora & Diretora de Expansão"
+    },
+    "congresso_sobre_intro": {
+      "type": "string"
+    },
+    "congresso_hero_subtitle": {
+      "type": "string"
+    },
+    "congresso_palestrante_1_role": {
+      "type": "string",
+      "default": "Fundadora & CEO da Body Harmony"
+    },
+    "congresso_depoimentos_label": {
+      "type": "string",
+      "default": "Depoimentos"
+    },
+    "congresso_countdown_label": {
+      "type": "string",
+      "default": "Tempo Restante"
+    },
+    "congresso_vip_badge": {
+      "type": "string",
+      "default": "👑 EXCLUSIVO · APENAS 40 VAGAS"
+    },
+    "congresso_countdown_title": {
+      "type": "string",
+      "default": "O Congresso começa em:"
+    },
+    "congresso_faq_label": {
+      "type": "string",
+      "default": "FAQ"
+    },
+    "congresso_location_title": {
+      "type": "string"
+    },
+    "congresso_sobre_label": {
+      "type": "string",
+      "default": "O Congresso"
+    },
+    "congresso_sections_order": {
+      "type": "string",
+      "default": "hero,sobre,oferta,vip,tabela,espaco,testemunhos,countdown,faq,footer"
+    }
+  },
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Contrato de dados para configuracoes e copys dinamicas do Congresso no Shop CMS (Regra 21 + PLAN-094)",
+  "title": "CongressoCmsSettings"
+}

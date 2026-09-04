@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRM Inbox Media Upload Contract",
+  "type": "object",
+  "required": ["conversation_id", "media_type", "file"],
+  "properties": {
+    "conversation_id": { "type": "string" },
+    "phone": { "type": "string" },
+    "media_type": { "type": "string", "enum": ["audio", "image", "document", "video"] },
+    "caption": { "type": "string" },
+    "is_whisper": { "type": "boolean", "default": false }
+  }
+}

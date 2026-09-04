@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HermesAgentWebhookContract",
+  "description": "Contrato para o webhook de saída do Agent Bot do Chatwoot para o Hermes Agent (Nexus V3.1 - PLAN-179)",
+  "type": "object",
+  "properties": {
+    "event": {
+      "type": "string",
+      "enum": ["message_created", "message_updated", "conversation_created"]
+    },
+    "id": {
+      "type": "integer"
+    },
+    "content": {
+      "type": "string"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": ["incoming", "outgoing"]
+    },
+    "conversation": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "inbox_id": { "type": "integer" },
+        "status": { "type": "string" },
+        "custom_attributes": { "type": "object" }
+      },
+      "required": ["id", "inbox_id"]
+    },
+    "sender": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "phone_number": { "type": "string" }
+      }
+    }
+  },
+  "required": ["event", "content", "conversation"]
+}

@@ -1,0 +1,15 @@
+{
+    "entry": [
+        "src/main.jsx"
+    ],
+    "ignorePatterns": [
+        "**/node_modules/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/tests/**",
+        "**/vitest.config.js"
+    ],
+    "ignoreUnresolved": [],
+    "ignoreUnimported": [],
+    "ignoreUnused": []
+}

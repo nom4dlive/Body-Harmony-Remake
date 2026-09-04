@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShopSettingsGranularTogglesContract",
+  "description": "Contrato de controle granular de visibilidade para todos os itens e subitens da vitrine /shop",
+  "type": "object",
+  "properties": {
+    "hero_title": { "type": "string" },
+    "hero_title_active": { "type": "integer", "enum": [0, 1] },
+    "hero_subtitle": { "type": "string" },
+    "hero_subtitle_active": { "type": "integer", "enum": [0, 1] },
+    "trust_bar_active": { "type": "integer", "enum": [0, 1] },
+    "badge_1": { "type": "string" },
+    "badge_1_active": { "type": "integer", "enum": [0, 1] },
+    "badge_2": { "type": "string" },
+    "badge_2_active": { "type": "integer", "enum": [0, 1] },
+    "badge_3": { "type": "string" },
+    "badge_3_active": { "type": "integer", "enum": [0, 1] },
+    "announcement_text": { "type": "string" },
+    "announcement_active": { "type": "integer", "enum": [0, 1] },
+    "filters_active": { "type": "integer", "enum": [0, 1] },
+    "support_topbar_active": { "type": "integer", "enum": [0, 1] },
+    "support_title": { "type": "string" },
+    "support_subtitle": { "type": "string" },
+    "support_whatsapp": { "type": "string" },
+    "support_whatsapp_active": { "type": "integer", "enum": [0, 1] }
+  }
+}

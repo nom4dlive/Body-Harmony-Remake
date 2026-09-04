@@ -1,0 +1,34 @@
+{
+  "$schema": "https://bodyharmony.com.br/openspec/v3.1/contract-schema.json",
+  "plan": "PLAN-066",
+  "endpoint": "GET /api/v1/admin/onboarding/metrics",
+  "description": "Endpoint de métricas agregadas do Funil de Onboarding de Licenciadas para o Dashboard do Gestor. Retorna contagens por estágio, taxa de conversão e alertas de ação (licenciadas aguardando assinatura há +24h).",
+  "auth": "admin | superadmin",
+  "method": "GET",
+  "request": {
+    "query": {
+      "periodo_dias": { "type": "integer", "default": 30, "description": "Janela de tempo em dias para métricas de tendência" }
+    }
+  },
+  "response": {
+    "200": {
+      "success": true,
+      "metrics": {
+        "total": "integer — total de solicitações de onboarding",
+        "por_estagio": {
+          "PRE_CADASTRO": "integer",
+          "CONTRATO_EMITIDO": "integer",
+          "AGUARDANDO_ASSINATURA": "integer",
+          "VALIDAR_PAGAMENTO": "integer",
+          "ATIVO_LIBERADO": "integer",
+          "CANCELADO": "integer"
+        },
+        "taxa_conversao_pct": "float — % de leads que chegaram a ATIVO_LIBERADO",
+        "taxa_abandono_pct": "float — % de leads que estão em CANCELADO",
+        "alertas_assinatura_pendente": "integer — nº de leads em AGUARDANDO_ASSINATURA há mais de 24h sem lembrete enviado",
+        "ativacoes_no_periodo": "integer — licenciadas ativadas nos últimos periodo_dias dias",
+        "contratos_emitidos_no_periodo": "integer — contratos emitidos nos últimos periodo_dias dias"
+      }
+    }
+  }
+}

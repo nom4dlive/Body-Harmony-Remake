@@ -1,0 +1,293 @@
+openapi: 3.0.3
+info:
+  title: Body Harmony API
+  description: API REST do Body Harmony — plataforma de estética e bem-estar
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: API principal
+  - url: /admin
+    description: Admin API
+paths:
+  /auth/login:
+    post:
+      tags: [Autenticação]
+      summary: Login admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: { type: string }
+                password: { type: string }
+      responses:
+        '200': { description: Login successful }
+        '401': { description: Invalid credentials }
+  /auth/login/licenciada:
+    post:
+      tags: [Autenticação]
+      summary: Login licenciada
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login: { type: string }
+                password: { type: string }
+                device_token: { type: string }
+      responses:
+        '200': { description: Login successful }
+  /auth/login/aluna:
+    post:
+      tags: [Autenticação]
+      summary: Login aluna
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login: { type: string }
+                password: { type: string }
+      responses:
+        '200': { description: Login successful }
+  /content/mentors:
+    get:
+      tags: [Conteúdo]
+      summary: Listar mentores
+      responses:
+        '200': { description: Array de mentores }
+    post:
+      tags: [Conteúdo]
+      summary: Cadastrar mentor
+      security: [{ adminAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                nickname: { type: string }
+                role: { type: string }
+                bio: { type: string }
+                photo: { type: string, format: binary }
+                instagram: { type: string }
+      responses:
+        '201': { description: Mentor created }
+  /content/mentors/{id}:
+    put:
+      tags: [Conteúdo]
+      summary: Atualizar mentor
+      security: [{ adminAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Mentor updated }
+    delete:
+      tags: [Conteúdo]
+      summary: Excluir mentor
+      security: [{ adminAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Mentor deleted }
+  /leads:
+    get:
+      tags: [Leads]
+      summary: Listar leads
+      security: [{ adminAuth: [] }]
+      responses:
+        '200': { description: Array de leads }
+    post:
+      tags: [Leads]
+      summary: Capturar lead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+                message: { type: string }
+                whatsapp: { type: string }
+      responses:
+        '201': { description: Lead created }
+  /licenciadas/results:
+    get:
+      tags: [Resultados]
+      summary: Listar resultados
+      responses:
+        '200': { description: Array de resultados }
+  /admin/results:
+    post:
+      tags: [Resultados]
+      summary: Cadastrar resultado
+      security: [{ adminAuth: [] }]
+      responses:
+        '201': { description: Result created }
+  /faq:
+    get:
+      tags: [FAQ]
+      summary: Listar FAQs
+      responses:
+        '200': { description: Array de FAQs }
+  /v1/broadcasts/active:
+    get:
+      tags: [Broadcast]
+      summary: Listar broadcasts ativos
+      security: [{ userAuth: [] }]
+      responses:
+        '200': { description: Array de broadcasts }
+  /v1/broadcasts/acknowledge:
+    post:
+      tags: [Broadcast]
+      summary: Marcar broadcast como lido
+      security: [{ userAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id: { type: integer }
+      responses:
+        '200': { description: Acknowledged }
+  /lms/modules:
+    get:
+      tags: [LMS]
+      summary: Listar módulos
+      responses:
+        '200': { description: Array de módulos }
+  /lms/lessons/{moduleId}:
+    get:
+      tags: [LMS]
+      summary: Listar aulas de módulo
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Module with lessons }
+  /lms/progress:
+    post:
+      tags: [LMS]
+      summary: Salvar progresso
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lesson_id: { type: integer }
+                progress_percent: { type: number }
+                is_completed: { type: boolean }
+                current_time: { type: integer }
+      responses:
+        '200': { description: Progress saved }
+  /certificate/generate:
+    post:
+      tags: [Certificado]
+      summary: Gerar certificado
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                module_id: { type: integer }
+      responses:
+        '200':
+          description: PDF download
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+  /admin/nexus/dashboard:
+    get:
+      tags: [Nexus]
+      summary: Dashboard do sistema
+      security: [{ adminAuth: [] }]
+      responses:
+        '200': { description: System status }
+  /admin/nexus/ops/rules:
+    get:
+      tags: [Nexus]
+      summary: Listar regras de firewall
+      security: [{ adminAuth: [] }]
+      responses:
+        '200': { description: Array de regras }
+    post:
+      tags: [Nexus]
+      summary: Adicionar regra de firewall
+      security: [{ adminAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ip: { type: string }
+                type: { type: string, enum: [BAN, ALLOW, SUSPICIOUS] }
+                reason: { type: string }
+                duration_hours: { type: integer }
+      responses:
+        '200': { description: Rule created }
+  /admin/nexus/ops/feed:
+    get:
+      tags: [Nexus]
+      summary: Guardian Feed
+      security: [{ adminAuth: [] }]
+      responses:
+        '200': { description: Combined feed }
+  /admin/nexus/forensics/analyze:
+    post:
+      tags: [Nexus]
+      summary: Análise forense
+      security: [{ adminAuth: [] }]
+      responses:
+        '200': { description: Forensic analysis }
+  /nexus/doctor-harmony/pending:
+    get:
+      tags: [Doctor Harmony]
+      summary: Casos pendentes
+      responses:
+        '200': { description: Array de casos pendentes }
+  /nexus/doctor-harmony/analyze:
+    post:
+      tags: [Doctor Harmony]
+      summary: Analisar caso clínico
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+                notes: { type: string }
+      responses:
+        '200': { description: AI analysis result }
+components:
+  securitySchemes:
+    adminAuth:
+      type: http
+      scheme: bearer
+      description: Token de admin (bh_auth)
+    userAuth:
+      type: http
+      scheme: bearer
+      description: Token de usuário (bh_device_token ou bh_auth)

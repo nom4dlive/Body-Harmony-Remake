@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMUnifiedHealthCheckContract",
+  "description": "Contrato da sonda unificada de saúde operacional do CRM — agrega MySQL, Evolution API, Google SA, Redis e Chatwoot (Nexus V3.1 - PLAN-178)",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "const": "GET /api/v1/crm/health"
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["healthy", "degraded", "unhealthy"]
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checks": {
+          "type": "object",
+          "properties": {
+            "database_mysql": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string", "enum": ["ok", "error"] },
+                "latency_ms": { "type": "number" }
+              },
+              "required": ["status"]
+            },
+            "whatsapp_instances": {
+              "type": "object",
+              "properties": {
+                "juridico": { "type": "string", "enum": ["open", "close", "unknown"] },
+                "licenciadas": { "type": "string", "enum": ["open", "close", "unknown"] },
+                "clinica": { "type": "string", "enum": ["open", "close", "unknown"] },
+                "comercial": { "type": "string", "enum": ["open", "close", "unknown"] }
+              },
+              "required": ["juridico", "licenciadas", "clinica", "comercial"]
+            },
+            "google_service_account": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string", "enum": ["ok", "missing", "error"] },
+                "scopes_valid": { "type": "boolean" }
+              },
+              "required": ["status"]
+            },
+            "redis_queue": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string", "enum": ["ok", "unavailable", "error"] },
+                "pending_jobs": { "type": "integer" }
+              },
+              "required": ["status"]
+            },
+            "chatwoot_bridge": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string", "enum": ["ok", "unreachable", "error"] }
+              },
+              "required": ["status"]
+            }
+          },
+          "required": ["database_mysql", "whatsapp_instances", "google_service_account", "redis_queue", "chatwoot_bridge"]
+        }
+      },
+      "required": ["status", "timestamp", "checks"]
+    }
+  },
+  "required": ["endpoint", "response"]
+}

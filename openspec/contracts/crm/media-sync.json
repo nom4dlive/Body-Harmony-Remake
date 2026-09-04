@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MediaSyncContract",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "photo_id": { "type": "integer" },
+    "image_url": { "type": "string" },
+    "saved_to_dossier": { "type": "boolean" }
+  },
+  "required": ["success"]
+}

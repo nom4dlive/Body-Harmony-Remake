@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmChannelsCrudContract",
+  "description": "Contrato de API para gerenciamento completo, adicao e edicao de numeros e canais do CRM V4 (PLAN-184)",
+  "type": "object",
+  "properties": {
+    "getChannels": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "object",
+          "required": ["success", "channels"],
+          "properties": {
+            "success": { "type": "boolean" },
+            "channels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "instanceKey", "name", "type", "phoneNumber", "department", "attendantUsername", "status"],
+                "properties": {
+                  "id": { "type": ["string", "integer"] },
+                  "instanceKey": { "type": "string" },
+                  "name": { "type": "string" },
+                  "type": { "type": "string", "enum": ["WHATSAPP", "INSTAGRAM", "TELEGRAM"] },
+                  "phoneNumber": { "type": "string" },
+                  "department": { "type": "string" },
+                  "attendantUsername": { "type": "string" },
+                  "status": { "type": "string", "enum": ["CONNECTED", "DISCONNECTED", "CONNECTING"] },
+                  "battery": { "type": "string" },
+                  "signal": { "type": "string" },
+                  "todaySent": { "type": "integer" },
+                  "todayRecv": { "type": "integer" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "saveChannel": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "object",
+          "required": ["name", "type", "phoneNumber", "department", "attendantUsername"],
+          "properties": {
+            "id": { "type": ["string", "integer", "null"] },
+            "instanceKey": { "type": "string" },
+            "name": { "type": "string" },
+            "type": { "type": "string", "enum": ["WHATSAPP", "INSTAGRAM", "TELEGRAM"] },
+            "phoneNumber": { "type": "string" },
+            "department": { "type": "string" },
+            "attendantUsername": { "type": "string" },
+            "status": { "type": "string" }
+          }
+        },
+        "response": {
+          "type": "object",
+          "required": ["success", "message"],
+          "properties": {
+            "success": { "type": "boolean" },
+            "message": { "type": "string" },
+            "channel": { "type": "object" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+# Proteção Nexus: Impede o acesso direto ao banco de dados SQLite
+Require all denied

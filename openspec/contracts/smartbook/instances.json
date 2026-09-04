@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SmartBook Multi-Tenancy Instances Contract",
+  "description": "Contrato estrito para criação, listagem e obtenção de instâncias isoladas de cadernos por Licenciada",
+  "endpoints": {
+    "create_or_get_instance": {
+      "method": "POST",
+      "path": "/api/v1/smartbook/instances",
+      "request": {
+        "type": "object",
+        "required": ["notebook_id", "user_id"],
+        "properties": {
+          "notebook_id": { "type": "string" },
+          "user_id": { "type": "string" },
+          "title": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "response": {
+        "status_code": 200,
+        "type": "object",
+        "required": ["id", "notebook_id", "user_id", "title", "created_at"],
+        "properties": {
+          "id": { "type": "string" },
+          "notebook_id": { "type": "string" },
+          "user_id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "list_user_instances": {
+      "method": "GET",
+      "path": "/api/v1/smartbook/instances",
+      "query_params": {
+        "user_id": { "type": "string", "required": true }
+      },
+      "response": {
+        "status_code": 200,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "notebook_id", "user_id", "title", "created_at"],
+          "properties": {
+            "id": { "type": "string" },
+            "notebook_id": { "type": "string" },
+            "user_id": { "type": "string" },
+            "title": { "type": "string" },
+            "sources_count": { "type": "integer" },
+            "last_activity": { "type": "string" },
+            "created_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    }
+  }
+}

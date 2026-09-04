@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gestor Agenda Advanced Features Contract",
+  "description": "Contrato de API para funcionalidades avançadas da Agenda do Gestor: iCal Feed, Subtarefas/Checklists, Anexos, Comentários e Triggers de Automação (V3.1)",
+  "endpoints": {
+    "GET /admin/agenda/feed.ics": {
+      "request_query": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" }
+        },
+        "required": ["token"]
+      },
+      "response": {
+        "content_type": "text/calendar; charset=utf-8",
+        "description": "Retorna o arquivo de feed no padrão iCal RFC 5545 para sincronização no smartphone ou Google Calendar"
+      }
+    },
+    "GET /admin/agenda/events/{id}/comments": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "event_id": { "type": "integer" },
+                "admin_id": { "type": "integer" },
+                "admin_name": { "type": "string" },
+                "comment": { "type": "string" },
+                "mentions": { "type": ["array", "null"], "items": { "type": "string" } },
+                "created_at": { "type": "string" }
+              },
+              "required": ["id", "event_id", "admin_id", "comment", "created_at"]
+            }
+          }
+        },
+        "required": ["success", "comments"]
+      }
+    },
+    "POST /admin/agenda/events/{id}/comments": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "comment": { "type": "string" },
+          "mentions": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["comment"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "comment_id": { "type": "integer" }
+        },
+        "required": ["success", "message", "comment_id"]
+      }
+    },
+    "POST /admin/agenda/events/{id}/attachments": {
+      "request_multipart": {
+        "file": "file upload (PDF, PNG, JPG, DOCX)"
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "attachment": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "filename": { "type": "string" },
+              "original_name": { "type": "string" },
+              "file_size": { "type": "integer" }
+            }
+          }
+        },
+        "required": ["success", "message", "attachment"]
+      }
+    },
+    "POST /admin/agenda/events/{id}/checklists": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" }
+        },
+        "required": ["title"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "checklist_item": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "title": { "type": "string" },
+              "completed": { "type": "boolean" }
+            }
+          }
+        },
+        "required": ["success", "message", "checklist_item"]
+      }
+    },
+    "PATCH /admin/agenda/checklists/{id}/toggle": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "completed": { "type": "boolean" }
+        },
+        "required": ["success", "completed"]
+      }
+    }
+  }
+}

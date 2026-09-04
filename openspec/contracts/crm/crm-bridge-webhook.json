@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMBridgeWebhookContract",
+  "description": "Contrato de Webhook do Chatwoot para o Backend Bridge Auto-Linker (Nexus V3.1 - PLAN-153)",
+  "type": "object",
+  "properties": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string",
+          "enum": ["contact_created", "conversation_created", "message_created"]
+        },
+        "id": { "type": "integer" },
+        "sender": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "name": { "type": "string" },
+            "phone_number": { "type": "string" },
+            "email": { "type": ["string", "null"] }
+          }
+        },
+        "conversation": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "inbox_id": { "type": "integer" }
+          }
+        }
+      },
+      "required": ["event"]
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "matched": { "type": "boolean" },
+        "tipo_usuario": {
+          "type": "string",
+          "enum": ["LICENCIADA", "ALUNA", "ONBOARDING", "LEAD", "DESCONHECIDO"]
+        },
+        "chatwoot_contact_id": { "type": "integer" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "nome": { "type": "string" },
+            "cpf": { "type": ["string", "null"] },
+            "status_contrato": { "type": "string" },
+            "cidade_uf": { "type": "string" }
+          }
+        }
+      },
+      "required": ["success", "matched", "tipo_usuario"]
+    }
+  },
+  "required": ["request", "response"]
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RBAC UI Matrix & Custom Permissions Contract",
+  "description": "Contrato de dados para atualização e resolução da Matriz de Permissões RBAC (Cargo e Usuário) no ecossistema Body Harmony Nexus V3.1",
+  "type": "object",
+  "properties": {
+    "agenda_scope": { "type": "string", "enum": ["all", "team", "own", "none"] },
+    "pages": {
+      "type": "object",
+      "properties": {
+        "dashboard": { "type": "boolean" },
+        "onboarding": { "type": "boolean" },
+        "agenda": { "type": "boolean" },
+        "contratos": { "type": "boolean" },
+        "mensagens": { "type": "boolean" },
+        "lms": { "type": "boolean" },
+        "licenciadas": { "type": "boolean" },
+        "alunas": { "type": "boolean" },
+        "usuarios": { "type": "boolean" },
+        "mentores": { "type": "boolean" },
+        "textos": { "type": "boolean" },
+        "aparencia": { "type": "boolean" },
+        "visual_editor": { "type": "boolean" },
+        "imagens": { "type": "boolean" },
+        "resultados": { "type": "boolean" },
+        "depoimentos": { "type": "boolean" },
+        "leads": { "type": "boolean" },
+        "faq": { "type": "boolean" },
+        "configuracoes": { "type": "boolean" },
+        "nexus": { "type": "boolean" }
+      }
+    },
+    "actions": {
+      "type": "object",
+      "properties": {
+        "onboarding_create": { "type": "boolean" },
+        "onboarding_approve": { "type": "boolean" },
+        "contracts_create": { "type": "boolean" },
+        "contracts_sign": { "type": "boolean" },
+        "users_manage": { "type": "boolean" },
+        "users_reset_password": { "type": "boolean" },
+        "agenda_create": { "type": "boolean" },
+        "agenda_manage": { "type": "boolean" },
+        "lms_manage": { "type": "boolean" },
+        "content_edit": { "type": "boolean" },
+        "theme_edit": { "type": "boolean" },
+        "financial_view": { "type": "boolean" }
+      }
+    }
+  }
+}

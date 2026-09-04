@@ -1,0 +1,728 @@
+{
+  "generated_at": "2026-06-02T12:00:00Z",
+  "modules": [
+    {
+      "name": "auth",
+      "path": "apps/web-app/src/backend/api/v1/Core/",
+      "purpose": "Autenticação e autorização de todos os perfis (admin, licenciada, aluna) com suporte a JWT, device tokens, firewall e detecção de risco",
+      "primary_files": [
+        "api/v1/Core/AuthMiddleware.php",
+        "api/v1/Core/Auth.php",
+        "api/v1/Core/JWT.php",
+        "api/v1/Core/NexusGuard.php",
+        "api/v1/Controllers/AuthController.php",
+        "api/v1/Controllers/AlunaAuthController.php",
+        "api/v1/Services/MagicTokenService.php",
+        "api/v1/Services/RiskEngineService.php"
+      ],
+      "functions": [
+        {
+          "name": "handle",
+          "file": "api/v1/Core/AuthMiddleware.php",
+          "params": ["requiredRole: string|null"],
+          "returns": "array|void (user ou error)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "validateToken",
+          "file": "api/v1/Core/AuthMiddleware.php",
+          "params": ["token: string"],
+          "returns": "array|null (user ou null)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "login",
+          "file": "api/v1/Controllers/AuthController.php",
+          "params": ["input: {username, password}"],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "loginLicenciada",
+          "file": "api/v1/Controllers/AuthController.php",
+          "params": ["input: {login, password, device_token?}"],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "loginAluna",
+          "file": "api/v1/Controllers/AlunaAuthController.php",
+          "params": ["input: {login, password}"],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "checkThrottling",
+          "file": "api/v1/Controllers/AuthController.php",
+          "params": ["email: string"],
+          "returns": "void (Response::error se bloqueado)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "AdminUser",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "username", "type": "string", "required": true },
+            { "name": "password_hash", "type": "string", "required": true },
+            { "name": "role", "type": "string", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Licenciada",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "cpf", "type": "string", "required": false },
+            { "name": "password_hash", "type": "string", "required": false },
+            { "name": "is_active", "type": "tinyint", "required": false },
+            { "name": "max_devices", "type": "int", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Aluna",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "cpf", "type": "string", "required": false },
+            { "name": "email", "type": "string", "required": false },
+            { "name": "password_hash", "type": "string", "required": false },
+            { "name": "is_active", "type": "tinyint", "required": false },
+            { "name": "max_devices", "type": "int", "required": false }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Senha deve ter pelo menos 6 caracteres para alteração",
+          "location": "AuthController.php:469",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Bloqueio de conta após 5 tentativas falhas consecutivas (15 min)",
+          "location": "AuthController.php:205",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Máximo de dispositivos simultâneos controlado por max_devices (FIFO)",
+          "location": "AuthController.php:276",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Admin pode fazer login como licenciada via ID negativo (-admin_id)",
+          "location": "AuthController.php:176",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Token de aluna deve começar com prefixo 'al_'",
+          "location": "AlunaAuthController.php:162",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Superadmin é hardcoded como id=5 ou role='superadmin'",
+          "location": "NexusGuard.php:39",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Senão enviada, senha padrão é Mudar123! com força de troca obrigatória",
+          "location": "LicenciadasController.php:145",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["RiskEngineService", "LoggerService", "NexusSQLite"],
+      "algorithms": [
+        {
+          "name": "FIFO Session Kicker",
+          "description": "Quando o número de dispositivos ativos excede o limite, o mais antigo é desativado (is_active=0)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Dual-Layer Throttling",
+          "description": "Account-based (5 falhas) + IP-based (50 falhas) com regras dinâmicas de nexus_security_rules",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Fingerprint Device Reuse",
+          "description": "RiskEngine gera fingerprint hash; login tenta reusar device pelo fingerprint antes de criar novo",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Admin-as-Student Fallback",
+          "description": "Admin pode logar como licenciada: id negativo (-admin_id), is_admin=true, max_devices=999",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "aluna",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/",
+      "purpose": "Portal individual da aluna: autenticação própria, visualização de módulos, progresso, emissão de certificados",
+      "primary_files": [
+        "api/v1/Controllers/AlunaAuthController.php",
+        "api/v1/Controllers/AlunaLmsController.php",
+        "api/v1/Controllers/AdminAlunaController.php"
+      ],
+      "functions": [
+        {
+          "name": "guardAluna",
+          "file": "api/v1/Controllers/AlunaLmsController.php",
+          "params": ["pdo"],
+          "returns": "array (loggedAluna)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "modules",
+          "file": "api/v1/Controllers/AlunaLmsController.php",
+          "params": [],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "saveProgress",
+          "file": "api/v1/Controllers/AlunaLmsController.php",
+          "params": ["input: {lesson_id, progress_percent, is_completed}"],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "certificate",
+          "file": "api/v1/Controllers/AlunaLmsController.php",
+          "params": ["moduleId: string"],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "AlunaCourseAccess",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "aluna_id", "type": "int", "required": true },
+            { "name": "module_id", "type": "int", "required": true },
+            { "name": "expires_at", "type": "datetime", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "AlunaProgress",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "aluna_id", "type": "int", "required": true },
+            { "name": "lesson_id", "type": "int", "required": true },
+            { "name": "progress_percent", "type": "decimal", "required": false },
+            { "name": "is_completed", "type": "tinyint", "required": false }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "AlunaCertificate",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "aluna_id", "type": "int", "required": true },
+            { "name": "module_id", "type": "int", "required": true },
+            { "name": "hash_code", "type": "string", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Aluna só vê módulos que tem acesso via aluna_course_access (com expiração)",
+          "location": "AlunaLmsController.php:75",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Certificado só é emitido se 100% das aulas do módulo estão concluídas",
+          "location": "AlunaLmsController.php:353",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "URL de vídeo é assinada HMAC com validade de 1 hora",
+          "location": "AlunaLmsController.php:291",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["auth", "lms"],
+      "algorithms": [
+        {
+          "name": "Progress UPSERT",
+          "description": "Se registro existe: UPDATE progress_percent + is_completed + completion_date. Se não: INSERT.",
+          "location": "AlunaLmsController.php:221",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "medium"
+    },
+    {
+      "name": "licenciada",
+      "path": "apps/web-app/src/backend/api/v1/",
+      "purpose": "CRUD de licenciadas, dashboard, progresso educacional, gerenciamento de dispositivos e sessões",
+      "primary_files": [
+        "api/v1/Controllers/LicenciadasController.php",
+        "api/v1/licenciada/dashboard_summary.php",
+        "api/v1/licenciada/progress.php",
+        "api/v1/licenciada/lessons.php"
+      ],
+      "functions": [
+        {
+          "name": "store",
+          "file": "api/v1/Controllers/LicenciadasController.php",
+          "params": ["POST data (multipart)"],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "update",
+          "file": "api/v1/Controllers/LicenciadasController.php",
+          "params": ["id: int, POST/PUT data"],
+          "returns": "void (Response::json)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "processRows",
+          "file": "api/v1/Controllers/LicenciadasController.php",
+          "params": ["rows: array (by ref)"],
+          "returns": "void (modifica in-place)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "handleUpload",
+          "file": "api/v1/Controllers/LicenciadasController.php",
+          "params": ["file: array, id: int, nameContext: string, cpf: string?"],
+          "returns": "string (public URL)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "LicenciadaDevice",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "licenciada_id", "type": "int", "required": true },
+            { "name": "device_token", "type": "string", "required": true },
+            { "name": "fingerprint_hash", "type": "string", "required": false },
+            { "name": "is_active", "type": "tinyint", "required": false }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Ao criar licenciada sem senha, usa hash padrão de 'Mudar123!' e força troca",
+          "location": "LicenciadasController.php:145",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "CPF, Email e WhatsApp são únicos (tratamento de duplicidade com MySQL 1062)",
+          "location": "LicenciadasController.php:199",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Foto é renomeada automaticamente para {id}_{name}_{cpf}.{ext}",
+          "location": "LicenciadasController.php:500",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Progresso é global (total de aulas ativas no sistema)",
+          "location": "licenciada/progress.php:81",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["auth", "lms"],
+      "algorithms": [
+        {
+          "name": "Photo Rename on Update",
+          "description": "Se name ou CPF mudou, renomeia o arquivo no filesystem para manter consistência",
+          "location": "LicenciadasController.php:305",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "V97 Anomaly Detection",
+          "description": "Zero progress records → verifica schema lms_progress para coluna licenciada_id",
+          "location": "licenciada/progress.php:101",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Token Resolution multi-fallback",
+          "description": "X-Device-Token → Authorization Bearer → $loggedUser (non-admin only)",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "admin",
+      "path": "apps/web-app/src/backend/api/v1/Core/ + Controllers/ + admin/",
+      "purpose": "Infraestrutura administrativa: Core system (router, response, cache, logger), engine (cache manager, feature flags), monitoramento (watchtower, signal_tower, war_room)",
+      "primary_files": [
+        "api/v1/Core/Response.php",
+        "api/v1/Core/ResponseCache.php",
+        "api/v1/Core/NexusLogger.php",
+        "api/v1/Core/NexusErrorHandler.php",
+        "api/v1/Core/NexusSQLite.php",
+        "api/v1/Core/Router.php",
+        "api/v1/Controllers/AdminController.php",
+        "api/v1/Controllers/AdminAlunaController.php",
+        "api/v1/Controllers/AdminLmsController.php",
+        "api/v1/Controllers/AnalyticsController.php",
+        "api/v1/Controllers/BroadcastController.php",
+        "api/v1/Controllers/MediaController.php",
+        "api/admin/engine/cache_manager.php",
+        "api/admin/engine/feature_flags.php",
+        "api/admin/watchtower/core.php"
+      ],
+      "functions": [
+        {
+          "name": "Response::json",
+          "file": "api/v1/Core/Response.php",
+          "params": ["data: mixed", "status: int=200"],
+          "returns": "void (exit)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Response::error",
+          "file": "api/v1/Core/Response.php",
+          "params": ["message: string", "status: int=400", "code: string?"],
+          "returns": "void (exit)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "ResponseCache::serve",
+          "file": "api/v1/Core/ResponseCache.php",
+          "params": ["key: string", "callback: callable", "ttl: int=1800", "isPublic: bool=false"],
+          "returns": "void (serve JSON or execute callback)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "ResponseCache::clear",
+          "file": "api/v1/Core/ResponseCache.php",
+          "params": ["keyPrefix: string"],
+          "returns": "void",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "NexusLogger::log",
+          "file": "api/v1/Core/NexusLogger.php",
+          "params": ["action: string", "description: string", "details: array=[]", "userType: string='system'", "userId: int=0", "severity: string?"],
+          "returns": "void",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "manageUser",
+          "file": "api/v1/Controllers/AdminController.php",
+          "params": ["input: {action, user_id, ...}"],
+          "returns": "void",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "AuditLog",
+          "fields": [
+            { "name": "id", "type": "int", "required": true },
+            { "name": "action", "type": "string", "required": true },
+            { "name": "severity", "type": "enum('INFO','WARNING','ERROR','CRITICAL')", "required": true },
+            { "name": "description", "type": "text", "required": false },
+            { "name": "details", "type": "json", "required": false },
+            { "name": "user_id", "type": "int", "required": false },
+            { "name": "user_type", "type": "string", "required": false },
+            { "name": "ip_address", "type": "varchar(45)", "required": false },
+            { "name": "created_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "SiteConfig",
+          "fields": [
+            { "name": "config_key", "type": "string", "required": true },
+            { "name": "config_value", "type": "text", "required": false }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Superadmin pode executar reset_lifecycle: force_password, revoke_lgpd, clear_devices, clear_throttling, max_devices",
+          "location": "AdminController.php:63",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Cache público é compartilhado globalmente; cache privado é segmentado por token de usuário",
+          "location": "ResponseCache.php:43",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Feature flags limitadas: apenas maintenance_mode",
+          "location": "api/admin/engine/feature_flags.php:40",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Dados sensíveis (password, token, secret, key) são redactados automaticamente nos logs",
+          "location": "NexusLogger.php:44",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": [],
+      "algorithms": [
+        {
+          "name": "ResponseCache — Stale-While-Revalidate",
+          "description": "Arquivos JSON em disco; serve stale enquanto revalida; segmento público vs privado",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "NexusSQLite — Dual Engine",
+          "description": "SQLite para admin (zero MySQL); degrada para MySQL se SQLite indisponível",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Watchtower — Credential Sharing Detection",
+          "description": "Detecta mesmo usuário acessando de múltiplos IPs distintos nos últimos 60 min",
+          "confidence": "confirmed"
+        }
+      ],
+      "complexity": "medium"
+    },
+    {
+      "name": "lms",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/LmsController.php + Controllers/AdminLmsController.php + Controllers/QuizController.php + libs/ResourceService.php",
+      "purpose": "Learning Management System: módulos, aulas, quizzes, certificados, biblioteca de recursos, progressão bloqueada",
+      "primary_files": [
+        "Controllers/LmsController.php",
+        "Controllers/AdminLmsController.php",
+        "Controllers/QuizController.php",
+        "libs/ResourceService.php"
+      ],
+      "functions": [
+        { "name": "LmsController::index", "file": "LmsController.php", "params": [], "returns": "JSON modules[]", "confidence": "confirmed" },
+        { "name": "LmsController::lessons", "file": "LmsController.php", "params": ["moduleId"], "returns": "JSON module+lessons+quiz+certificate", "confidence": "confirmed" },
+        { "name": "LmsController::saveProgress", "file": "LmsController.php", "params": ["{lesson_id, progress_percent, is_completed, current_time}"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "LmsController::resources", "file": "LmsController.php", "params": [], "returns": "JSON resources[]", "confidence": "confirmed" },
+        { "name": "LmsController::signUrl", "file": "LmsController.php", "params": ["{lesson_id}"], "returns": "JSON {url}", "confidence": "confirmed" },
+        { "name": "AdminLmsController::dashboard", "file": "AdminLmsController.php", "params": [], "returns": "JSON metrics+chart", "confidence": "confirmed" },
+        { "name": "AdminLmsController::indexData", "file": "AdminLmsController.php", "params": [], "returns": "JSON modules with lessons", "confidence": "confirmed" },
+        { "name": "QuizController::getAdminQuiz", "file": "QuizController.php", "params": ["moduleId"], "returns": "JSON {quiz, questions[]}", "confidence": "confirmed" },
+        { "name": "QuizController::saveQuiz", "file": "QuizController.php", "params": [], "returns": "JSON {success}", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "lms_modules", "fields": [{"name":"id","type":"int"},{"name":"title","type":"varchar"},{"name":"description","type":"text"},{"name":"cover_image","type":"varchar"},{"name":"display_order","type":"int"},{"name":"is_active","type":"tinyint"}], "confidence": "confirmed" },
+        { "name": "lms_lessons", "fields": [{"name":"id","type":"int"},{"name":"module_id","type":"int"},{"name":"title","type":"varchar"},{"name":"video_type","type":"varchar"},{"name":"video_ref","type":"varchar"},{"name":"duration_seconds","type":"int"},{"name":"display_order","type":"int"}], "confidence": "confirmed" },
+        { "name": "lms_quizzes", "fields": [{"name":"id","type":"int"},{"name":"module_id","type":"int"},{"name":"title","type":"varchar"},{"name":"min_score","type":"int"}], "confidence": "confirmed" },
+        { "name": "lms_questions", "fields": [{"name":"id","type":"int"},{"name":"quiz_id","type":"int"},{"name":"question_text","type":"text"},{"name":"order_index","type":"int"}], "confidence": "confirmed" },
+        { "name": "lms_question_options", "fields": [{"name":"id","type":"int"},{"name":"question_id","type":"int"},{"name":"option_text","type":"text"},{"name":"is_correct","type":"tinyint"},{"name":"order_index","type":"int"}], "confidence": "confirmed" },
+        { "name": "lms_quiz_attempts", "fields": [{"name":"id","type":"int"},{"name":"quiz_id","type":"int"},{"name":"licenciada_id","type":"int"},{"name":"score","type":"decimal"},{"name":"passed","type":"tinyint"},{"name":"answers","type":"json"}], "confidence": "confirmed" },
+        { "name": "lms_certificates", "fields": [{"name":"id","type":"int"},{"name":"licenciada_id","type":"int"},{"name":"module_id","type":"int"},{"name":"hash_code","type":"varchar"}], "confidence": "confirmed" }
+      ],
+      "business_rules": [
+        { "description": "Módulo N+1 bloqueado se módulo N tem quiz não aprovado (Strict Progression)", "location": "LmsController.php:90", "confidence": "confirmed" },
+        { "description": "Certificado só é emitido se quiz foi passed (score >= min_score)", "location": "CertificateController.php:45", "confidence": "confirmed" },
+        { "description": "Cache de módulos invalidado ao salvar progresso (V76)", "location": "LmsController.php:303", "confidence": "confirmed" }
+      ],
+      "dependencies": ["Core/Response.php", "Core/ResponseCache.php"],
+      "algorithms": [
+        { "name": "Strict Progression Lock", "description": "Bloqueia acesso a módulo N+1 se quiz do módulo N não foi aprovado", "confidence": "confirmed" },
+        { "name": "Signed URL (HMAC SHA-256)", "description": "Gera URLs temporárias para download/stream com APP_SECRET", "confidence": "confirmed" }
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "content",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/ContentController.php",
+      "purpose": "CRUD de mentores para o site público",
+      "primary_files": ["Controllers/ContentController.php"],
+      "functions": [
+        { "name": "getMentors", "file": "ContentController.php", "params": [], "returns": "JSON mentors[]", "confidence": "confirmed" },
+        { "name": "storeMentor", "file": "ContentController.php", "params": ["{name,nickname,role,bio,photo,instagram}"], "returns": "JSON {id}", "confidence": "confirmed" },
+        { "name": "updateMentor", "file": "ContentController.php", "params": ["id", "{...fields}"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "deleteMentor", "file": "ContentController.php", "params": ["id"], "returns": "void (exit)", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "mentors", "fields": [{"name":"id","type":"int"},{"name":"name","type":"varchar"},{"name":"nickname","type":"varchar"},{"name":"role","type":"varchar"},{"name":"bio","type":"text"},{"name":"photo_url","type":"varchar"},{"name":"instagram","type":"varchar"}], "confidence": "confirmed" }
+      ],
+      "business_rules": [],
+      "dependencies": ["Core/Response.php"],
+      "algorithms": [],
+      "complexity": "low"
+    },
+    {
+      "name": "certificate",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/CertificateController.php + libs/SimplePDF.php",
+      "purpose": "Geração de certificados PDF após aprovação em quiz",
+      "primary_files": ["Controllers/CertificateController.php"],
+      "functions": [
+        { "name": "CertificateController::generate", "file": "CertificateController.php", "params": ["user", "POST module_id"], "returns": "void (PDF download)", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "lms_certificates", "fields": [{"name":"id","type":"int"},{"name":"licenciada_id","type":"int"},{"name":"module_id","type":"int"},{"name":"hash_code","type":"varchar"},{"name":"created_at","type":"datetime"}], "confidence": "confirmed" }
+      ],
+      "business_rules": [
+        { "description": "Só gera certificado se quiz foi aprovado (passed=1)", "location": "CertificateController.php:45", "confidence": "confirmed" }
+      ],
+      "dependencies": ["libs/SimplePDF.php"],
+      "algorithms": [
+        { "name": "Certificate Hash", "description": "SHA-256(user_id + module_id + time + secret)", "confidence": "confirmed" }
+      ],
+      "complexity": "low"
+    },
+    {
+      "name": "analytics",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/AnalyticsController.php + admin/war_room/",
+      "purpose": "Watchtower dashboard, War Room deep analytics, security alerts, bot stats",
+      "primary_files": ["Controllers/AnalyticsController.php"],
+      "functions": [
+        { "name": "getLogs", "file": "AnalyticsController.php", "params": ["GET page,limit"], "returns": "JSON {data[],page,limit}", "confidence": "confirmed" },
+        { "name": "getSecurityAlerts", "file": "AnalyticsController.php", "params": [], "returns": "JSON {alerts[]}", "confidence": "confirmed" },
+        { "name": "getStats", "file": "AnalyticsController.php", "params": [], "returns": "JSON metrics", "confidence": "confirmed" },
+        { "name": "watchtower", "file": "AnalyticsController.php", "params": [], "returns": "JSON full dashboard", "confidence": "confirmed" },
+        { "name": "warRoom", "file": "AnalyticsController.php", "params": [], "returns": "JSON {dau[], devices[], churn_risk[]}", "confidence": "confirmed" },
+        { "name": "getBotStats", "file": "AnalyticsController.php", "params": [], "returns": "JSON {pending,approved,rejected,total}", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "lms_access_logs", "fields": [{"name":"id","type":"int"},{"name":"licenciada_id","type":"int"},{"name":"admin_id","type":"int"},{"name":"action","type":"varchar"},{"name":"metadata","type":"json"},{"name":"created_at","type":"datetime"}], "confidence": "confirmed" },
+        { "name": "bot_cadastro_staging", "fields": [{"name":"id","type":"int"},{"name":"status","type":"varchar"}], "confidence": "confirmed" }
+      ],
+      "business_rules": [
+        { "description": "Security Alert: >3 devices OU >2 IPv4 em 72h = compartilhamento de conta", "location": "AnalyticsController.php:63", "confidence": "confirmed" },
+        { "description": "IPv6 ignorado em alerts (CGNAT falsos positivos)", "location": "AnalyticsController.php:62", "confidence": "confirmed" },
+        { "description": "Churn Risk: licenciadas inativas >15 dias", "location": "AnalyticsController.php:340", "confidence": "confirmed" }
+      ],
+      "dependencies": ["libs/LoggerService.php"],
+      "complexity": "medium"
+    },
+    {
+      "name": "broadcast",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/BroadcastController.php + admin/signal_tower/broadcasts.php",
+      "purpose": "Sistema de broadcasts e comunicados com targeting por role e tracking de leitura",
+      "primary_files": ["Controllers/BroadcastController.php"],
+      "functions": [
+        { "name": "index", "file": "BroadcastController.php", "params": [], "returns": "JSON {all_broadcasts[]}", "confidence": "confirmed" },
+        { "name": "getActive", "file": "BroadcastController.php", "params": [], "returns": "JSON {broadcasts[]}", "confidence": "confirmed" },
+        { "name": "getHistory", "file": "BroadcastController.php", "params": [], "returns": "JSON {history[]}", "confidence": "confirmed" },
+        { "name": "acknowledge", "file": "BroadcastController.php", "params": ["{id}"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "manage", "file": "BroadcastController.php", "params": ["{action,message,...}"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "delete", "file": "BroadcastController.php", "params": ["id"], "returns": "JSON {success}", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "system_broadcasts", "fields": [{"name":"id","type":"int"},{"name":"title","type":"varchar"},{"name":"message","type":"text"},{"name":"type","type":"varchar"},{"name":"target_roles","type":"json"},{"name":"is_active","type":"tinyint"},{"name":"is_blocking","type":"tinyint"}], "confidence": "confirmed" },
+        { "name": "system_broadcast_logs", "fields": [{"name":"id","type":"int"},{"name":"broadcast_id","type":"int"},{"name":"user_id","type":"int"},{"name":"user_type","type":"varchar"},{"name":"read_at","type":"datetime"}], "confidence": "confirmed" }
+      ],
+      "business_rules": [
+        { "description": "Broadcasts filtrados por target_roles (JSON array de roles)", "location": "BroadcastController.php:53", "confidence": "confirmed" },
+        { "description": "GET /v1/broadcasts/active retorna apenas NÃO LIDOS (LEFT JOIN com NULL check)", "location": "BroadcastController.php:42", "confidence": "confirmed" },
+        { "description": "Deleção de broadcast remove logs em transação", "location": "BroadcastController.php:172", "confidence": "confirmed" }
+      ],
+      "dependencies": [],
+      "complexity": "low"
+    },
+    {
+      "name": "media",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/MediaController.php",
+      "purpose": "Gerenciador de mídia com listagem avançada, upload, filtros e limpeza",
+      "primary_files": ["Controllers/MediaController.php"],
+      "functions": [
+        { "name": "listFiles", "file": "MediaController.php", "params": ["GET params"], "returns": "JSON {files[],total,pagination}", "confidence": "confirmed" },
+        { "name": "upload", "file": "MediaController.php", "params": ["FILES"], "returns": "JSON {id,path}", "confidence": "confirmed" },
+        { "name": "reportUnused", "file": "MediaController.php", "params": [], "returns": "JSON {unused[]}", "confidence": "confirmed" },
+        { "name": "cleanup", "file": "MediaController.php", "params": [], "returns": "JSON {deleted_count}", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "media_files", "fields": [{"name":"id","type":"int"},{"name":"file_name","type":"varchar"},{"name":"file_type","type":"varchar"},{"name":"file_size","type":"int"},{"name":"media_category","type":"varchar"},{"name":"width","type":"int"},{"name":"height","type":"int"},{"name":"hash","type":"varchar"},{"name":"access_count","type":"int"},{"name":"created_at","type":"datetime"}], "confidence": "inferred" }
+      ],
+      "business_rules": [
+        { "description": "Apenas superadmin pode executar cleanup", "location": "media/cleanup", "confidence": "inferred" },
+        { "description": "Upload validado por MIME type whitelist e MAX_UPLOAD_SIZE", "location": "MediaController.php", "confidence": "inferred" }
+      ],
+      "dependencies": [],
+      "complexity": "medium"
+    },
+    {
+      "name": "doctor-harmony",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/DoctorHarmonyController.php + Controllers/AdminDoctorHarmonyController.php + libs/GeminiService.php",
+      "purpose": "Mentoria clínica IA (Gemini Vision) com controle de créditos, análise multimodal, crise detection e revisão híbrida",
+      "primary_files": [
+        "Controllers/DoctorHarmonyController.php",
+        "Controllers/AdminDoctorHarmonyController.php",
+        "libs/GeminiService.php"
+      ],
+      "functions": [
+        { "name": "getCredits", "file": "DoctorHarmonyController.php", "params": [], "returns": "JSON {credits, history}", "confidence": "confirmed" },
+        { "name": "getHistory", "file": "DoctorHarmonyController.php", "params": [], "returns": "JSON {messages[]}", "confidence": "confirmed" },
+        { "name": "getContext", "file": "DoctorHarmonyController.php", "params": ["GET lesson_id"], "returns": "JSON {context}", "confidence": "confirmed" },
+        { "name": "analyze", "file": "DoctorHarmonyController.php", "params": ["POST file+notes"], "returns": "JSON {opinion, confidence, needs_review}", "confidence": "confirmed" },
+        { "name": "getPendingCases", "file": "DoctorHarmonyController.php", "params": [], "returns": "JSON {cases[]}", "confidence": "confirmed" },
+        { "name": "submitReview", "file": "DoctorHarmonyController.php", "params": ["id", "POST notes"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "getSession", "file": "DoctorHarmonyController.php", "params": [], "returns": "JSON {session}", "confidence": "confirmed" },
+        { "name": "saveSession", "file": "DoctorHarmonyController.php", "params": ["BODY raw JSON"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "getConfig", "file": "AdminDoctorHarmonyController.php", "params": [], "returns": "JSON {config}", "confidence": "confirmed" },
+        { "name": "updateConfig", "file": "AdminDoctorHarmonyController.php", "params": ["POST {config}"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "getAuditLogs", "file": "AdminDoctorHarmonyController.php", "params": [], "returns": "JSON {logs[]}", "confidence": "confirmed" },
+        { "name": "healthCheck", "file": "AdminDoctorHarmonyController.php", "params": [], "returns": "JSON {status}", "confidence": "confirmed" },
+        { "name": "runSandbox", "file": "AdminDoctorHarmonyController.php", "params": ["POST file+notes"], "returns": "JSON {result}", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "ai_clinical_cases", "fields": [{"name":"id","type":"int"},{"name":"license_id","type":"int"},{"name":"licenciada_id","type":"int"},{"name":"case_title","type":"varchar"},{"name":"case_description","type":"text"},{"name":"photo_path","type":"varchar"},{"name":"doctor_harmony_response","type":"text"},{"name":"confidence_score","type":"decimal"},{"name":"needs_review","type":"tinyint"},{"name":"mentor_feedback","type":"text"},{"name":"status","type":"varchar"},{"name":"created_at","type":"datetime"}], "confidence": "confirmed" },
+        { "name": "ai_mentorship_logs", "fields": [{"name":"id","type":"int"},{"name":"license_id","type":"int"},{"name":"interaction_type","type":"varchar"},{"name":"image_path","type":"varchar"},{"name":"created_at","type":"datetime"}], "confidence": "confirmed" },
+        { "name": "ai_mentorship_sessions", "fields": [{"name":"id","type":"int"},{"name":"licenciada_id","type":"int"},{"name":"session_data","type":"json"},{"name":"last_interaction","type":"datetime"}], "confidence": "confirmed" },
+        { "name": "ai_config", "fields": [{"name":"config_key","type":"varchar"},{"name":"config_value","type":"text"}], "confidence": "confirmed" }
+      ],
+      "business_rules": [
+        { "description": "Créditos de IA controlados por license (total/used). Admin bypass.", "location": "DoctorHarmonyController.php:177", "confidence": "confirmed" },
+        { "description": "Crisis detection: palavras de desistência forçam PENDING + needs_review", "location": "DoctorHarmonyController.php:203", "confidence": "confirmed" },
+        { "description": "LGPD Consent: dados pessoais só enviados se ai_usage=true", "location": "DoctorHarmonyController.php:223", "confidence": "confirmed" },
+        { "description": "Hybrid Review: confidence < threshold (0.80) = revisão humana obrigatória", "location": "DoctorHarmonyController.php:276", "confidence": "confirmed" }
+      ],
+      "dependencies": ["libs/GeminiService.php"],
+      "algorithms": [
+        { "name": "Hybrid Review (Option C)", "description": "Se confiança IA < 80% ou crise detectada, caso vai para revisão humana", "confidence": "confirmed" },
+        { "name": "Crisis Alert", "description": "Varre texto por palavras de desistência e força revisão prioritária", "confidence": "confirmed" }
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "leads",
+      "path": "apps/web-app/src/backend/api/v1/Controllers/LeadController.php",
+      "purpose": "Captura e gerenciamento de leads do site público",
+      "primary_files": ["Controllers/LeadController.php"],
+      "functions": [
+        { "name": "index", "file": "LeadController.php", "params": [], "returns": "JSON leads[]", "confidence": "confirmed" },
+        { "name": "store", "file": "LeadController.php", "params": ["{email,name,message,whatsapp}"], "returns": "JSON {id}", "confidence": "confirmed" },
+        { "name": "update", "file": "LeadController.php", "params": ["id", "{status}"], "returns": "JSON {success}", "confidence": "confirmed" },
+        { "name": "destroy", "file": "LeadController.php", "params": ["id"], "returns": "JSON {success}", "confidence": "confirmed" }
+      ],
+      "entities": [
+        { "name": "leads", "fields": [{"name":"id","type":"int"},{"name":"name","type":"varchar"},{"name":"whatsapp","type":"varchar"},{"name":"email","type":"varchar"},{"name":"source","type":"varchar"},{"name":"status","type":"varchar"},{"name":"created_at","type":"datetime"}], "confidence": "confirmed" }
+      ],
+      "business_rules": [
+        { "description": "Sanitização: FILTER_SANITIZE_EMAIL, strip_tags, preg_replace whatsapp", "location": "LeadController.php:27", "confidence": "confirmed" },
+        { "description": "Status inicial do lead é 'new'", "location": "LeadController.php:37", "confidence": "confirmed" }
+      ],
+      "dependencies": [],
+      "complexity": "low"
+    },
+    {
+      "name": "frontend",
+      "path": "apps/web-app/src/frontend/src/",
+      "purpose": "React SPA com lazy loading, multi-perfil (público, licenciada, aluna, admin, nexus), cache-aware API client",
+      "primary_files": [
+        "App.jsx",
+        "services/api.js",
+        "context/AuthContext.jsx",
+        "components/ProtectedRoute/ProtectedRoute.jsx"
+      ],
+      "functions": [],
+      "entities": [],
+      "business_rules": [],
+      "dependencies": [],
+      "algorithms": [
+        { "name": "Stability Shield V100", "description": "Retry automático GET com exponential backoff (1s, 2s) para 500/503", "confidence": "confirmed" },
+        { "name": "Nexus Cache V48", "description": "Cache em memória Map com TTL 60s para GETs pesados", "confidence": "confirmed" },
+        { "name": "Device Token Auth", "description": "Rotas licenciada usam bh_device_token; admin usa bh_auth", "confidence": "confirmed" }
+      ],
+      "complexity": "high"
+    }
+  ]
+}

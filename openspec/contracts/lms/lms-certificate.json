@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsCertificateContract",
+  "description": "Contrato de download e validação de Certificados no LMS do Body Harmony",
+  "endpoints": {
+    "/v1/lms/modules/{moduleId}/certificate": {
+      "GET": {
+        "summary": "Obtém metadados e status de disponibilidade do certificado do módulo",
+        "security": ["LicenciadaToken", "AlunaToken"],
+        "parameters": {
+          "moduleId": {
+            "type": "integer",
+            "description": "ID do módulo correspondente ao certificado"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "available": { "type": "boolean" },
+                    "certificate": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "integer" },
+                        "hash": { "type": "string" },
+                        "score": { "type": "number" },
+                        "issued_at": { "type": "string", "format": "date-time" }
+                      },
+                      "required": ["id", "hash", "score", "issued_at"]
+                    }
+                  },
+                  "required": ["available", "certificate"]
+                }
+              }
+            }
+          },
+          "401": { "description": "Token inválido ou ausente" },
+          "404": { "description": "Módulo não encontrado ou não possui certificado" }
+        }
+      }
+    },
+    "/v1/lms/modules/{moduleId}/certificate/download": {
+      "GET": {
+        "summary": "Realiza o download do arquivo PDF do certificado compilado",
+        "security": ["LicenciadaToken", "AlunaToken"],
+        "parameters": {
+          "moduleId": {
+            "type": "integer"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna o arquivo PDF",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": { "description": "Acesso negado - Quiz não concluído ou nota insuficiente" },
+          "404": { "description": "Certificado não encontrado" }
+        }
+      }
+    }
+  }
+}

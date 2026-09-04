@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmSocialChannelsConfigContract",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "channel_type": { "type": "string" },
+          "name": { "type": "string" },
+          "inbox_id": { "type": ["integer", "null"] },
+          "is_connected": { "type": "boolean" },
+          "assigned_agent": { "type": "string" }
+        },
+        "required": ["channel_type", "name", "is_connected"]
+      }
+    }
+  },
+  "required": ["success", "channels"]
+}

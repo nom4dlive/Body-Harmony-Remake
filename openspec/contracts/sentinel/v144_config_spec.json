@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HermesSentinelConfigSchema",
+  "description": "Especificação do contrato de configuração (config.yaml) para a Sentinela Hermony.",
+  "type": "object",
+  "properties": {
+    "agent": {
+      "type": "object",
+      "properties": {
+        "model": { "type": "string" },
+        "system_prompt_file": { "type": "string" }
+      },
+      "required": ["model"]
+    },
+    "mcp_servers": {
+      "type": "object",
+      "properties": {
+        "mysql_db": {
+          "type": "object",
+          "properties": {
+            "command": { "type": "string" },
+            "args": { "type": "array", "items": { "type": "string" } },
+            "env": { "type": "object" }
+          },
+          "required": ["command", "args"]
+        },
+        "docker_node": {
+          "type": "object",
+          "properties": {
+            "command": { "type": "string" },
+            "args": { "type": "array", "items": { "type": "string" } }
+          },
+          "required": ["command", "args"]
+        },
+        "hostinger_mcp": {
+          "type": "object",
+          "properties": {
+            "command": { "type": "string" },
+            "args": { "type": "array", "items": { "type": "string" } },
+            "env": { "type": "object" }
+          },
+          "required": ["command", "args"]
+        }
+      }
+    }
+  },
+  "required": ["agent", "mcp_servers"]
+}

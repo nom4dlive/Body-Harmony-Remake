@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BetaTestersCreditsContract",
+  "type": "object",
+  "description": "Liberação manual de beta testers e gestão de créditos de IA pelos Gestores",
+  "request": {
+    "type": "object",
+    "required": [
+      "licenciada_id",
+      "is_beta_active"
+    ],
+    "properties": {
+      "licenciada_id": {
+        "type": "integer"
+      },
+      "is_beta_active": {
+        "type": "boolean"
+      },
+      "daily_credit_override": {
+        "type": "integer",
+        "description": "Cota diária customizada (padrão: 100)"
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "required": [
+      "success",
+      "licenciada_id",
+      "status",
+      "credits_balance"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "licenciada_id": {
+        "type": "integer"
+      },
+      "status": {
+        "type": "string"
+      },
+      "credits_balance": {
+        "type": "integer"
+      }
+    }
+  }
+}

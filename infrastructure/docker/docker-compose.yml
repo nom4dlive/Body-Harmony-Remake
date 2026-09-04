@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    container_name: bodyharmony-app
+    restart: always
+    volumes:
+      - ../public:/var/www/html
+      - ../api:/var/www/html/api
+      - ../private_uploads:/var/www/private_uploads
+    environment:
+      - DB_STAGE=PROD
+      - DB_HOST=45.152.44.244
+      - DB_NAME=u388974772_bodyharmony_db
+      - DB_USER=u388974772_body_db
+      - DB_PASS=${DB_PASS:-}
+      - SITE_URL=https://bodyharmony.com.br
+      - SETUP_DONE=true
+
+  web:
+    image: nginx:alpine
+    container_name: bodyharmony-web
+    restart: always
+    volumes:
+      - ../public:/var/www/html
+      - ../api:/var/www/html/api
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ../private_uploads:/var/www/private_uploads
+    depends_on:
+      - app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bodyharmony.rule=Host(`api.bodyharmony.com.br`) || Host(`app.bodyharmony.com.br`) || Host(`stream.bodyharmony.com.br`)"
+      - "traefik.http.routers.bodyharmony.entrypoints=websecure"
+      - "traefik.http.routers.bodyharmony.tls.certresolver=letsencrypt"
+      - "traefik.http.services.bodyharmony.loadbalancer.server.port=80"

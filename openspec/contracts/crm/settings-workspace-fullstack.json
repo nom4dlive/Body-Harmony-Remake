@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmSettingsAndWorkspaceFullstackContract",
+  "description": "Contrato Fullstack para Painel Unificado de Configurações, Google Workspace e Analytics Real (PLAN-187)",
+  "type": "object",
+  "properties": {
+    "getGoogleStatus": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "object",
+          "required": ["success", "is_connected", "account"],
+          "properties": {
+            "success": { "type": "boolean" },
+            "is_connected": { "type": "boolean" },
+            "account": { "type": "string" },
+            "auth_type": { "type": "string" },
+            "synced_contacts_count": { "type": "integer" },
+            "services": {
+              "type": "object",
+              "properties": {
+                "calendar": { "type": "boolean" },
+                "contacts": { "type": "boolean" },
+                "drive": { "type": "boolean" },
+                "meet": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "getRealAnalytics": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "object",
+          "required": ["success", "period", "clinic_kpis", "congress_sales_kpis"],
+          "properties": {
+            "success": { "type": "boolean" },
+            "period": { "type": "string" },
+            "clinic_kpis": { "type": "object" },
+            "congress_sales_kpis": { "type": "object" },
+            "attendants_metrics": { "type": "array" }
+          }
+        }
+      }
+    }
+  }
+}

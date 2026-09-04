@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContractsTemplatesContract",
+  "description": "Contrato de catálogo de modelos (templates) de contratos e suas variáveis mapeadas",
+  "endpoints": {
+    "/v1/admin/contracts/templates": {
+      "GET": {
+        "summary": "Obtém catálogo de templates de contrato disponíveis e suas definições de campos variáveis",
+        "security": ["AdminToken"],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "templates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "integer" },
+                          "slug": { "type": "string" },
+                          "title": { "type": "string" },
+                          "category": { "type": "string" },
+                          "description": { "type": "string" },
+                          "version": { "type": "string" },
+                          "sections": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": { "type": "string" },
+                                "title": { "type": "string" },
+                                "fields": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": { "type": "string", "description": "Tag {{CHAVE}}" },
+                                      "label": { "type": "string" },
+                                      "type": { "type": "string", "enum": ["text", "textarea", "currency", "date", "select", "cpf_cnpj", "email", "phone"] },
+                                      "default_value": { "type": ["string", "null"] },
+                                      "required": { "type": "boolean" },
+                                      "auto_fill_from": { "type": ["string", "null"], "description": "Propriedade da Licenciada para auto-preenchimento" }
+                                    },
+                                    "required": ["key", "label", "type", "required"]
+                                  }
+                                }
+                              },
+                              "required": ["id", "title", "fields"]
+                            }
+                          },
+                          "default_content_html": { "type": "string" }
+                        },
+                        "required": ["id", "slug", "title", "category", "version", "sections"]
+                      }
+                    }
+                  },
+                  "required": ["ok", "templates"]
+                }
+              }
+            }
+          },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    }
+  }
+}

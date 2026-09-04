@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContractsDetailContract",
+  "description": "Contrato para consulta detalhada de contrato específico, variáveis, trilha de assinaturas e histórico",
+  "endpoints": {
+    "/v1/admin/contracts/detail": {
+      "GET": {
+        "summary": "Obtém todos os dados, variáveis, trilha de assinaturas e URLs seguras de um contrato",
+        "security": ["AdminToken"],
+        "parameters": [
+          { "name": "uuid", "in": "query", "type": "string", "required": true }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "contract": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "integer" },
+                        "uuid": { "type": "string" },
+                        "title": { "type": "string" },
+                        "template_slug": { "type": "string" },
+                        "licenciada_id": { "type": ["integer", "null"] },
+                        "licenciada_name": { "type": "string" },
+                        "status": { "type": "string", "enum": ["DRAFT", "GENERATED", "PENDING_SIGNATURE", "SIGNED", "CANCELLED", "ARCHIVED"] },
+                        "variables_payload": { "type": "object" },
+                        "rendered_html": { "type": "string" },
+                        "sha256_hash": { "type": "string" },
+                        "sign_token": { "type": ["string", "null"] },
+                        "sign_url": { "type": ["string", "null"] },
+                        "pdf_url": { "type": "string" },
+                        "created_at": { "type": "string", "format": "date-time" },
+                        "updated_at": { "type": "string", "format": "date-time" },
+                        "signatures": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": { "type": "integer" },
+                              "signer_type": { "type": "string" },
+                              "signer_name": { "type": "string" },
+                              "signer_document": { "type": "string" },
+                              "signer_email": { "type": "string" },
+                              "signature_mode": { "type": "string" },
+                              "signature_image_url": { "type": ["string", "null"] },
+                              "ip_address": { "type": "string" },
+                              "user_agent": { "type": "string" },
+                              "signed_at": { "type": "string", "format": "date-time" },
+                              "checksum_signature": { "type": "string" }
+                            },
+                            "required": ["signer_type", "signer_name", "signed_at", "checksum_signature"]
+                          }
+                        }
+                      },
+                      "required": ["id", "uuid", "title", "status", "variables_payload", "sha256_hash", "signatures"]
+                    }
+                  },
+                  "required": ["ok", "contract"]
+                }
+              }
+            }
+          },
+          "404": { "description": "Contrato não encontrado" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    }
+  }
+}

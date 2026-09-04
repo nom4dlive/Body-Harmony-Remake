@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShopAdminProductImageUploadContract",
+  "description": "Contrato de upload de imagem de produto para a Loja Virtual pelo Gestor",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "image_url": { "type": "string" },
+    "message": { "type": "string" }
+  },
+  "required": ["success"]
+}

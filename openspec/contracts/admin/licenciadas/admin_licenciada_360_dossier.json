@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AdminLicenciada360DossierContract",
+  "description": "Contrato de API para o Dossiê 360º Unificado da Licenciada e Sincronização Transversal (PLAN-142)",
+  "endpoints": {
+    "get_dossier": {
+      "method": "GET",
+      "path": "/api/v1/admin/licenciadas/{id}/dossier",
+      "auth_required": true,
+      "permissions": ["licenciadas_view", "admin", "superadmin"],
+      "response": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": { "type": "boolean", "const": true },
+          "data": {
+            "type": "object",
+            "required": ["profile", "contracts", "financial", "onboarding", "agenda", "lms", "summary_badges"],
+            "properties": {
+              "profile": {
+                "type": "object",
+                "required": ["id", "name", "cpf", "whatsapp", "is_active"],
+                "properties": {
+                  "id": { "type": "integer" },
+                  "name": { "type": "string" },
+                  "cpf": { "type": "string" },
+                  "cnpj": { "type": ["string", "null"] },
+                  "whatsapp": { "type": "string" },
+                  "email": { "type": "string" },
+                  "location": { "type": ["string", "null"] },
+                  "cidade": { "type": ["string", "null"] },
+                  "state": { "type": ["string", "null"] },
+                  "photo_url": { "type": ["string", "null"] },
+                  "is_active": { "type": "integer" },
+                  "created_at": { "type": "string" }
+                }
+              },
+              "contracts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "contract_uuid": { "type": "string" },
+                    "category": { "type": "string" },
+                    "status": { "type": "string" },
+                    "pdf_url": { "type": ["string", "null"] },
+                    "signed_at": { "type": ["string", "null"] },
+                    "created_at": { "type": "string" }
+                  }
+                }
+              },
+              "financial": {
+                "type": "object",
+                "properties": {
+                  "total_contracted_cents": { "type": "integer" },
+                  "total_contracted_formatted": { "type": "string" },
+                  "total_paid_cents": { "type": "integer" },
+                  "total_paid_formatted": { "type": "string" },
+                  "balance_pending_cents": { "type": "integer" },
+                  "balance_pending_formatted": { "type": "string" },
+                  "status": { "type": "string" },
+                  "taxes": { "type": "array" },
+                  "transactions": { "type": "array" },
+                  "attachments": { "type": "array" }
+                }
+              },
+              "onboarding": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "integer" },
+                  "status": { "type": "string" },
+                  "cidade_celebracao": { "type": ["string", "null"] },
+                  "estado": { "type": ["string", "null"] },
+                  "taxa_inicial_num": { "type": ["string", "null"] },
+                  "condicoes_pagamento": { "type": ["string", "null"] },
+                  "contract_uuid": { "type": ["string", "null"] },
+                  "comprovante_pagamento_path": { "type": ["string", "null"] }
+                }
+              },
+              "agenda": {
+                "type": "object",
+                "properties": {
+                  "total_events": { "type": "integer" },
+                  "next_event": { "type": ["object", "null"] },
+                  "history": { "type": "array" }
+                }
+              },
+              "lms": {
+                "type": "object",
+                "properties": {
+                  "enrolled": { "type": "boolean" },
+                  "progress_percentage": { "type": "number" },
+                  "completed_lessons": { "type": "integer" },
+                  "total_lessons": { "type": "integer" },
+                  "last_access_at": { "type": ["string", "null"] }
+                }
+              },
+              "summary_badges": {
+                "type": "object",
+                "properties": {
+                  "contract_status_badge": { "type": "string" },
+                  "financial_status_badge": { "type": "string" },
+                  "lms_status_badge": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "update_dossier": {
+      "method": "PUT",
+      "path": "/api/v1/admin/licenciadas/{id}/dossier",
+      "auth_required": true,
+      "permissions": ["licenciadas_manage", "admin", "superadmin"],
+      "request_body": {
+        "type": "object",
+        "required": ["name", "whatsapp"],
+        "properties": {
+          "name": { "type": "string" },
+          "cpf": { "type": "string" },
+          "cnpj": { "type": ["string", "null"] },
+          "whatsapp": { "type": "string" },
+          "email": { "type": "string" },
+          "location": { "type": ["string", "null"] },
+          "cidade": { "type": ["string", "null"] },
+          "state": { "type": ["string", "null"] },
+          "propagate_cascade": { "type": "boolean", "default": true }
+        }
+      },
+      "response": {
+        "type": "object",
+        "required": ["success", "data", "propagated_counts"],
+        "properties": {
+          "success": { "type": "boolean", "const": true },
+          "data": { "type": "object" },
+          "propagated_counts": {
+            "type": "object",
+            "properties": {
+              "taxes_updated": { "type": "integer" },
+              "onboarding_updated": { "type": "integer" },
+              "agenda_updated": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "sync_360": {
+      "method": "POST",
+      "path": "/api/v1/admin/licenciadas/sync-360",
+      "auth_required": true,
+      "permissions": ["admin", "superadmin"],
+      "response": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": { "type": "boolean", "const": true },
+          "data": {
+            "type": "object",
+            "properties": {
+              "taxes_linked": { "type": "integer" },
+              "contracts_linked": { "type": "integer" },
+              "onboardings_linked": { "type": "integer" },
+              "agenda_linked": { "type": "integer" },
+              "total_licenciadas": { "type": "integer" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

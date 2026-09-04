@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmSettingsAndErgonomicsContract",
+  "description": "Contrato de API para configurações de aparência do CRM e sanitização de avatares e balões (PLAN-186)",
+  "type": "object",
+  "properties": {
+    "getSettings": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "object",
+          "required": ["success", "settings"],
+          "properties": {
+            "success": { "type": "boolean" },
+            "settings": {
+              "type": "object",
+              "properties": {
+                "sent_bubble_bg": { "type": "string" },
+                "sent_bubble_text": { "type": "string" },
+                "received_bubble_bg": { "type": "string" },
+                "received_bubble_text": { "type": "string" },
+                "default_dossier_open": { "type": "boolean" },
+                "audio_notifications_enabled": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "saveSettings": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "sent_bubble_bg": { "type": "string" },
+            "sent_bubble_text": { "type": "string" },
+            "received_bubble_bg": { "type": "string" },
+            "received_bubble_text": { "type": "string" },
+            "default_dossier_open": { "type": "boolean" },
+            "audio_notifications_enabled": { "type": "boolean" }
+          }
+        },
+        "response": {
+          "type": "object",
+          "required": ["success", "message"],
+          "properties": {
+            "success": { "type": "boolean" },
+            "message": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Body Harmony CRM - Workspace</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#d8dadc",
+                      "primary": "#002841",
+                      "on-error-container": "#93000a",
+                      "inverse-surface": "#2d3133",
+                      "background": "#f7f9fb",
+                      "primary-fixed-dim": "#a1cbf4",
+                      "secondary": "#944b00",
+                      "primary-container": "#0a3e60",
+                      "surface-container-highest": "#e0e3e5",
+                      "success-emerald": "#10B981",
+                      "sidebar-inactive-icon": "#94A3B8",
+                      "surface-container-high": "#e6e8ea",
+                      "on-surface": "#191c1e",
+                      "on-primary-container": "#80a9d1",
+                      "on-secondary": "#ffffff",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-tertiary-container": "#8aa8c6",
+                      "on-secondary-fixed-variant": "#713700",
+                      "surface": "#f7f9fb",
+                      "gold-vibrant": "#FFB366",
+                      "on-secondary-fixed": "#301400",
+                      "sidebar-bg": "#072B44",
+                      "on-background": "#191c1e",
+                      "tertiary": "#022740",
+                      "on-tertiary-fixed": "#001d32",
+                      "on-surface-variant": "#42474e",
+                      "sidebar-inactive-text": "#E2E8F0",
+                      "secondary-fixed-dim": "#ffb783",
+                      "error-container": "#ffdad6",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f7f9fb",
+                      "tertiary-fixed-dim": "#abcae9",
+                      "tertiary-container": "#1e3d57",
+                      "outline": "#72777f",
+                      "on-error": "#ffffff",
+                      "whisper-border": "#D97706",
+                      "on-secondary-container": "#633000",
+                      "surface-container-lowest": "#ffffff",
+                      "warning-amber": "#F59E0B",
+                      "surface-container-low": "#f2f4f6",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#376286",
+                      "on-tertiary-fixed-variant": "#2b4964",
+                      "tertiary-fixed": "#cee5ff",
+                      "outline-variant": "#c2c7cf",
+                      "primary-fixed": "#cde5ff",
+                      "secondary-container": "#fd8a23",
+                      "error": "#ba1a1a",
+                      "whisper-bg": "#FEF3C7",
+                      "inverse-primary": "#a1cbf4",
+                      "danger-ruby": "#EF4444",
+                      "secondary-fixed": "#ffdcc5",
+                      "surface-container": "#eceef0",
+                      "surface-variant": "#e0e3e5",
+                      "on-primary-fixed-variant": "#1c4a6d",
+                      "on-primary-fixed": "#001d32"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "1rem",
+                      "sidebar-width": "250px",
+                      "inbox-list-width": "340px",
+                      "dossier-width": "380px",
+                      "margin": "1.5rem"
+              },
+              "fontFamily": {
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "chat-message": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Outfit"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-xl": [
+                              "Outfit"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Outfit"
+                      ]
+              },
+              "fontSize": {
+                      "body-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "chat-message": [
+                              "14px",
+                              {
+                                      "lineHeight": "22px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-xl": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            },
+          }
+        }
+      </script>
+<style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen overflow-hidden flex">
+<!-- Sidebar -->
+<aside class="w-sidebar-width bg-sidebar-bg flex flex-col h-full shrink-0 shadow-lg z-20">
+<!-- Logo Area -->
+<div class="px-6 py-8 flex flex-col items-center">
+<img alt="Body Harmony Logo" class="h-10 w-auto mb-2 opacity-90 hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk4oBh0yM2uy0lOSTFFlRhsgkZ8v-EwUz9ZheV80znH2gVPsnrXRbeMUkEId7VCLUPt_jphJ2THY0knMbwUDhtTWh5IERK6xipmTufln9L7AmUm2q_ZlsU8zydJvl8GycksPKyCLMWRNcA4Bbu7S6nZ7dXudXY5eKFWEoyYLEueGQ3sdpnlWtXtT6mk6drvX0vV4R_5U8dFP4hNAHvSey1lVW4qCtX2pxn204M2TfwJUEAXGYv8KIzrs6xrRSQvy-0dg"/>
+<span class="text-[10px] tracking-[0.2em] text-gold-vibrant font-semibold font-headline-md uppercase">Elite Healthcare CRM</span>
+</div>
+<!-- CTA -->
+<div class="px-4 mb-6">
+<button class="w-full bg-[#ED7E13] hover:bg-[#d9720b] text-on-primary font-headline-md text-sm py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-all shadow-md shadow-[#ED7E13]/20">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                + Novo Paciente / Lead
+            </button>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 overflow-y-auto scrollbar-hide px-3 space-y-6">
+<!-- Atendimento -->
+<div class="space-y-1">
+<h3 class="px-4 text-xs font-semibold text-sidebar-inactive-icon uppercase tracking-wider mb-2">Atendimento</h3>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary-container font-bold border-l-4 border-secondary-container bg-primary-container/20 group transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span class="flex-1">Omnichannel Inbox</span>
+<span class="bg-gold-vibrant/20 text-gold-vibrant text-xs py-0.5 px-2 rounded-full font-bold">8</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">history</span>
+                    Histórico
+                </a>
+</div>
+<!-- Vendas & Clínico -->
+<div class="space-y-1">
+<h3 class="px-4 text-xs font-semibold text-sidebar-inactive-icon uppercase tracking-wider mb-2">Vendas &amp; Clínico</h3>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">campaign</span>
+                    Campanhas
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">monetization_on</span>
+                    Pipeline de Vendas
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">medical_services</span>
+                    Agendamento Clínico
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">payments</span>
+                    Faturamento
+                </a>
+</div>
+<!-- Google Workspace -->
+<div class="space-y-1">
+<h3 class="px-4 text-xs font-semibold text-sidebar-inactive-icon uppercase tracking-wider mb-2">Google Workspace</h3>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">calendar_today</span>
+                    Google Calendar
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">folder_shared</span>
+                    Drive Documents
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">mail</span>
+                    Gmail Sync
+                </a>
+</div>
+<!-- Gestão -->
+<div class="space-y-1 pb-4">
+<h3 class="px-4 text-xs font-semibold text-sidebar-inactive-icon uppercase tracking-wider mb-2">Gestão</h3>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">settings</span>
+                    Configurações
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">hub</span>
+                    Canais
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-inactive-text hover:bg-primary-container/10 hover:text-on-primary group transition-colors" href="#">
+<span class="material-symbols-outlined text-sidebar-inactive-icon group-hover:text-on-primary">groups</span>
+                    Equipe
+                </a>
+</div>
+</nav>
+<!-- Footer Profile -->
+<div class="p-4 border-t border-primary-container/30 bg-tertiary">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-10 h-10 rounded-full object-cover border border-outline/30" data-alt="Professional headshot of a female healthcare administrator, Mariana Silva, in modern office lighting, corporate attire, high quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMrrD3AIvOjV5Q8GJS6mUX964YIDJb1cERrkXZZFfFmZ10wsrZvIBegy31ZXI1DS6LuDtnEpzkNrQsQd_LEDllyFsmkKh4l5z5n1itK1UzGnoNZKHIMEa-VFYbYfZyoskjicTw5YMsJqY3YmX6fYLFepFRCMiUgTp8SxzM3xNlHXeTD1aVT8wratETdDj59gXT9Uv8mBEUpP2gKbuAjMoIgvE2oi3Ta1lKdowdjIwwUWC-kuE97chU"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-success-emerald rounded-full border-2 border-tertiary"></div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-on-primary truncate">Mariana Silva</p>
+<p class="text-xs text-sidebar-inactive-icon truncate">Disponível</p>
+</div>
+<button class="text-sidebar-inactive-icon hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">expand_less</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Area -->
+<main class="flex-1 flex bg-surface h-full">
+<!-- Lista de Conversas (340px) -->
+<section class="w-inbox-list-width bg-surface-container-lowest border-r border-outline-variant/40 flex flex-col h-full shrink-0 z-10">
+<!-- Header List -->
+<div class="p-4 border-b border-outline-variant/40">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-headline-md text-headline-md text-primary font-bold">Inbox</h2>
+<div class="flex gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Search -->
+<div class="relative mb-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-2.5 pl-10 pr-4 text-sm text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary-fixed-dim focus:bg-surface-container-lowest transition-all" placeholder="Buscar pacientes, leads..." type="text"/>
+</div>
+<!-- Channel Chips -->
+<div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+<button class="whitespace-nowrap px-3 py-1 rounded-full bg-primary text-on-primary text-xs font-semibold border border-primary">Todos</button>
+<button class="whitespace-nowrap px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-[#25D366]"></div> WhatsApp
+                    </button>
+<button class="whitespace-nowrap px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-[#E1306C]"></div> Instagram
+                    </button>
+<button class="whitespace-nowrap px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-[#0088cc]"></div> Telegram
+                    </button>
+</div>
+</div>
+<!-- List Content -->
+<div class="flex-1 overflow-y-auto scrollbar-hide">
+<!-- Active Card -->
+<div class="p-4 bg-surface-container-high border-l-4 border-[#ED7E13] cursor-pointer hover:bg-surface-container-highest transition-colors relative">
+<div class="flex items-start gap-3">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover border border-outline-variant" data-alt="Portrait of a female doctor, Dra Camila Vasconcelos, smiling slightly, professional clinical setting, soft natural light, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB840AQwttUGjKHpydQAZiELJmujKeoR94oxUSKQm3DKFaLIQnlYbo3EDL4ne_R4qNIBF-WiuMVvodG98lhhnYHIfIPUyPGk-IVelflQYt8iPHXFfmJlBlttl5DPlpgnniZ4_u65kZybLMb65mhbfkZVv25zKCGUShmpymROhCM70KOltvxWJiK9zJ7au4pG04nsmYpGAtnULBQvvgcnWXTMMKPFuxgECtMOH_48bWFRMZivHnun9x"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#25D366] border-2 border-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white" style="font-variation-settings: 'FILL' 1;">chat</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<h4 class="text-sm font-bold text-primary truncate">Dra. Camila Vasconcelos</h4>
+<span class="text-xs text-outline font-medium">10:42</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate pr-6">Gostaria de saber o valor do p...</p>
+</div>
+</div>
+<div class="absolute right-4 bottom-4 w-5 h-5 bg-gold-vibrant text-on-secondary-fixed text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">2</div>
+</div>
+<!-- Inactive Card 1 -->
+<div class="p-4 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex items-start gap-3">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover border border-outline-variant/50" data-alt="Portrait of a female doctor, Dra Renata Souza, looking confident, modern clinic background, subtle lighting, professional corporate headshot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7Lqc1wxwV37KxJq6c1E_DHlj6YpQV3Y_1OmfuZmHefRF1wuj1jsxd9dBHLgoifEKWDvNSTRPYnTj8qn8AG6L7q6J87dxAFgWceOWBT-hRNinRuRAMJMtrNk-wgFvlWAGJ7iEKq7lv0IT_1gGMgTBjOkWdjDnXtWIi43_MoDKgAWiMoU2N3u07q_cV9chigrex_fNnTB3FhA-mbfaTYQ3FHWcs0NLbekUotAgjSADZPRelcNAlJTrx"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#E1306C] border-2 border-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<h4 class="text-sm font-semibold text-on-surface truncate">Dra. Renata Souza</h4>
+<span class="text-xs text-outline font-medium">Ontem</span>
+</div>
+<p class="text-sm text-outline truncate">Sim, podemos agendar para sex...</p>
+</div>
+</div>
+</div>
+<!-- Inactive Card 2 (AI Transfer) -->
+<div class="p-4 border-b border-outline-variant/30 cursor-pointer hover:bg-surface-container-low transition-colors bg-blue-50/30">
+<div class="flex items-start gap-3">
+<div class="relative shrink-0">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center border border-outline-variant/50 text-outline">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</div>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#0088cc] border-2 border-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white" style="font-variation-settings: 'FILL' 1;">send</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-0.5">
+<h4 class="text-sm font-semibold text-on-surface truncate">Dra. Patrícia Lima</h4>
+<span class="text-xs text-outline font-medium">Seg</span>
+</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="bg-blue-100 text-blue-700 text-[10px] px-1.5 py-0.5 rounded font-semibold border border-blue-200">Transbordo IA</span>
+<p class="text-sm text-outline truncate flex-1">Preciso de ajuda técnica com...</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CHAT CENTRAL (Flex 1) -->
+<section class="flex-1 flex flex-col bg-background relative z-0">
+<!-- Header Chat -->
+<header class="h-16 px-6 bg-surface/80 backdrop-blur-md border-b border-outline-variant/40 flex items-center justify-between shrink-0 sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Portrait of a female doctor, Dra Camila Vasconcelos, smiling slightly, professional clinical setting, soft natural light, high resolution, small header avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXM19aTk9HJ6kc8KR4KxppP1DOd00X4yDPjMZ8seZqFL3s4T9l5ZxYoY4_Buoc8u-5S5IkRCJBiW4TvBO2XibYVUXzlAnmKCyHOk55wJ-6SljsSqlW1l23LuNICSgvqiQoYxX5eEciM_MRdzRS6onGXxh3Jj2SVl0bqeis9FcwdQsK8QNHT1lGJZYLvmdjHvOHl0_CZ_IQ6Luc3-9Ijii5fyFA4Xv92j8jOSDm8UFs2t4nxy4pED_l"/>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary flex items-center gap-2">
+                            Dra. Camila Vasconcelos
+                            <span class="w-2 h-2 rounded-full bg-[#25D366]"></span>
+</h2>
+<p class="text-xs text-success-emerald font-medium animate-pulse">Digitando...</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary-fixed/20 rounded-lg transition-colors border border-transparent hover:border-primary-fixed">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+<span class="hidden xl:inline">Meet</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary-fixed/20 rounded-lg transition-colors border border-transparent hover:border-primary-fixed">
+<span class="material-symbols-outlined text-[18px]">folder</span>
+<span class="hidden xl:inline">Drive</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/50 mx-1"></div>
+<button class="p-2 text-primary hover:bg-surface-container rounded-full transition-colors" title="Ver Dossiê">
+<span class="material-symbols-outlined">info</span>
+</button>
+</div>
+</header>
+<!-- Chat Canvas -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col">
+<!-- Data divider -->
+<div class="flex justify-center">
+<span class="text-xs font-medium text-outline bg-surface-container-low px-3 py-1 rounded-full">Hoje, 10:20</span>
+</div>
+<!-- AI Message -->
+<div class="flex justify-start max-w-[85%]">
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center shrink-0 border border-primary-fixed-dim">
+<span class="material-symbols-outlined text-primary text-[18px]">smart_toy</span>
+</div>
+<div class="flex flex-col gap-1 items-start">
+<span class="text-[11px] font-bold text-outline-variant flex items-center gap-1">
+                                🤖 Copiloto Hermes
+                                <span class="font-normal">10:20</span>
+</span>
+<div class="bg-white p-3.5 rounded-2xl rounded-tl-sm shadow-sm border border-outline-variant/30 text-on-surface text-chat-message">
+                                Olá, Dra. Camila! Sou o Hermes, assistente virtual da Body Harmony. Notei seu interesse em nossa franquia. Como posso ajudar com mais detalhes hoje?
+                            </div>
+</div>
+</div>
+</div>
+<!-- Incoming Message (Patient) -->
+<div class="flex justify-start max-w-[85%]">
+<div class="flex gap-3">
+<img class="w-8 h-8 rounded-full object-cover shrink-0" data-alt="Portrait of a female doctor, Dra Camila Vasconcelos, small chat avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA8LTjwjE6mTJ4biM0djdKLqcl1zMzK7CdYACyw4pdi0U_VCyUG5ybb_L9qQnERmVaPCjhsWk2dweEa5J4BBRBTECK42QGumJeslukEroMwltD0zMbSzuCafGQvZl6fncLHQEm11Vzvt4A4kJQzWkuEz49GbK4lUs9BjzSHHU_v3hJf2A9jiv_A2nSRkhw13HqRF3ClbYGTQzG1TsGifOOyi5tiuMl4j9dXi9Mc29KbNG28VXUwLA0"/>
+<div class="flex flex-col gap-1 items-start">
+<span class="text-[11px] font-medium text-outline-variant">Dra. Camila • 10:35</span>
+<div class="bg-white p-3.5 rounded-2xl rounded-tl-sm shadow-sm border border-outline-variant/30 text-on-surface text-chat-message">
+                                Bom dia. Gostaria de saber o valor inicial para investimento e se há disponibilidade de exclusividade na minha região (Campinas-SP).
+                            </div>
+</div>
+</div>
+</div>
+<!-- Whisper Note (Internal) -->
+<div class="flex justify-center my-4">
+<div class="bg-whisper-bg border border-dashed border-whisper-border/50 rounded-xl p-3 max-w-md w-full relative shadow-sm">
+<span class="material-symbols-outlined absolute -top-3 -right-3 bg-whisper-border text-white rounded-full p-1 text-[16px] shadow-sm">push_pin</span>
+<h5 class="text-xs font-bold text-on-secondary-fixed-variant mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">visibility_off</span> Nota Interna - Equipe de Vendas
+                        </h5>
+<p class="text-sm text-on-secondary-fixed text-chat-message">
+                            Lead MQL Alto Potencial. Região de Campinas está com última vaga de exclusividade. Oferecer reunião com o diretor de expansão amanhã.
+                        </p>
+</div>
+</div>
+<!-- Incoming Audio Message -->
+<div class="flex justify-start max-w-[85%]">
+<div class="flex gap-3">
+<img class="w-8 h-8 rounded-full object-cover shrink-0" data-alt="Portrait of a female doctor, Dra Camila Vasconcelos, small chat avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM-6Ht0cGDtBskWxoTG6CsbN86SDSVfFOJEhegf6XJC7YapPX1rNxbVUJYhNvD1gACtaUAztXCRyVGeoS4WindSTQcT4DRELEsvZhjFxF6uEJasBmJiizoyPRQy9B9vySucFjT8hNAn9EAqvFUsAosHgAGNoFVV9njUNeZKLCeQNPCx3GEP7Tzhc2cOwmBM1kZP9waTS2rg2lCG0XWQsHsfbU1Xe1Yw4rPpzRwUz8RSmhSrbLizBv8"/>
+<div class="flex flex-col gap-1 items-start">
+<span class="text-[11px] font-medium text-outline-variant">Dra. Camila • 10:42</span>
+<div class="bg-white p-3 rounded-2xl rounded-tl-sm shadow-sm border border-outline-variant/30 text-on-surface flex flex-col gap-2 min-w-[280px]">
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shrink-0 hover:bg-tertiary transition-colors">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div class="flex-1 h-6 bg-surface-container rounded-full overflow-hidden flex items-center px-2 relative">
+<!-- Fake Waveform -->
+<div class="absolute inset-0 bg-gradient-to-r from-gold-vibrant to-gold-vibrant/40 opacity-20 w-[45%]"></div>
+<div class="flex gap-0.5 items-end h-3 w-full opacity-60">
+<div class="w-1 bg-[#ED7E13] h-full rounded-t-sm"></div>
+<div class="w-1 bg-[#ED7E13] h-2/3 rounded-t-sm"></div>
+<div class="w-1 bg-[#ED7E13] h-full rounded-t-sm"></div>
+<div class="w-1 bg-[#ED7E13] h-1/2 rounded-t-sm"></div>
+<div class="w-1 bg-[#ED7E13] h-3/4 rounded-t-sm"></div>
+<div class="w-1 bg-[#ED7E13] h-1/4 rounded-t-sm"></div>
+<div class="w-1 bg-outline-variant h-full rounded-t-sm"></div>
+<div class="w-1 bg-outline-variant h-1/2 rounded-t-sm"></div>
+</div>
+</div>
+<span class="text-xs text-outline font-medium">0:45</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 flex justify-end">
+<button class="text-[11px] text-[#ED7E13] font-semibold hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">transcribe</span>
+                                        Transcrever Áudio
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Chat Input -->
+<footer class="p-4 bg-surface border-t border-outline-variant/40 shrink-0">
+<div class="bg-white border border-outline-variant rounded-2xl shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<div class="flex items-center px-2 pt-2 gap-1 text-outline">
+<button class="p-2 hover:bg-surface-container hover:text-primary rounded-lg transition-colors" title="Anexar arquivo">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="p-2 hover:bg-surface-container hover:text-primary rounded-lg transition-colors" title="Emoji">
+<span class="material-symbols-outlined">sentiment_satisfied</span>
+</button>
+<button class="p-2 hover:bg-whisper-bg hover:text-whisper-border rounded-lg transition-colors" title="Adicionar Nota Interna">
+<span class="material-symbols-outlined">push_pin</span>
+</button>
+</div>
+<div class="flex items-end px-3 pb-3 gap-2">
+<textarea class="flex-1 max-h-32 min-h-[44px] bg-transparent border-none resize-none focus:ring-0 text-sm py-3 text-on-surface placeholder:text-outline" placeholder="Digite uma mensagem..." rows="1"></textarea>
+<button class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#ED7E13] to-[#d9720b] text-white flex items-center justify-center shrink-0 hover:shadow-md hover:scale-105 transition-all shadow-[#ED7E13]/30">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<div class="text-center mt-2 text-[10px] text-outline">
+                    Pressione <kbd class="font-sans bg-surface-container px-1 py-0.5 rounded border border-outline-variant/50">Enter</kbd> para enviar
+                </div>
+</footer>
+</section>
+<!-- DOSSIÊ 360° (380px) -->
+<aside class="w-dossier-width bg-surface-container-lowest border-l border-outline-variant/40 flex flex-col h-full shrink-0 z-10 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.02)]">
+<!-- Dossier Header -->
+<div class="p-6 border-b border-outline-variant/40 bg-surface/30">
+<div class="flex flex-col items-center text-center">
+<div class="relative mb-3">
+<img class="w-20 h-20 rounded-full object-cover border-2 border-surface-container-lowest shadow-md" data-alt="Portrait of a female doctor, Dra Camila Vasconcelos, high quality, professional clinical setting, soft natural light, dossier profile picture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM9YvOXP9wcE4rLDU6oTud5slJKV6qNpQtCpG_ibjSISui236-WYEOcVpGLLDuktVhDq-lUciVgyiaBuT67lOnFtMELj0eLQM9ZheJ6ImnosyU8AMKKkEmRkOLVsuLGCN9Op9EC1JlG0OuzZQVcBqOMdiUphkaeB0v8eW_Xpwo_i4Fo64YvZREZj-Qgo0WnVctls3GGZk0HFbg1sSHTLsd2BcQXk7_jg2uwYMRFXMuFCCDTcV8j9jX"/>
+<div class="absolute bottom-0 right-0 bg-[#ED7E13] text-white text-[10px] font-bold px-2 py-0.5 rounded-full border-2 border-surface-container-lowest flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">star</span> VIP
+                        </div>
+</div>
+<h2 class="font-headline-md text-headline-md font-bold text-primary mb-1">Dra. Camila Vasconcelos</h2>
+<p class="text-sm text-outline mb-3">Dermatologista • CRM-SP 123456</p>
+<span class="bg-primary-fixed-dim/30 text-primary-container px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider border border-primary-fixed/50">
+                        Lead - Franquia
+                    </span>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant/40 bg-surface/50">
+<button class="flex-1 py-3 text-sm font-semibold text-outline hover:text-primary transition-colors">Cadastro</button>
+<button class="flex-1 py-3 text-sm font-semibold text-primary border-b-2 border-secondary-container bg-surface-container-lowest">G Suite</button>
+<button class="flex-1 py-3 text-sm font-semibold text-outline hover:text-primary transition-colors">Contratos</button>
+<button class="flex-1 py-3 text-sm font-semibold text-outline hover:text-primary transition-colors">Financeiro</button>
+</div>
+<!-- Dossier Content (G Suite View) -->
+<div class="flex-1 overflow-y-auto p-5 space-y-5 bg-surface-container-lowest">
+<!-- Google Meet / Calendar Card -->
+<div class="bg-white rounded-xl border border-outline-variant/50 p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-on-surface">Próxima Reunião</h3>
+<p class="text-xs text-outline">Google Calendar Sync</p>
+</div>
+</div>
+<div class="bg-surface p-3 rounded-lg border border-outline-variant/30 mb-3">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-sm font-semibold text-primary">Apresentação Plano de Expansão</h4>
+<span class="bg-warning-amber/10 text-warning-amber text-[10px] font-bold px-1.5 py-0.5 rounded">Amanhã</span>
+</div>
+<p class="text-xs text-outline mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 14:00 - 15:00
+                        </p>
+</div>
+<button class="w-full py-2 text-sm font-semibold text-primary border border-outline-variant rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">videocam</span> Iniciar Meet
+                    </button>
+</div>
+<!-- Google Drive Card -->
+<div class="bg-white rounded-xl border border-outline-variant/50 p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_to_drive</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-on-surface">Pasta do Lead</h3>
+<p class="text-xs text-outline">Google Drive Sync</p>
+</div>
+</div>
+<button class="text-primary hover:bg-surface-container p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+<div class="space-y-2">
+<a class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface transition-colors group" href="#">
+<span class="material-symbols-outlined text-red-500 text-[20px]">picture_as_pdf</span>
+<span class="text-sm text-on-surface group-hover:text-primary flex-1 truncate">Proposta_Comercial_v2.pdf</span>
+</a>
+<a class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface transition-colors group" href="#">
+<span class="material-symbols-outlined text-blue-500 text-[20px]">description</span>
+<span class="text-sm text-on-surface group-hover:text-primary flex-1 truncate">Ficha_Qualificacao_Lead.docx</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Dossier Fixed CTAs -->
+<div class="p-5 border-t border-outline-variant/40 bg-surface/50 space-y-3 shrink-0">
+<button class="w-full bg-primary hover:bg-tertiary text-on-primary font-semibold text-sm py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">contract</span>
+                    + Emitir Contrato
+                </button>
+<button class="w-full bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-primary font-semibold text-sm py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+                    💳 Gerar Link de Pagamento
+                </button>
+</div>
+</aside>
+</main>
+</body></html>

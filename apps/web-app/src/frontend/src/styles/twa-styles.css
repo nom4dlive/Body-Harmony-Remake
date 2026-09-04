@@ -1,0 +1,56 @@
+/* TWA Nexus Styles - V3.1 */
+:root {
+  --tg-theme-bg-color: #0A3E60;
+  --tg-theme-text-color: #ffffff;
+  --tg-theme-hint-color: rgba(255, 255, 255, 0.5);
+  --tg-theme-link-color: #ED7E13;
+  --tg-theme-button-color: #ED7E13;
+  --tg-theme-button-text-color: #ffffff;
+  
+  --nexus-navy: #0A3E60;
+  --nexus-gold: #ED7E13;
+  --nexus-gold-rgb: 237, 126, 19;
+  --nexus-glass: rgba(255, 255, 255, 0.05);
+  --nexus-border: rgba(255, 255, 255, 0.1);
+}
+
+body.twa-body {
+  background-color: var(--tg-theme-bg-color, var(--nexus-navy));
+  color: var(--tg-theme-text-color, #fff);
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utility */
+.glass-effect {
+  background: var(--nexus-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--nexus-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Animations */
+@keyframes twaFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: twaFadeIn 0.4s ease-out forwards;
+}
+
+/* Telegram Specific Adjustments */
+.twa-container {
+  padding: 16px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive Touch Targets */
+button, input, textarea {
+  min-height: 44px;
+}

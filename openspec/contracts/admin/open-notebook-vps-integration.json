@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenNotebookVpsIntegrationContract",
+  "type": "object",
+  "description": "Contrato de integração entre o LMS Body Harmony e o stack Open Notebook na VPS com Qwen Proxy",
+  "properties": {
+    "vps_host": {
+      "type": "string",
+      "default": "2.25.156.25"
+    },
+    "notebook_domain": {
+      "type": "string",
+      "default": "notebook.bodyharmony.com.br"
+    },
+    "traefik_port": {
+      "type": "integer",
+      "default": 8502
+    },
+    "api_port": {
+      "type": "integer",
+      "default": 5055
+    },
+    "llm_provider": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "default": "qwen-proxy"
+        },
+        "base_url": {
+          "type": "string",
+          "default": "http://qwen-proxy:8000/v1"
+        },
+        "model": {
+          "type": "string",
+          "default": "Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4"
+        }
+      }
+    },
+    "sync_payload": {
+      "type": "object",
+      "properties": {
+        "notebook_name": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              },
+              "source_type": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

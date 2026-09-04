@@ -1,0 +1,477 @@
+[
+    {
+        "module_title": "Introdução ao Body Harmony",
+        "folder_name": "01 - Introdução ao Body Harmony",
+        "display_order": 1,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Aula 1 - Boas Vindas",
+                "folder_name": "01 - Aula 1 - Boas Vindas",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Introducao_ao_Body_Harmony_Aula_1_-_Boas_vindas.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 2,
+                "title": "Aula 2 - Conhecendo a Musculatura Esquelética",
+                "folder_name": "02 - Aula 2 - Conhecendo a Musculatura Esquelética",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Introducao_ao_Body_Harmony_Aula_2_-_Conhecendo_a_musculatura_esqueletica.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 3,
+                "title": "Aula 3 - Composição Muscular",
+                "folder_name": "03 - Aula 3 - Composição Muscular",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Introducao_ao_Body_Harmony_Aula_3_-_Composicao_Muscular.mov",
+                "description": ""
+            },
+            {
+                "display_order": 4,
+                "title": "Aula 4 - Fibras Musculares Tipo 1 - BRANCA",
+                "folder_name": "04 - Aula 4 - Fibras Musculares Tipo 1 - BRANCA",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Introducao_ao_Body_Harmony_Aula_4_-_Fibras_Musculares_Tipo_1_-_BRANCA.mov",
+                "description": ""
+            },
+            {
+                "display_order": 5,
+                "title": "Aula 5 - Fibras Musculares - Tipo 2 - Vermelhas",
+                "folder_name": "05 - Aula 5 - Fibras Musculares - Tipo 2 - Vermelhas",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Introducao_ao_Body_Harmony_Aula_5_-_Fibras_Musculares_-_Tipo_2_-_Vermelhas.mov",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "module_title": "Aulas do Licenciamento - 6",
+        "folder_name": "02 - Aulas do Licenciamento - 6",
+        "display_order": 2,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Aula 1",
+                "folder_name": "01 - Aula 1",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "AULA_GRAVADA_-6_LICENCIAMENTO_Aula_1.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 2,
+                "title": "Aula 2",
+                "folder_name": "02 - Aula 2",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "AULA_GRAVADA_-6_LICENCIAMENTO_Aula_2.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 3,
+                "title": "Aula 3",
+                "folder_name": "03 - Aula 3",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "AULA_GRAVADA_-6_LICENCIAMENTO_Aula_3.mp4",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "module_title": "Workshop elestroestimulacao",
+        "folder_name": "03 - Workshop elestroestimulacao",
+        "display_order": 3,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Boas vindas",
+                "folder_name": "01 - Boas vindas",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Boas_vindas_.mov",
+                "description": "Boas vi das ao workshop"
+            },
+            {
+                "display_order": 2,
+                "title": "Diferença entre Musculacao e Body Harmony",
+                "folder_name": "02 - Diferença entre Musculacao e Body Harmony",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Diferenca_entre_Musculacao_e_Body_Harmony.mov",
+                "description": ""
+            },
+            {
+                "display_order": 3,
+                "title": "Aula 3",
+                "folder_name": "03 - Aula 3",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Workshop_elestroestimulacao__Aula_3.mov",
+                "description": ""
+            },
+            {
+                "display_order": 4,
+                "title": "Aula 4- Fibra Vermelha",
+                "folder_name": "04 - Aula 4- Fibra Vermelha",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Aula_4-_Fibra_Vermelha.mov",
+                "description": ""
+            },
+            {
+                "display_order": 5,
+                "title": "Fibra Branca",
+                "folder_name": "05 - Fibra Branca",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Fibra_Branca.mov",
+                "description": ""
+            },
+            {
+                "display_order": 6,
+                "title": "Aula pratica - Quadríceps",
+                "folder_name": "06 - Aula pratica - Quadríceps",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Aula_pratica_-_Quadriceps_.mov",
+                "description": ""
+            },
+            {
+                "display_order": 7,
+                "title": "Aula prática- abdomen",
+                "folder_name": "07 - Aula prática- abdomen",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Aula_pratica-_abdomen_.mov",
+                "description": ""
+            },
+            {
+                "display_order": 8,
+                "title": "Aula pratica- dorsais",
+                "folder_name": "08 - Aula pratica- dorsais",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Aula_pratica-_dorsais.mov",
+                "description": ""
+            },
+            {
+                "display_order": 9,
+                "title": "Aula  Pratica - Panturrilha",
+                "folder_name": "09 - Aula  Pratica - Panturrilha",
+                "video_file": "video.mp4",
+                "thumbnail_file": null,
+                "video_ref": "Workshop_elestroestimulacao__Aula__Pratica_-_Panturilha.mov",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "module_title": "Introdução a Prática e Protocolos",
+        "folder_name": "04 - Introdução a Prática e Protocolos",
+        "display_order": 4,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Aula 1 - Mindset Profissional e a Comunicação com o Corpo",
+                "folder_name": "01 - Aula 1 - Mindset Profissional e a Comunicação com o Corpo",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_1_-_Mindset_Profissional_e_a_Comunicacao_com_.mp4",
+                "description": "A aula enfatiza que o profissional deve assumir o \"personagem\" de um personal trainer\/fisiculturista, desenvolvendo a habilidade de bater o olho no corpo e entender o que precisa ser feito. É introduzido o conceito de que cada treino é uma mensagem enviada ao organismo (estimulando fibras específicas); se o corpo não responde a essa mensagem, o profissional deve ser capaz de metrificar e corrigir a rota para evitar frustrações e garantir a entrega de resultados."
+            },
+            {
+                "display_order": 2,
+                "title": "Aula 2 - Protocolos Iniciais e Identificação de Perfis Corporais",
+                "folder_name": "02 - Aula 2 - Protocolos Iniciais e Identificação de Perfis Corporais",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_2_-_Protocolos_Iniciais_e_Identificacao_de_Pe.mp4",
+                "description": "Aula focada na recepção do paciente e na escolha estratégica do tratamento inicial: Afterburn para corpos inflamados, 3S para pacientes com maior percentual de gordura, ou Hipertrofia para quem possui apenas gordura localizada e precisa de densidade muscular. A aula estabelece que o quarto encontro é o ponto crucial de avaliação, onde se verifica se o corpo está respondendo aos estímulos semanais (como os 60 Hz iniciais da hipertrofia) através de fotos e do caimento das roupas."
+            },
+            {
+                "display_order": 3,
+                "title": "Aula 3 - Fatores de Sucesso, Métricas e Configurações Técnicas",
+                "folder_name": "03 - Aula 3 - Fatores de Sucesso, Métricas e Configurações Técnicas",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_3_-_Fatores_de_Sucesso_Metricas_e_Configuraco.mp4",
+                "description": "Explora os pilares que sustentam o resultado fora da clínica: mentalidade, alimentação, cárdio, hidratação e sono. Caso o resultado estagne no quarto encontro, esses fatores devem ser investigados antes de alterar o treino. A aula também detalha as configurações técnicas no aparelho e uso estratégico para a transição segura entre as fibras, ensinando a alternar estímulos para evitar a flacidez enquanto se elimina gordura."
+            },
+            {
+                "display_order": 4,
+                "title": "Aula 4- Grandes dorçais",
+                "folder_name": "04 - Aula 4- Grandes dorçais",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_4-_Grandes_dorcais.mov",
+                "description": ""
+            },
+            {
+                "display_order": 5,
+                "title": "Aula 5- Quadriceps",
+                "folder_name": "05 - Aula 5- Quadriceps",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_5-_Quadriceps.mov",
+                "description": ""
+            },
+            {
+                "display_order": 6,
+                "title": "Aula 6- Panturrilhas",
+                "folder_name": "06 - Aula 6- Panturrilhas",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_6-_Panturrilhas.mov",
+                "description": ""
+            },
+            {
+                "display_order": 7,
+                "title": "Aula 7-Biceps e triceps",
+                "folder_name": "07 - Aula 7-Biceps e triceps",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco__Aula_7-Biceps_e_triceps_.mov",
+                "description": ""
+            },
+            {
+                "display_order": 8,
+                "title": "Aula 8- Abdômen",
+                "folder_name": "08 - Aula 8- Abdômen",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_8-_Abdomen_.mov",
+                "description": ""
+            },
+            {
+                "display_order": 9,
+                "title": "Aula 9- Gluteo",
+                "folder_name": "09 - Aula 9- Gluteo",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Introducao_a_Pratica_e_Protoco_Aula_9-_Gluteo.mov",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "module_title": "Fundamentos da Eletroestimulação",
+        "folder_name": "05 - Fundamentos da Eletroestimulação",
+        "display_order": 5,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Eletroestimulação e Seus Conceitos",
+                "folder_name": "01 - Eletroestimulação e Seus Conceitos",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Fundamentos_da_Eletroestimulac_Eletroestimulacao_e_Seus_Conceitos.mov",
+                "description": "O que é?\n• Hertz\n• Frequência\n• Largura de pulso\n• Burst"
+            }
+        ]
+    },
+    {
+        "module_title": "Interpretação de exames - DR ULISSES LOPES",
+        "folder_name": "06 - Interpretação de exames - DR ULISSES LOPES",
+        "display_order": 6,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Aula 1 - TGO E TGP",
+                "folder_name": "01 - Aula 1 - TGO E TGP",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Interpretacao_de_exames_-_DR_U_Aula_1_-_TGO_E_TGP_.mov",
+                "description": "Interpretação de exames e porque ha alterações nas enzimas tgo e tgp no BODY HARMONY."
+            },
+            {
+                "display_order": 2,
+                "title": "🚨 Aula 2 - CPK (creatinofosfoquinase)",
+                "folder_name": "02 - 🚨 Aula 2 - CPK (creatinofosfoquinase)",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Interpretacao_de_exames_-_DR_U__Aula_2_-_CPK_creatinofosfoquinase.mov",
+                "description": "Dr Ulisses explica sobre CPK e seus conceitos básicos e aos ligados ao Body Harmony!\nAULA EXTREMAMENTE IMPORTANTE!"
+            },
+            {
+                "display_order": 3,
+                "title": "Aula 3 - Pâncreas e Insulina",
+                "folder_name": "03 - Aula 3 - Pâncreas e Insulina",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Interpretacao_de_exames_-_DR_U_Aula_3_-_Pancreas_e_Insulina.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 4,
+                "title": "Aula 4 - Glucagon",
+                "folder_name": "04 - Aula 4 - Glucagon",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Interpretacao_de_exames_-_DR_U_Aula_4_-_Glucagon_.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 5,
+                "title": "Aula 5 - Testosterona",
+                "folder_name": "05 - Aula 5 - Testosterona",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Interpretacao_de_exames_-_DR_U_Aula_5_-_Testosterona.mp4",
+                "description": "Aula de testosterona e  suas funções metabólicas."
+            }
+        ]
+    },
+    {
+        "module_title": "Aulas Praticas",
+        "folder_name": "07 - Aulas Praticas",
+        "display_order": 7,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Gluteo - Colocação de eletrodo e exercícios",
+                "folder_name": "01 - Gluteo - Colocação de eletrodo e exercícios",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Aulas_Praticas_Gluteo_-_Colocacao_de_eletrodo_e_exercicios__69c02b16ee352.mov",
+                "description": ""
+            },
+            {
+                "display_order": 2,
+                "title": "Panturrilha - Execução",
+                "folder_name": "02 - Panturrilha - Execução",
+                "video_file": "video.mov",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Aulas_Praticas_Panturrilha_-_Execucao_.mov",
+                "description": ""
+            },
+            {
+                "display_order": 3,
+                "title": "Quadríceps - Colocação de Eletrodo e Exercícios",
+                "folder_name": "03 - Quadríceps - Colocação de Eletrodo e Exercícios",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Aulas_Praticas_Quadriceps_-_Colocacao_de_Eletrodo_e_Exercicios_.mov",
+                "description": ""
+            },
+            {
+                "display_order": 4,
+                "title": "Dorsais - Colocação de Eletrodo e Execução",
+                "folder_name": "04 - Dorsais - Colocação de Eletrodo e Execução",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Aulas_Praticas_Dorsais_-_Colocacao_de_Eletrodo_e_Execucao_.mov",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "module_title": "EletroFace -Aula teórica e fundamentos",
+        "folder_name": "08 - EletroFace -Aula teórica e fundamentos",
+        "display_order": 8,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Eletroface - Teoria",
+                "folder_name": "01 - Eletroface - Teoria",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/EletroFace_-Aula_teorica_e_fun_Eletroface_-_Teoria_.mov",
+                "description": ""
+            },
+            {
+                "display_order": 2,
+                "title": "Fase 1- parâmetros e praticas",
+                "folder_name": "02 - Fase 1- parâmetros e praticas",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "EletroFace_-Aula_teorica_e_fun_Fase_1-_parametros_e_praticas.mov",
+                "description": ""
+            },
+            {
+                "display_order": 3,
+                "title": "Fase 2- Parametros e praticas",
+                "folder_name": "03 - Fase 2- Parametros e praticas",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "EletroFace_-Aula_teorica_e_fun_Fase_2-_Parametros_e_praticas.mov",
+                "description": ""
+            },
+            {
+                "display_order": 4,
+                "title": "Pratica -Fase1- MENS",
+                "folder_name": "04 - Pratica -Fase1- MENS",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "EletroFace_-Aula_teorica_e_fun_Pratica_-Fase1-_MENS.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 5,
+                "title": "Pratica- Fase 2- Corrente Aussie HIGHT FORCE",
+                "folder_name": "05 - Pratica- Fase 2- Corrente Aussie HIGHT FORCE",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "EletroFace_-Aula_teorica_e_fun_Pratica-_Fase_2-_Corrente_Aussie_HIGHT_FORCE.mp4",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "module_title": "Negocios marketing",
+        "folder_name": "09 - Negocios marketing",
+        "display_order": 9,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Aula 1 - CAIXA RAPIDO",
+                "folder_name": "01 - Aula 1 - CAIXA RAPIDO",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Negocios_marketing__Aula_1_-_CAIXA_RAPIDO.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 2,
+                "title": "Aula 2 - CAIXA RAPIDO",
+                "folder_name": "02 - Aula 2 - CAIXA RAPIDO",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Negocios_marketing__Aula_2_-_CAIXA_RAPIDO.mp4",
+                "description": ""
+            },
+            {
+                "display_order": 3,
+                "title": "Aula 3 -CAIXA RAPIDO",
+                "folder_name": "03 - Aula 3 -CAIXA RAPIDO",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "lessons\/Negocios_marketing__Aula_3_-CAIXA_RAPIDO.mp4",
+                "description": ""
+            }
+        ]
+    },
+    {
+        "module_title": "Protocolo 3s",
+        "folder_name": "10 - Protocolo 3s",
+        "display_order": 10,
+        "lessons": [
+            {
+                "display_order": 1,
+                "title": "Masterclass Protocolo 3S – A Arte da Harmonização Corporal de Alta Performance",
+                "folder_name": "01 - Masterclass Protocolo 3S – A Arte da Harmonização Corporal de Alta Performance",
+                "video_file": "video.mp4",
+                "thumbnail_file": "thumbnail.png",
+                "video_ref": "Protocolo_3s_Masterclass_Protocolo_3S__A_Arte_da_Harmonizacao_C.mp4",
+                "description": "Nesta videoaula, você aprenderá a aplicar o **Protocolo 3S**, um método validado que transcende a estética convencional. Vamos além da superfície para entender como entregar resultados que não apenas transformam corpos, mas resgatam a autoestima e o equilíbrio dos seus clientes."
+            }
+        ]
+    }
+]

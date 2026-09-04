@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMTeamAccessProvisioningContract",
+  "description": "Contrato para provisionamento idempotente de usuários da equipe no Chatwoot e no Portal Gestor",
+  "type": "object",
+  "required": ["success", "account_id", "users"],
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "account_id": {
+      "type": "integer"
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["email", "name", "role", "status", "chatwoot_user_id", "inboxes_assigned"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["agent", "administrator"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["CREATED", "UPDATED", "ACTIVE"]
+          },
+          "chatwoot_user_id": {
+            "type": "integer"
+          },
+          "inboxes_assigned": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

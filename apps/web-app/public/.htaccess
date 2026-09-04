@@ -1,0 +1,46 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Forçar HTTPS (Evitar Redirects Múltiplos)
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Mod Deflate - GZIP Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# Mod Expires - Cache Lifetimes (Web Vitals)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  
+  # Estáticos Compilados (Vite usa hash, seguro fazer cache longo)
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  
+  # Imagens e Fontes
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType font/woff2 "access plus 1 year"
+  
+  # HTML/JSON nunca deve ser cacheado pesadamente
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+# 🛡️ Liberação de Iframe do Chatwoot CRM (PLAN-155 / REGRA 46 & 47)
+<IfModule mod_headers.c>
+    Header unset X-Frame-Options
+    Header always set Content-Security-Policy "frame-ancestors 'self' https://crm.bodyharmony.com.br"
+</IfModule>
+

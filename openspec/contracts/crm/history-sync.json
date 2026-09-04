@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRM History Sync Contract",
+  "description": "Especificação do contrato de importação e exportação de histórico de conversas no CRM (PLAN-165)",
+  "type": "object",
+  "endpoints": {
+    "import": {
+      "method": "POST",
+      "path": "/api/v1/crm/history/import",
+      "auth_required": true,
+      "roles": ["admin", "superadmin"],
+      "request": {
+        "type": "object",
+        "required": ["inbox_id", "messages"],
+        "properties": {
+          "inbox_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["phone", "content"],
+              "properties": {
+                "phone": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "created_at": {
+                  "type": ["integer", "string"]
+                },
+                "message_type": {
+                  "type": "string",
+                  "enum": ["incoming", "outgoing"]
+                },
+                "sender_name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "response": {
+        "type": "object",
+        "required": ["status", "data"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success", "error"]
+          },
+          "data": {
+            "type": "object",
+            "required": ["total_received", "imported_count", "skipped_count", "contacts_matched"],
+            "properties": {
+              "total_received": { "type": "integer" },
+              "imported_count": { "type": "integer" },
+              "skipped_count": { "type": "integer" },
+              "contacts_matched": { "type": "integer" }
+            }
+          },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "export": {
+      "method": "GET",
+      "path": "/api/v1/crm/history/export",
+      "auth_required": true,
+      "roles": ["admin", "superadmin"],
+      "request": {
+        "type": "object",
+        "required": ["inbox_id"],
+        "properties": {
+          "inbox_id": {
+            "type": "integer"
+          },
+          "format": {
+            "type": "string",
+            "enum": ["json", "csv"]
+          }
+        }
+      },
+      "response": {
+        "type": "object",
+        "required": ["status", "data"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success", "error"]
+          },
+          "data": {
+            "type": "object",
+            "required": ["inbox_id", "exported_at", "total_conversations", "conversations"],
+            "properties": {
+              "inbox_id": { "type": "integer" },
+              "exported_at": { "type": "string" },
+              "total_conversations": { "type": "integer" },
+              "conversations": {
+                "type": "array"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

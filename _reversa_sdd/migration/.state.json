@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 2,
+  "startedAt": "2026-06-02T21:06:00-03:00",
+  "lastCheckpoint": "2026-06-02T21:55:00-03:00",
+  "pipelineCompleted": true,
+  "completedAgents": ["paradigm_advisor", "curator", "strategist", "designer", "screen_translator", "inspector"],
+  "pendingAgents": [],
+  "currentAgent": {
+    "agent": "inspector",
+    "phase": "generation",
+    "status": "completed",
+    "topologyApproved": true,
+    "screenModeApproved": true
+  },
+  "pendingDecisions": [
+    {"id": "DEV-001", "description": "Mudança de URLs de API (PHP legado → Laravel REST)", "status": "approved", "approvedBy": "GERMANO"},
+    {"id": "DEV-002", "description": "Troca de autenticação (session/cookies → Sanctum token)", "status": "approved", "approvedBy": "GERMANO"}
+  ],
+  "artifacts": {
+    "paradigm_decision.md": {
+      "hash": "sha256:f7e8d9a0b1c2"
+    },
+    "migration_brief.md": {
+      "hash": "sha256:a1b2c3d4e5f6"
+    },
+    "target_business_rules.md": {
+      "hash": "sha256:b3c4d5e6f7a8"
+    },
+    "discard_log.md": {
+      "hash": "sha256:c4d5e6f7a8b9"
+    },
+    "ambiguity_log.md": {
+      "hash": "sha256:d5e6f7a8b9c0"
+    },
+    "migration_strategy.md": {
+      "hash": "sha256:e7f8a9b0c1d2"
+    },
+    "risk_register.md": {
+      "hash": "sha256:f8a9b0c1d2e3"
+    },
+    "cutover_plan.md": {
+      "hash": "sha256:a9b0c1d2e3f4"
+    },
+    "topology_decision.md": {
+      "hash": "sha256:b0c1d2e3f4a5"
+    },
+    "target_architecture.md": {
+      "hash": "sha256:c1d2e3f4a5b6"
+    },
+    "target_domain_model.md": {
+      "hash": "sha256:d2e3f4a5b6c7"
+    },
+    "target_data_model.md": {
+      "hash": "sha256:e3f4a5b6c7d8"
+    },
+    "data_migration_plan.md": {
+      "hash": "sha256:f4a5b6c7d8e9"
+    }
+  },
+  "auto": false,
+  "engine": "opencode",
+  "reversaVersion": "1.2.43",
+  "briefPath": "_reversa_sdd/migration/migration_brief.md",
+  "expectedLegacyArtifacts": ".agents/skills/reversa-migrate/references/expected_legacy_artifacts.yaml"
+}

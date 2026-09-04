@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Onboarding Sandbox Ops & Delegation Contract (PLAN-083)",
+  "description": "Contrato de API para Gestão Avançada de Onboardings (Atribuição, Turmas Futuras), Geração Instantânea de Testes e Exclusão em Cascata com Blindagem Jurídica",
+  "endpoints": {
+    "DELETE /admin/onboarding/requests/{id}": {
+      "description": "Exclui um lead em cascata (se teste ou rascunho sem contrato assinado) ou arquiva via soft-delete (se já possuir contrato assinado SIGNED)",
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "action": { "type": "string", "enum": ["hard_deleted", "soft_deleted_archived"] },
+          "message": { "type": "string" },
+          "deleted_files_count": { "type": "integer" }
+        },
+        "required": ["success", "action", "message"]
+      }
+    },
+    "POST /admin/onboarding/sandbox/generate-quick": {
+      "description": "Gera instantaneamente um lead fictício completo no estágio PRE_CADASTRO com flag is_test = 1, CPF/CNPJ válidos gerados e documentos mock",
+      "request": {
+        "type": "object",
+        "properties": {
+          "categoria": { "type": "string", "default": "Licenciamento" },
+          "future_cohort_tag": { "type": "string" }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "mock_lead": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "nome": { "type": "string" },
+              "cpf": { "type": "string" },
+              "cnpj": { "type": "string" },
+              "categoria": { "type": "string" },
+              "status": { "type": "string" },
+              "is_test": { "type": "integer" }
+            },
+            "required": ["id", "nome", "cpf", "is_test"]
+          }
+        },
+        "required": ["success", "message", "mock_lead"]
+      }
+    },
+    "POST /admin/onboarding/sandbox/purge-tests": {
+      "description": "Purga em massa todos os leads marcados como is_test = 1 (exclusivo para Superadmins)",
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "purged_count": { "type": "integer" }
+        },
+        "required": ["success", "message", "purged_count"]
+      }
+    },
+    "PATCH /admin/onboarding/requests/{id}/assign": {
+      "description": "Atribui ou reatribui um lead de onboarding para um gestor/admin responsável",
+      "request": {
+        "type": "object",
+        "properties": {
+          "assigned_admin_id": { "type": "integer" },
+          "future_cohort_tag": { "type": "string" }
+        },
+        "required": ["assigned_admin_id"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "assigned_admin_id": { "type": "integer" }
+        },
+        "required": ["success", "message"]
+      }
+    }
+  }
+}

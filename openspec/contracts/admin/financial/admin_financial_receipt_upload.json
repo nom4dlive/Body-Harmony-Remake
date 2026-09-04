@@ -1,0 +1,27 @@
+{
+  "endpoint": "POST /api/v1/admin/financial/receipt",
+  "plan": "PLAN-154",
+  "description": "Upload direto de comprovante de pagamento vinculado à licenciada, atualizando taxa e quitação contábil",
+  "request_type": "multipart/form-data",
+  "body": {
+    "file": "binary",
+    "licenciada_id": "int",
+    "tax_id": "int|null",
+    "notes": "string|null"
+  },
+  "validations": {
+    "extensions_whitelist": ["pdf", "jpg", "jpeg", "png", "webp"],
+    "max_size_bytes": 10485760
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "id": "int",
+      "licenciada_id": "int",
+      "tax_id": "int",
+      "file_url": "string",
+      "status": "paid",
+      "payment_confirmed_at": "datetime"
+    }
+  }
+}

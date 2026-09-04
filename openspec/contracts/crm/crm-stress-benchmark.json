@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmStressBenchmarkContract",
+  "description": "Contrato de métricas de estresse, concorrência e telemetria E2E do CRM (Nexus V3.1 - PLAN-180)",
+  "type": "object",
+  "properties": {
+    "benchmark_name": {
+      "type": "string"
+    },
+    "concurrency": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "total_requests": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "success_rate_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "avg_latency_ms": {
+      "type": "number"
+    },
+    "p95_latency_ms": {
+      "type": "number"
+    },
+    "memory_leak_detected": {
+      "type": "boolean"
+    },
+    "e2e_journey_passed": {
+      "type": "boolean"
+    },
+    "fault_tolerance_verified": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "benchmark_name",
+    "concurrency",
+    "total_requests",
+    "success_rate_percentage",
+    "avg_latency_ms",
+    "p95_latency_ms",
+    "memory_leak_detected",
+    "e2e_journey_passed",
+    "fault_tolerance_verified"
+  ]
+}

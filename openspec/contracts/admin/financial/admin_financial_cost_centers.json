@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FinancialCostCentersContract",
+  "description": "Contrato de CRUD de centros de custo por evento (ex: Imersao Turma 04). Cada centro de custo possui tag unica para vinculacao de despesas.",
+  "type": "object",
+  "properties": {
+    "list_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "name": { "type": "string" },
+              "tag": { "type": "string" },
+              "description": { "type": ["string", "null"] },
+              "is_active": { "type": "integer", "enum": [0, 1] },
+              "total_expenses_cents": { "type": "integer" },
+              "total_expenses_formatted": { "type": "string" },
+              "expenses_count": { "type": "integer" },
+              "created_at": { "type": "string" }
+            }
+          }
+        }
+      },
+      "required": ["success", "data"]
+    },
+    "create_request": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "tag": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name", "tag"]
+    },
+    "create_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "message": { "type": "string" }
+          }
+        }
+      },
+      "required": ["success", "data"]
+    },
+    "update_request": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "tag": { "type": "string" },
+        "description": { "type": "string" },
+        "is_active": { "type": "integer", "enum": [0, 1] }
+      }
+    },
+    "update_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "message": { "type": "string" }
+          }
+        }
+      },
+      "required": ["success", "data"]
+    },
+    "delete_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "message": { "type": "string" }
+          }
+        }
+      },
+      "required": ["success", "data"]
+    }
+  }
+}

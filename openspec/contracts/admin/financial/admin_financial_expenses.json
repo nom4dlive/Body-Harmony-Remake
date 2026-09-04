@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FinancialExpensesContract",
+  "description": "Contrato para lançamento e gestão de despesas com categorização, centros de custo e comprovantes (PLAN-141).",
+  "type": "object",
+  "properties": {
+    "create_expense_request": {
+      "type": "object",
+      "properties": {
+        "description": { "type": "string", "minLength": 3 },
+        "amount_cents": { "type": "integer", "minimum": 1 },
+        "category": { 
+          "type": "string",
+          "enum": ["marketing", "infraestrutura", "eventos", "operacional", "juridico_contabil", "pessoal", "outros"]
+        },
+        "cost_center_id": { "type": ["integer", "null"] },
+        "payment_method": { 
+          "type": "string",
+          "enum": ["pix", "cartao_credito", "cartao_debito", "boleto", "ted", "dinheiro", "outro"]
+        },
+        "supplier_name": { "type": ["string", "null"] },
+        "expense_date": { "type": "string", "format": "date" },
+        "notes": { "type": ["string", "null"] },
+        "attachment_id": { "type": ["integer", "null"] }
+      },
+      "required": ["description", "amount_cents", "category", "expense_date", "payment_method"]
+    },
+    "create_expense_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "description": { "type": "string" },
+            "category": { "type": "string" },
+            "amount_cents": { "type": "integer" },
+            "amount_formatted": { "type": "string" },
+            "expense_date": { "type": "string" },
+            "payment_method": { "type": "string" },
+            "supplier_name": { "type": ["string", "null"] },
+            "message": { "type": "string" }
+          },
+          "required": ["id", "amount_cents", "amount_formatted", "category"]
+        }
+      },
+      "required": ["success", "data"]
+    },
+    "categories_list_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": { "type": "string" },
+              "label": { "type": "string" },
+              "icon": { "type": "string" },
+              "color": { "type": "string" }
+            },
+            "required": ["key", "label", "icon", "color"]
+          }
+        }
+      },
+      "required": ["success", "data"]
+    }
+  }
+}

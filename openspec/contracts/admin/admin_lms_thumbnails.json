@@ -1,0 +1,63 @@
+{
+  "endpoints": {
+    "/admin/lms/lessons/generate-thumbnails-batch": {
+      "path": "/admin/lms/lessons/generate-thumbnails-batch",
+      "method": "POST",
+      "description": "Inicia a extração em lote de miniaturas (thumbnails) usando FFmpeg no servidor VPS.",
+      "headers": {
+        "Authorization": "Bearer <admin_token>"
+      },
+      "request": {
+        "type": "object",
+        "properties": {
+          "force": {
+            "type": "boolean",
+            "description": "Se verdadeiro, força a regeneração de todas as miniaturas, mesmo se já existirem."
+          }
+        },
+        "required": []
+      },
+      "response": {
+        "status": 200,
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "job_id": { "type": "string" },
+              "total_queued": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "/admin/lms/lessons/generate-thumbnails-batch-status": {
+      "path": "/admin/lms/lessons/generate-thumbnails-batch-status",
+      "method": "GET",
+      "description": "Consulta o progresso em tempo real da geração de miniaturas em lote.",
+      "headers": {
+        "Authorization": "Bearer <admin_token>"
+      },
+      "response": {
+        "status": 200,
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "is_running": { "type": "boolean" },
+              "total_videos": { "type": "integer" },
+              "converted": { "type": "integer" },
+              "pending": { "type": "integer" },
+              "progress_percent": { "type": "integer" },
+              "last_error": { "type": "string", "nullable": true }
+            }
+          }
+        }
+      }
+    }
+  }
+}

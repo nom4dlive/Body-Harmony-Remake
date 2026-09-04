@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HermesAdminDirectDispatchPayload",
+  "type": "object",
+  "required": [
+    "target_phone",
+    "objective"
+  ],
+  "properties": {
+    "target_phone": {
+      "type": "string",
+      "description": "Número do destinatário. Em modo de teste, estritamente restrito a +5518996959486.",
+      "enum": [
+        "+5518996959486",
+        "5518996959486",
+        "18996959486"
+      ]
+    },
+    "instance": {
+      "type": "string",
+      "description": "Instância da Evolution API a ser utilizada para o disparo direto.",
+      "enum": [
+        "inst_comercial",
+        "inst_licenciadas",
+        "inst_juridico"
+      ],
+      "default": "inst_comercial"
+    },
+    "objective": {
+      "type": "string",
+      "description": "Comando contextual ou objetivo que guiará o raciocínio autônomo do Qwen Proxy.",
+      "minLength": 3
+    },
+    "context": {
+      "type": "object",
+      "description": "Dados adicionais de contexto opcionais (ex: lead_name, canal, dados de curso).",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

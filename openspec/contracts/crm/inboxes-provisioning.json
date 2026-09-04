@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMInboxesAndInstancesProvisioningContract",
+  "description": "Contrato de provisionamento das instâncias da Evolution API v2 e Inboxes do Chatwoot (PLAN-152 - Bloco 2)",
+  "type": "object",
+  "properties": {
+    "chatwoot_inboxes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "channel_type": { "type": "string", "enum": ["Channel::Api", "Channel::Email"] },
+          "associated_instance": { "type": "string" },
+          "webhook_url": { "type": "string" }
+        },
+        "required": ["name", "channel_type"]
+      }
+    },
+    "evolution_instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "instance_name": { "type": "string" },
+          "type": { "type": "string", "enum": ["permanent", "burner"] },
+          "status": { "type": "string" },
+          "chatwoot_enabled": { "type": "boolean" },
+          "chatwoot_inbox_id": { "type": "integer" },
+          "webhook_events": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["instance_name", "type", "chatwoot_enabled"]
+      }
+    }
+  },
+  "required": ["chatwoot_inboxes", "evolution_instances"]
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TelegramWebhookContract",
+  "description": "Contrato de recebimento de atualizações da API do Telegram (Webhook) na VPS",
+  "endpoints": {
+    "/v1/bot/webhook": {
+      "POST": {
+        "summary": "Recebe notificações de mensagens e interações de usuários via Webhook do Telegram",
+        "security": ["TelegramSecretToken"],
+        "headers": {
+          "X-Telegram-Bot-Api-Secret-Token": {
+            "type": "string",
+            "description": "Token secreto configurado no webhook para validação de origem"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "update_id": { "type": "integer" },
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "message_id": { "type": "integer" },
+                      "from": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "integer" },
+                          "is_bot": { "type": "boolean" },
+                          "first_name": { "type": "string" },
+                          "username": { "type": "string" }
+                        },
+                        "required": ["id", "is_bot", "first_name"]
+                      },
+                      "chat": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "integer" },
+                          "type": { "type": "string" }
+                        },
+                        "required": ["id", "type"]
+                      },
+                      "text": { "type": "string" },
+                      "date": { "type": "integer" }
+                    },
+                    "required": ["message_id", "from", "chat", "date"]
+                  }
+                },
+                "required": ["update_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensagem processada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "status": { "type": "string" }
+                  },
+                  "required": ["ok", "status"]
+                }
+              }
+            }
+          },
+          "403": { "description": "Token secreto inválido (Acesso Proibido)" }
+        }
+      }
+    }
+  }
+}

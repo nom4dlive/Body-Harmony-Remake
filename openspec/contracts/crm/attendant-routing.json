@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmAttendantRoutingContract",
+  "description": "Contrato de API para Gestão de Atendentes, Silos de Linhas e Transferência de Atendimento (Nexus V3.1 / CRM V4)",
+  "type": "object",
+  "definitions": {
+    "Attendant": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["ADMIN", "ATTENDANT"] },
+        "status": { "type": "string", "enum": ["ONLINE", "BUSY", "OFFLINE"] },
+        "primaryLine": { 
+          "type": "string", 
+          "enum": ["CLINICA", "JURIDICO", "VENDAS", "SUPORTE", "ALL"] 
+        },
+        "allowedLines": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "canTransfer": { "type": "boolean" },
+        "canViewReports": { "type": "boolean" }
+      },
+      "required": ["id", "name", "role", "primaryLine", "allowedLines"]
+    },
+    "TransferPayload": {
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "targetLine": { 
+          "type": "string", 
+          "enum": ["CLINICA", "JURIDICO", "VENDAS", "SUPORTE"] 
+        },
+        "targetAttendantId": { "type": ["string", "null"] },
+        "contextNote": { "type": "string", "minLength": 5 },
+        "priority": { "type": "string", "enum": ["NORMAL", "HIGH", "URGENT"] }
+      },
+      "required": ["conversationId", "targetLine", "contextNote"]
+    }
+  }
+}

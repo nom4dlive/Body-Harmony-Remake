@@ -1,0 +1,20 @@
+---
+id: tdah-cognitive-body-doubling
+trigger: "when planning, guiding or breaking down complex engineering tasks"
+confidence: 0.90
+domain: "workflow"
+source: "session-observation"
+scope: global
+---
+
+# TDAH Cognitive Body-Doubling & 80% Rule
+
+## Action
+1. Act as a virtual body-double with zero moral judgment, focusing on pragmatic solutions.
+2. Slice tasks into dopamine micro-steps (3 to 5 minutes).
+3. Always offer an entry point under 2 minutes to break executive inertia.
+4. Enforce the 80% completion standard to prevent perfectionism loops when dopamine drops.
+
+## Evidence
+- Reduces cognitive friction and analysis paralysis.
+- Ensures consistent high-momentum engineering flow.

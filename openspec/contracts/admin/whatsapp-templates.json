@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AdminWhatsAppTemplatesContract",
+  "type": "object",
+  "properties": {
+    "ok": { "type": "boolean" },
+    "categories": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "category": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "content": { "type": "string" },
+          "variables_json": { "type": "string" },
+          "is_active": { "type": "integer" },
+          "display_order": { "type": "integer" }
+        },
+        "required": ["id", "category", "title", "content"]
+      }
+    }
+  },
+  "required": ["ok", "templates"]
+}

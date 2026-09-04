@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BodyHarmonyCrmV4ComponentContracts",
+  "description": "Contratos de propriedades e eventos para os componentes agnósticos do CRM V4",
+  "components": {
+    "ConversationList": {
+      "props": {
+        "conversations": { "type": "array", "items": { "$ref": "#/definitions/Conversation" } },
+        "selectedConversationId": { "type": "string" },
+        "activeFilter": { "type": "string", "enum": ["ALL", "UNREAD", "MINE", "AI_HANDOFF", "TAG"] },
+        "searchQuery": { "type": "string" },
+        "isLoading": { "type": "boolean" }
+      },
+      "events": {
+        "onSelectConversation": { "payload": { "conversationId": "string" } },
+        "onChangeFilter": { "payload": { "filter": "string" } },
+        "onSearch": { "payload": { "query": "string" } },
+        "onPinConversation": { "payload": { "conversationId": "string", "isPinned": "boolean" } }
+      }
+    },
+    "ChatCanvas": {
+      "props": {
+        "conversation": { "$ref": "#/definitions/Conversation" },
+        "messages": { "type": "array", "items": { "$ref": "#/definitions/Message" } },
+        "isTyping": { "type": "boolean" },
+        "isSending": { "type": "boolean" }
+      },
+      "events": {
+        "onSendMessage": { "payload": { "text": "string", "media": "object", "isWhisperNote": "boolean" } },
+        "onRetryMessage": { "payload": { "messageId": "string" } },
+        "onPlayAudio": { "payload": { "messageId": "string", "speed": "number" } },
+        "onTranscribeAudio": { "payload": { "messageId": "string" } },
+        "onToggleDossier": { "payload": {} }
+      }
+    },
+    "ContactDossier": {
+      "props": {
+        "contact": { "$ref": "#/definitions/Contact" },
+        "contracts": { "type": "array", "items": { "type": "object" } },
+        "shopOrders": { "type": "array", "items": { "type": "object" } },
+        "clinicalHistory": { "type": "array", "items": { "type": "object" } },
+        "isOpen": { "type": "boolean" }
+      },
+      "events": {
+        "onUpdateCategory": { "payload": { "category": "string" } },
+        "onUpdateStage": { "payload": { "stageId": "string" } },
+        "onCreateContract": { "payload": { "templateId": "string" } },
+        "onAddTag": { "payload": { "tagName": "string" } },
+        "onClose": { "payload": {} }
+      }
+    },
+    "KanbanBoard": {
+      "props": {
+        "funnelType": { "type": "string", "enum": ["SALES", "CLINIC"] },
+        "stages": { "type": "array", "items": { "type": "object" } },
+        "cards": { "type": "array", "items": { "type": "object" } },
+        "isLoading": { "type": "boolean" }
+      },
+      "events": {
+        "onMoveCard": { "payload": { "cardId": "string", "sourceStageId": "string", "targetStageId": "string", "newIndex": "number" } },
+        "onCardClick": { "payload": { "cardId": "string" } },
+        "onAddCard": { "payload": { "stageId": "string", "cardData": "object" } }
+      }
+    },
+    "InstancesManager": {
+      "props": {
+        "instances": { "type": "array", "items": { "type": "object" } },
+        "isLoading": { "type": "boolean" }
+      },
+      "events": {
+        "onRefreshAll": { "payload": {} },
+        "onRequestQrCode": { "payload": { "instanceId": "string" } },
+        "onRestartInstance": { "payload": { "instanceId": "string" } },
+        "onDisconnectInstance": { "payload": { "instanceId": "string" } }
+      }
+    }
+  },
+  "definitions": {
+    "Conversation": {
+      "type": "object",
+      "required": ["id", "instanceId", "contact", "unreadCount", "status"],
+      "properties": {
+        "id": { "type": "string" },
+        "instanceId": { "type": "string" },
+        "contact": { "$ref": "#/definitions/Contact" },
+        "unreadCount": { "type": "integer" },
+        "status": { "type": "string", "enum": ["OPEN", "PENDING", "RESOLVED", "SNOOZED"] },
+        "isPinned": { "type": "boolean" }
+      }
+    },
+    "Contact": {
+      "type": "object",
+      "required": ["id", "name", "phone", "category"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "document": { "type": "string" },
+        "category": { "type": "string", "enum": ["LEAD", "LICENCIADA", "ALUNA", "PARCEIRA", "DESCONHECIDO"] }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "required": ["id", "conversationId", "sender", "content", "type", "deliveryStatus"],
+      "properties": {
+        "id": { "type": "string" },
+        "conversationId": { "type": "string" },
+        "content": { "type": "string" },
+        "type": { "type": "string", "enum": ["TEXT", "AUDIO", "IMAGE", "VIDEO", "DOCUMENT", "LOCATION", "WHISPER_NOTE", "EVENT_LOG"] },
+        "deliveryStatus": { "type": "string", "enum": ["QUEUED", "SENT", "DELIVERED", "READ", "ERROR"] },
+        "isInternalNote": { "type": "boolean" }
+      }
+    }
+  }
+}

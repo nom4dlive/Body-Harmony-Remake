@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HermesCrmIntelligenceHubPayload",
+  "type": "object",
+  "required": [
+    "action"
+  ],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "copilot_draft",
+        "test_prompt",
+        "summarize_dossier",
+        "internal_assistant_chat",
+        "update_prompts",
+        "update_config"
+      ]
+    },
+    "operator": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["CLINICA", "VENDAS", "SUPORTE", "JURIDICO", "clinica", "vendas", "suporte", "juridico"]
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "message": { "type": "string" },
+    "conversation_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": { "type": "string", "enum": ["user", "assistant", "client", "attendant", "system"] },
+          "content": { "type": "string" }
+        },
+        "required": ["role", "content"]
+      }
+    }
+  }
+}

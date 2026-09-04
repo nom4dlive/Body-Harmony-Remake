@@ -1,0 +1,453 @@
+/**
+ * Body Harmony Nexus V3.1 — Total Luxury Design System CRM Master Theme
+ * Official Palette:
+ * - Deep Navy: #0A3E60 (RGB: 10 62 96)
+ * - Dark Luxury Navy (Sidebar/Base): #07131E (RGB: 7 19 30)
+ * - Deep Surface: #0B253A (RGB: 11 37 58)
+ * - Luxury Gold: #ED7E13 (RGB: 237 126 19)
+ * - Luxury Gold Hover: #D96E0D (RGB: 217 110 13)
+ * - Clean Light: #F8FAFC (RGB: 248 250 252)
+ * - Clean Surface: #FFFFFF (RGB: 255 255 255)
+ * - Clean Borders: #E2E8F0 (RGB: 226 232 240)
+ */
+
+/* ==========================================================================
+   1. INJEÇÃO DE VARIÁVEIS DO TAILWIND (LIGHT & DARK ROOT PALETTE OVERRIDE)
+   ========================================================================== */
+:root {
+  /* Google Fonts */
+  --font-family: 'Outfit', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+
+  /* Global Brand Identity */
+  --n-brand: #ED7E13 !important;
+  --color-brand: #ED7E13 !important;
+
+  /* Blue tokens -> Convert to Luxury Gold (#ED7E13) */
+  --blue-1: 255 251 245;
+  --blue-2: 254 246 235;
+  --blue-3: 253 238 217;
+  --blue-4: 251 224 188;
+  --blue-5: 249 207 154;
+  --blue-6: 246 186 114;
+  --blue-7: 242 161 68;
+  --blue-8: 237 126 19;
+  --blue-9: 237 126 19;   /* Official Gold */
+  --blue-10: 217 110 13;  /* Official Gold Dark */
+  --blue-11: 180 88 10;
+  --blue-12: 10 62 96;    /* Deep Navy */
+
+  /* Amber tokens -> Convert to Luxury Gold */
+  --amber-9: 237 126 19;
+  --amber-10: 217 110 13;
+  --amber-11: 180 88 10;
+
+  /* Surfaces and Backgrounds (Light Mode) */
+  --background-color: 248 250 252;
+  --surface-1: 255 255 255;
+  --surface-2: 248 250 252;
+  --surface-active: 254 246 235;
+  --card-color: 255 255 255;
+  --border-weak: 226 232 240;
+  --border-strong: 203 213 225;
+  --border-container: 226 232 240;
+  --border-blue: 237, 126, 19, 0.5;
+  --border-blue-strong: 237 126 19;
+}
+
+/* Modo Escuro / Dark Luxury Theme Override */
+.dark,
+[data-theme='dark'],
+html.dark {
+  /* Substituir o cinza/preto genérico pelo Dark Luxury Navy #07131E */
+  --background-color: 7 19 30 !important;      /* #07131E */
+  --surface-1: 10 62 96 !important;            /* #0A3E60 Deep Navy */
+  --surface-2: 11 37 58 !important;            /* #0B253A */
+  --surface-active: 14 47 74 !important;
+  --card-color: 10 62 96 !important;
+  --button-color: 11 37 58 !important;
+  
+  /* Slate Tokens em Navy Luxury */
+  --slate-1: 7 19 30;
+  --slate-2: 10 25 39;
+  --slate-3: 11 37 58;
+  --slate-4: 14 47 74;
+  --slate-5: 18 58 91;
+  --slate-6: 22 70 109;
+  --slate-7: 35 95 143;
+  --slate-8: 70 135 186;
+  --slate-9: 237 126 19;   /* Gold Accent */
+  --slate-10: 148 163 184;
+  --slate-11: 203 213 225;
+  --slate-12: 255 255 255;
+
+  /* Blue / Accent Tokens -> Luxury Gold */
+  --blue-8: 242 161 68;
+  --blue-9: 237 126 19;   /* #ED7E13 */
+  --blue-10: 217 110 13;  /* #D96E0D */
+  --blue-11: 254 207 154;
+  --blue-12: 255 246 235;
+
+  /* Bordas em Luxury Gold sutil */
+  --border-weak: 14 47 74 !important;
+  --border-strong: 22 70 109 !important;
+  --border-container: 14 47 74 !important;
+}
+
+/* ==========================================================================
+   2. TIPOGRAFIA UNIVERSAL
+   ========================================================================== */
+body, html, input, button, select, textarea, .chatwoot-app, div, span, p, a {
+  font-family: var(--font-family);
+}
+
+h1, h2, h3, h4, h5, h6, .text-heading, strong {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* ==========================================================================
+   3. OCULTAÇÃO ESTRITA DE CAPITÃO, CALLS & BANNERS PAGOS
+   ========================================================================== */
+li:has(a[href*="captain"]),
+li:has(a[href*="/captain"]),
+a[href*="captain"],
+a[href*="/captain"],
+a[href*="/calls"],
+div:has(> a[href*="captain"]),
+.captain-sidebar-link,
+.upgrade-banner,
+.enterprise-banner,
+.announcement-banner {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  pointer-events: none !important;
+}
+
+/* ==========================================================================
+   4. LOGO & FAVICON WHITE-LABEL OFICIAL (SIDEBAR & HEADER)
+   ========================================================================== */
+/* Esconder o SVG azul padrão do Chatwoot */
+svg:has(path[fill="#2781F6"]),
+svg:has(clipPath[id*="woot-logo"]),
+svg:has(g[clip-path*="woot-logo"]),
+.size-6 > svg,
+.size-7 > svg,
+#sidebar-account-switcher ~ div svg {
+  display: none !important;
+}
+
+/* Injetar o monograma oficial Body Harmony com Data URI e fallbacks */
+aside .size-6,
+aside button:has(svg:has(clipPath[id*="woot-logo"])),
+aside div.size-6,
+#sidebar-account-switcher img,
+#sidebar-account-switcher svg {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="%230A3E60" stroke="%23ED7E13" stroke-width="4"/><text x="50%" y="58%" font-family="sans-serif" font-weight="900" font-size="34" fill="%23ED7E13" text-anchor="middle" dominant-baseline="middle">BH</text></svg>'), url('/brand-assets/BH-icon.svg'), url('/BH-icon.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  border-radius: 6px !important;
+}
+
+/* Compensação de Margem Superior da TopBar Institucional */
+.app-wrapper,
+main,
+.chatwoot-app,
+#app,
+.dashboard-app {
+  margin-top: 38px !important;
+  height: calc(100vh - 38px) !important;
+}
+
+/* ==========================================================================
+   5. SIDEBAR DE NAVEGAÇÃO PRINCIPAL (DARK LUXURY NAVY)
+   ========================================================================== */
+aside,
+aside.left-nav,
+.bg-n-background {
+  background-color: #07131E !important;
+  border-right: 1px solid rgba(237, 126, 19, 0.15) !important;
+}
+
+/* Nome da Conta / Header da Sidebar */
+#sidebar-account-switcher span {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  font-size: 0.95rem !important;
+}
+
+/* Barra de Busca na Sidebar */
+aside a[href*="search"] {
+  border-radius: 8px !important;
+  background-color: #0B253A !important;
+  border: 1px solid rgba(237, 126, 19, 0.2) !important;
+  color: #94A3B8 !important;
+}
+
+aside a[href*="search"]:hover {
+  border-color: #ED7E13 !important;
+  color: #FFFFFF !important;
+}
+
+/* Itens da Navegação (Ícones e Labels) */
+aside nav li a,
+aside nav a {
+  color: #94A3B8 !important;
+  border-radius: 8px !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+aside nav li a:hover,
+aside nav a:hover {
+  color: #ED7E13 !important;
+  background-color: rgba(237, 126, 19, 0.12) !important;
+}
+
+/* Item Ativo da Navegação (Luxury Gold Pill) */
+aside nav li a.active,
+aside nav a.router-link-active,
+aside nav a.active {
+  color: #ED7E13 !important;
+  background-color: rgba(237, 126, 19, 0.18) !important;
+  font-weight: 700 !important;
+}
+
+/* Badges de Contagem de Conversas */
+aside nav span.rounded-full,
+.badge.badge--primary,
+.unread-count {
+  background: linear-gradient(135deg, #ED7E13 0%, #D96E0D 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  font-family: 'Outfit', sans-serif !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 6px rgba(237, 126, 19, 0.35) !important;
+}
+
+/* Linha Divisória de Perfil */
+aside section:last-child {
+  border-top: 1px solid rgba(237, 126, 19, 0.15) !important;
+}
+
+/* ==========================================================================
+   6. LISTA DE CONVERSAS (INBOX PANEL)
+   ========================================================================== */
+.conversations-sidebar,
+.conversation-wrap,
+main > div:first-child {
+  background-color: #0A2234 !important;
+}
+
+.conversation-card,
+.conversation {
+  background-color: #0A2234 !important;
+  border-bottom: 1px solid rgba(14, 47, 74, 0.8) !important;
+  transition: all 0.15s ease !important;
+}
+
+.conversation-card:hover,
+.conversation:hover {
+  background-color: #0E2C44 !important;
+}
+
+/* Card Selecionado */
+.conversation-card.is-active,
+.conversation.active,
+.conversation--selected {
+  background-color: rgba(237, 126, 19, 0.15) !important;
+  border-left: 4px solid #ED7E13 !important;
+}
+
+/* ==========================================================================
+   7. PAINEL DE CHAT, BALÕES E COMPOSER
+   ========================================================================== */
+.conversation-panel,
+.message-pane,
+.chat-window {
+  background-color: #07131E !important;
+}
+
+/* Balão de Mensagem do Atendente (Deep Navy) */
+.message--outgoing .message-body,
+.message.outgoing .message-content,
+.message-wrap.outgoing .message-box {
+  background: linear-gradient(135deg, #0A3E60 0%, #072B44 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(237, 126, 19, 0.25) !important;
+  border-radius: 16px 16px 3px 16px !important;
+  box-shadow: 0 4px 12px rgba(7, 19, 30, 0.4) !important;
+}
+
+.message--outgoing .message-body p,
+.message.outgoing .message-content p,
+.message--outgoing .message-body span,
+.message.outgoing .message-content span {
+  color: #FFFFFF !important;
+}
+
+/* Balão de Mensagem do Cliente (Clean Surface) */
+.message--incoming .message-body,
+.message.incoming .message-content,
+.message-wrap.incoming .message-box {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-radius: 16px 16px 16px 3px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.message--incoming .message-body p,
+.message.incoming .message-content p,
+.message--incoming .message-body span,
+.message.incoming .message-content span {
+  color: #0F172A !important;
+}
+
+/* Caixa de Digitação (Composer) */
+.ProseMirror,
+textarea.message-editor {
+  border-radius: 10px !important;
+  border: 1px solid rgba(237, 126, 19, 0.25) !important;
+  background-color: #0B253A !important;
+  color: #FFFFFF !important;
+  font-size: 0.9rem !important;
+}
+
+.ProseMirror:focus,
+textarea.message-editor:focus {
+  border-color: #ED7E13 !important;
+  box-shadow: 0 0 0 2px rgba(237, 126, 19, 0.25) !important;
+  outline: none !important;
+}
+
+/* Botões Primários & Ação de Envio (Luxury Gold) */
+.button--primary,
+.button.success,
+button[type="submit"],
+.send-button,
+.button--confirm {
+  background: linear-gradient(135deg, #ED7E13 0%, #D96E0D 100%) !important;
+  border-color: #ED7E13 !important;
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  font-family: 'Outfit', sans-serif !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(237, 126, 19, 0.35) !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+.button--primary:hover,
+.button.success:hover,
+button[type="submit"]:hover,
+.send-button:hover,
+.button--confirm:hover {
+  background: linear-gradient(135deg, #F08C28 0%, #ED7E13 100%) !important;
+  border-color: #D96E0D !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(237, 126, 19, 0.45) !important;
+}
+
+/* ==========================================================================
+   8. TELA DE AUTENTICAÇÃO / LOGIN
+   ========================================================================== */
+.auth--wrapper,
+.auth-wrapper,
+.login-page,
+main.auth-page {
+  background: linear-gradient(135deg, #0A3E60 0%, #07131E 100%) !important;
+  min-height: 100vh !important;
+}
+
+.auth-card,
+.auth--box,
+.auth-wrapper .card,
+.login-box {
+  background: #FFFFFF !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 50px rgba(7, 19, 30, 0.5) !important;
+  border: 1px solid rgba(237, 126, 19, 0.25) !important;
+}
+
+.auth-card .logo svg,
+.auth--wrapper .logo svg,
+.login-logo svg {
+  display: none !important;
+}
+
+.auth-card .logo,
+.auth--wrapper .logo,
+.login-logo {
+  background-image: url('https://bodyharmony.com.br/logo.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  min-height: 52px !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* ==========================================================================
+   9. EMPTY STATE INSTITUCIONAL BODY HARMONY & REFINAMENTOS DE LUXO (PLAN-176)
+   ========================================================================== */
+.conversation--empty-state,
+.empty-state,
+.no-conversations,
+div[class*="empty-state"] {
+  background-color: #07131E !important;
+  color: #FFFFFF !important;
+}
+
+.conversation--empty-state::before,
+.empty-state::before {
+  content: "";
+  display: block;
+  width: 140px;
+  height: 48px;
+  margin: 0 auto 1.5rem auto;
+  background-image: url('https://bodyharmony.com.br/logo.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.conversation--empty-state h3,
+.empty-state h3 {
+  font-family: 'Outfit', sans-serif !important;
+  color: #ED7E13 !important;
+  font-weight: 800 !important;
+  font-size: 1.15rem !important;
+}
+
+.conversation--empty-state p,
+.empty-state p {
+  color: #94A3B8 !important;
+  font-size: 0.85rem !important;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Scrollbar Elegante em Gold */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #07131E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(237, 126, 19, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ED7E13;
+}
+

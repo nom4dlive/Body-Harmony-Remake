@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenNotebookCoreRBACContracts",
+  "description": "Contratos de API para a Fase 1 do Core Backend (FastAPI + SurrealDB) com RBAC Gestor vs Licenciada",
+  "endpoints": {
+    "sources": {
+      "list": {
+        "method": "GET",
+        "path": "/api/sources",
+        "roles_allowed": ["GESTOR", "LICENCIADA"],
+        "response": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "source_type", "created_at"],
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "source_type": { "type": "string", "enum": ["pdf", "audio", "video", "text", "url"] },
+              "url": { "type": "string" },
+              "file_path": { "type": "string" },
+              "created_at": { "type": "string" }
+            }
+          }
+        }
+      },
+      "create": {
+        "method": "POST",
+        "path": "/api/sources",
+        "roles_allowed": ["GESTOR"],
+        "request": {
+          "type": "object",
+          "required": ["title", "source_type"],
+          "properties": {
+            "title": { "type": "string" },
+            "source_type": { "type": "string" },
+            "content": { "type": "string" },
+            "url": { "type": "string" }
+          }
+        },
+        "response": {
+          "type": "object",
+          "required": ["id", "title"],
+          "properties": {
+            "id": { "type": "string" },
+            "title": { "type": "string" }
+          }
+        }
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/sources/{id}",
+        "roles_allowed": ["GESTOR"],
+        "response": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "message": { "type": "string" }
+          }
+        }
+      }
+    },
+    "notebooks": {
+      "list": {
+        "method": "GET",
+        "path": "/api/notebooks",
+        "roles_allowed": ["GESTOR", "LICENCIADA"],
+        "response": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "created_at"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "created_by": { "type": "string" },
+              "sources_count": { "type": "integer" },
+              "created_at": { "type": "string" }
+            }
+          }
+        }
+      },
+      "create": {
+        "method": "POST",
+        "path": "/api/notebooks",
+        "roles_allowed": ["GESTOR", "LICENCIADA"],
+        "request": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "source_ids": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "delete": {
+        "method": "DELETE",
+        "path": "/api/notebooks/{id}",
+        "roles_allowed": ["GESTOR"],
+        "response": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "message": { "type": "string" }
+          }
+        }
+      }
+    },
+    "transformations": {
+      "seed": {
+        "method": "POST",
+        "path": "/api/transformations/seed",
+        "roles_allowed": ["GESTOR"],
+        "response": {
+          "type": "object",
+          "properties": {
+            "seeded": { "type": "integer" },
+            "existing": { "type": "integer" }
+          }
+        }
+      }
+    }
+  }
+}

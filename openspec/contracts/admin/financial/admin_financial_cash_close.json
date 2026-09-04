@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FinancialCashCloseContract",
+  "description": "Contrato do Fechamento Diario de Caixa (Daily Close). Cruza eventos do dia com entradas financeiras e gera alertas impeditivos.",
+  "type": "object",
+  "properties": {
+    "get_request": {
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date", "description": "Data do fechamento (YYYY-MM-DD). Default: hoje." }
+      }
+    },
+    "get_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "close_date": { "type": "string" },
+            "status": { "type": "string", "enum": ["pending", "closed", "reviewed"] },
+            "summary": {
+              "type": "object",
+              "properties": {
+                "total_revenue_cents": { "type": "integer" },
+                "total_expenses_cents": { "type": "integer" },
+                "net_result_cents": { "type": "integer" },
+                "total_revenue_formatted": { "type": "string" },
+                "total_expenses_formatted": { "type": "string" },
+                "net_result_formatted": { "type": "string" }
+              }
+            },
+            "events": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "event_type": { "type": "string", "enum": ["shop_sale", "onboarding_payment", "licenciamento", "expense"] },
+                  "description": { "type": "string" },
+                  "amount_cents": { "type": "integer" },
+                  "has_financial_record": { "type": "boolean" },
+                  "financial_transaction_id": { "type": ["integer", "null"] }
+                }
+              }
+            },
+            "alerts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "severity": { "type": "string", "enum": ["info", "warning", "critical"] },
+                  "message": { "type": "string" },
+                  "event_type": { "type": "string" },
+                  "event_id": { "type": ["integer", "null"] }
+                }
+              }
+            },
+            "closed_by": { "type": ["string", "null"] },
+            "closed_at": { "type": ["string", "null"] }
+          },
+          "required": ["close_date", "status", "summary", "events", "alerts"]
+        }
+      },
+      "required": ["success", "data"]
+    },
+    "post_request": {
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" }
+      },
+      "required": ["date"]
+    },
+    "post_response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "message": { "type": "string" },
+            "close_id": { "type": "integer" },
+            "alerts_count": { "type": "integer" }
+          }
+        }
+      },
+      "required": ["success", "data"]
+    }
+  }
+}

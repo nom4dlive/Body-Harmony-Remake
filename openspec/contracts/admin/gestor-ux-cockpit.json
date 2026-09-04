@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gestor UX Cockpit & Quick Search API Contract",
+  "description": "Especificação do contrato de dados para o Cockpit 360 e Busca Global Rapida do Gestor (PLAN-068)",
+  "type": "object",
+  "required": ["endpoints"],
+  "properties": {
+    "endpoints": {
+      "type": "object",
+      "properties": {
+        "GET /api/v1/admin/cockpit/summary": {
+          "description": "Retorna o resumo consolidado 360 para o Cockpit do Gestor",
+          "responses": {
+            "200": {
+              "type": "object",
+              "required": ["success", "summary"],
+              "properties": {
+                "success": { "type": "boolean" },
+                "summary": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

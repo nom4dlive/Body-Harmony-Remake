@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GoogleDriveProjectCloneManifest",
+  "type": "object",
+  "properties": {
+    "target_folder_id": { "type": "string" },
+    "target_folder_name": { "type": "string" },
+    "clone_root_id": { "type": "string" },
+    "clone_root_name": { "type": "string" },
+    "created_at": { "type": "string" },
+    "total_files": { "type": "integer" },
+    "total_bytes": { "type": "integer" },
+    "categories": {
+      "type": "object",
+      "properties": {
+        "governance_specs": { "type": "integer" },
+        "source_code": { "type": "integer" },
+        "infrastructure_devops": { "type": "integer" },
+        "configs_schemas": { "type": "integer" }
+      }
+    },
+    "exclusions_applied": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["target_folder_id", "clone_root_id", "total_files", "total_bytes"]
+}

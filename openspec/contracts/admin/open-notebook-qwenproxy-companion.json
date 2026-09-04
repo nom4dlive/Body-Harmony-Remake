@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenNotebookQwenProxyCompanionContract",
+  "type": "object",
+  "description": "Contrato de arquitetura para container auxiliar QwenProxy dentro do repositório Open Notebook",
+  "properties": {
+    "qwen_proxy_service": {
+      "type": "object",
+      "properties": {
+        "directory": {
+          "type": "string",
+          "default": "qwen_proxy"
+        },
+        "internal_port": {
+          "type": "integer",
+          "default": 3000
+        },
+        "endpoint": {
+          "type": "string",
+          "default": "http://qwen-proxy:3000/v1"
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "qwen-max",
+            "qwen-plus",
+            "qwen-turbo",
+            "qwen2.5-max",
+            "qwen2.5-plus"
+          ]
+        }
+      }
+    },
+    "open_notebook_service": {
+      "type": "object",
+      "properties": {
+        "default_llm_provider": {
+          "type": "string",
+          "default": "openai_compatible"
+        },
+        "api_base": {
+          "type": "string",
+          "default": "http://qwen-proxy:3000/v1"
+        },
+        "default_model": {
+          "type": "string",
+          "default": "qwen-max"
+        }
+      }
+    }
+  }
+}

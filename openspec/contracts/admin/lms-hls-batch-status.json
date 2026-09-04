@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsHlsBatchStatusResponse",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "is_running": {
+          "type": "boolean",
+          "description": "Indica se o job de conversão em lote está executando em background"
+        },
+        "total_videos": {
+          "type": "integer",
+          "description": "Total de aulas com vídeo local mapeadas no LMS"
+        },
+        "converted": {
+          "type": "integer",
+          "description": "Total de aulas convertidas com sucesso para HLS"
+        },
+        "pending": {
+          "type": "integer",
+          "description": "Total de aulas pendentes de conversão"
+        },
+        "progress_percent": {
+          "type": "integer",
+          "description": "Percentual de progresso do lote atual de conversão"
+        },
+        "last_error": {
+          "type": ["string", "null"],
+          "description": "Mensagem do último erro ocorrido se houver falhas de processamento"
+        }
+      },
+      "required": ["is_running", "total_videos", "converted", "pending", "progress_percent"]
+    }
+  },
+  "required": ["success", "data"]
+}

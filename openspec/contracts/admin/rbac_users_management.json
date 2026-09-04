@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AdminRbacUsersManagementContract",
+  "description": "Contrato para listagem, criação, edição e alteração de papéis/senhas de gestores (Nexus V3.1)",
+  "endpoints": {
+    "GET /api/v1/admin/rbac/users.php": {
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "current_user": {
+            "type": ["object", "null"],
+            "properties": {
+              "id": { "type": "integer" },
+              "username": { "type": "string" },
+              "role": { "type": "string" },
+              "department_id": { "type": ["integer", "null"] },
+              "role_id": { "type": ["integer", "null"] },
+              "hierarchy_level": { "type": "integer" }
+            }
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "username": { "type": "string" },
+                "email": { "type": ["string", "null"] },
+                "role": { "type": "string" },
+                "department_id": { "type": ["integer", "null"] },
+                "department_name": { "type": ["string", "null"] },
+                "role_id": { "type": ["integer", "null"] },
+                "role_name": { "type": ["string", "null"] },
+                "role_slug": { "type": ["string", "null"] },
+                "hierarchy_level": { "type": "integer" },
+                "supervisor_id": { "type": ["integer", "null"] },
+                "supervisor_name": { "type": ["string", "null"] },
+                "is_active": { "type": "integer" },
+                "created_at": { "type": "string" }
+              },
+              "required": ["id", "username", "role", "hierarchy_level"]
+            }
+          }
+        },
+        "required": ["success", "users"]
+      }
+    },
+    "POST /api/v1/admin/rbac/users.php": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": ["create", "update", "toggle_status", "reset_password", "assign_role"]
+          },
+          "user_id": { "type": "integer" },
+          "username": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "department_id": { "type": ["integer", "null"] },
+          "role_id": { "type": ["integer", "null"] },
+          "supervisor_id": { "type": ["integer", "null"] },
+          "is_active": { "type": "integer" }
+        },
+        "required": ["action"]
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "user": { "type": "object" },
+          "error": { "type": "string" }
+        },
+        "required": ["success"]
+      }
+    }
+  }
+}

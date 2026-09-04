@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmPollDeltaContract",
+  "description": "Contrato do endpoint de polling delta de mensagens em tempo real para o CRM Body Harmony",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "conversation_id": { "type": ["integer", "string"] },
+    "count": { "type": "integer" },
+    "latest_id": { "type": ["integer", "string", "null"] },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "sender", "type", "text", "time"],
+        "properties": {
+          "id": { "type": "string" },
+          "messageId": { "type": "string" },
+          "sender": { "type": "string", "enum": ["ME", "CLIENT", "HERMES_AI", "SYSTEM", "OPERATOR"] },
+          "senderName": { "type": ["string", "null"] },
+          "text": { "type": "string" },
+          "time": { "type": "string" },
+          "type": { "type": "string" },
+          "status": { "type": ["string", "null"] },
+          "mediaUrl": { "type": ["string", "null"] },
+          "fileName": { "type": ["string", "null"] },
+          "quotedMessage": { "type": ["object", "null"] }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-02T21:37:00-03:00",
+  "source": "code-analysis",
+  "totalScreens": 14,
+  "platform": "web-spa",
+  "screens": [
+    {
+      "id": "home",
+      "name": "Home",
+      "route": "/",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Home/Home.jsx", "apps/web-app/src/frontend/src/pages/Home/HomeV2.jsx"],
+      "critical": true,
+      "auth": false,
+      "apiEndpoints": ["/api/v1/public/home", "/api/v1/public/testimonials", "/api/v1/public/instagram-feed"]
+    },
+    {
+      "id": "portal",
+      "name": "Portal (Aluna)",
+      "route": "/portal/*",
+      "layout": "PortalLayout",
+      "origin": ["apps/web-app/src/frontend/src/pages/Portal/"],
+      "critical": true,
+      "auth": true,
+      "apiEndpoints": ["/api/v1/auth/aluna/login", "/api/v1/aluna/dashboard", "/api/v1/aluna/lessons", "/api/v1/aluna/progress"]
+    },
+    {
+      "id": "portal-aluna",
+      "name": "PortalAluna",
+      "route": "/aluna/*",
+      "layout": "AlunaLayout",
+      "origin": ["apps/web-app/src/frontend/src/pages/PortalAluna/"],
+      "critical": true,
+      "auth": true,
+      "apiEndpoints": ["/api/v1/aluna/modules", "/api/v1/aluna/lessons", "/api/v1/aluna/certificates"]
+    },
+    {
+      "id": "admin",
+      "name": "Admin",
+      "route": "/admin/*",
+      "layout": "AdminLayout",
+      "origin": ["apps/web-app/src/frontend/src/pages/Admin/"],
+      "critical": true,
+      "auth": true,
+      "apiEndpoints": ["/api/v1/admin/auth/login", "/api/v1/admin/content/*", "/api/v1/admin/licenciadas/*", "/api/v1/admin/alunas/*", "/api/v1/admin/lms/*"]
+    },
+    {
+      "id": "nexus",
+      "name": "Nexus",
+      "route": "/nexus/*",
+      "layout": "NexusLayout",
+      "origin": ["apps/web-app/src/frontend/src/pages/Nexus/"],
+      "critical": true,
+      "auth": true,
+      "apiEndpoints": ["/api/v1/nexus/dashboard", "/api/v1/nexus/signals", "/api/v1/nexus/actions", "/api/v1/nexus/forensics"]
+    },
+    {
+      "id": "lms",
+      "name": "LMS",
+      "route": "/lms/*",
+      "layout": "AppLayout",
+      "origin": ["apps/web-app/src/frontend/src/pages/LMS/"],
+      "critical": true,
+      "auth": true,
+      "apiEndpoints": ["/api/v1/lms/modules", "/api/v1/lms/lessons", "/api/v1/lms/progress"]
+    },
+    {
+      "id": "licenciadas",
+      "name": "Licenciadas",
+      "route": "/licenciadas",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Licenciadas/"],
+      "critical": false,
+      "auth": false,
+      "apiEndpoints": ["/api/v1/public/licenciadas"]
+    },
+    {
+      "id": "results",
+      "name": "Results",
+      "route": "/resultados",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Results/"],
+      "critical": false,
+      "auth": false,
+      "apiEndpoints": ["/api/v1/public/results"]
+    },
+    {
+      "id": "testimonials",
+      "name": "Testimonials",
+      "route": "/depoimentos",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Testimonials/"],
+      "critical": false,
+      "auth": false,
+      "apiEndpoints": ["/api/v1/public/testimonials"]
+    },
+    {
+      "id": "mentors",
+      "name": "Mentors",
+      "route": "/mentores",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Mentors/"],
+      "critical": false,
+      "auth": false,
+      "apiEndpoints": ["/api/v1/public/mentors"]
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop",
+      "route": "/workshop",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Workshop/"],
+      "critical": false,
+      "auth": false,
+      "apiEndpoints": ["/api/v1/public/workshop"]
+    },
+    {
+      "id": "contact",
+      "name": "Contact",
+      "route": "/contato",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Contact/"],
+      "critical": false,
+      "auth": false,
+      "apiEndpoints": ["/api/v1/public/contact"]
+    },
+    {
+      "id": "maintenance",
+      "name": "Maintenance",
+      "route": "/maintenance",
+      "layout": "minimal",
+      "origin": ["apps/web-app/src/frontend/src/pages/Maintenance/"],
+      "critical": true,
+      "auth": false,
+      "apiEndpoints": []
+    },
+    {
+      "id": "hidden-proposal",
+      "name": "Hidden (Proposal)",
+      "route": "/proposta",
+      "layout": "public",
+      "origin": ["apps/web-app/src/frontend/src/pages/Hidden/"],
+      "critical": false,
+      "auth": false,
+      "apiEndpoints": []
+    }
+  ]
+}

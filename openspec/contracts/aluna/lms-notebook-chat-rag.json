@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsNotebookChatRagContract",
+  "description": "Contrato para consulta RAG da Aluna com citação temporal, controle atômico de créditos e WhatsApp fallback",
+  "type": "object",
+  "properties": {
+    "module_id": { "type": "integer" },
+    "question": { "type": "string" },
+    "lesson_id": { "type": ["integer", "null"] },
+    "current_time_seconds": { "type": ["number", "null"] }
+  },
+  "required": ["module_id", "question"],
+  "additionalProperties": true
+}

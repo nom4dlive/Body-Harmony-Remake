@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmInboxDirectContract",
+  "description": "Contrato de Mensagens Diretas e Conversas do CRM Body Harmony",
+  "type": "object",
+  "properties": {
+    "conversation": {
+      "type": "object",
+      "required": ["id", "remote_jid", "instance_key", "contact_name"],
+      "properties": {
+        "id": { "type": ["string", "integer"] },
+        "remote_jid": { "type": "string" },
+        "instance_key": { "type": "string" },
+        "contact_name": { "type": "string" },
+        "contact_phone": { "type": "string" },
+        "unread_count": { "type": "integer" },
+        "last_message_content": { "type": "string" },
+        "last_message_time": { "type": "string" },
+        "is_group": { "type": "boolean" }
+      }
+    },
+    "message": {
+      "type": "object",
+      "required": ["id", "sender", "type", "text", "time"],
+      "properties": {
+        "id": { "type": "string" },
+        "sender": { "type": "string", "enum": ["ME", "CLIENT", "HERMES_AI", "SYSTEM", "OPERATOR"] },
+        "senderName": { "type": ["string", "null"] },
+        "text": { "type": "string" },
+        "time": { "type": "string" },
+        "type": { "type": "string", "enum": ["TEXT", "IMAGE", "AUDIO", "DOCUMENT", "STICKER", "VIDEO", "WHISPER", "AI", "ACTIVITY"] },
+        "status": { "type": ["string", "null"], "enum": ["PENDING", "SENT", "DELIVERED", "READ", "ERROR", "sent", "delivered", "read", null] },
+        "mediaUrl": { "type": ["string", "null"] },
+        "fileName": { "type": ["string", "null"] },
+        "fileSize": { "type": ["string", "integer", "null"] },
+        "quotedMessage": { "type": ["object", "null"] }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AdminContractsUpdateContractContract",
+  "type": "object",
+  "required": ["uuid"],
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID único do contrato a ser atualizado"
+    },
+    "title": {
+      "type": "string",
+      "description": "Novo título do contrato"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["DRAFT", "GENERATED", "PENDING_SIGNATURE", "SIGNED", "CANCELLED", "ARCHIVED"],
+      "description": "Novo status do contrato"
+    },
+    "variables": {
+      "type": "object",
+      "description": "Objeto com payload de variáveis dinâmicas do contrato"
+    },
+    "custom_html": {
+      "type": "string",
+      "description": "HTML customizado opcional para substituir o template base"
+    }
+  }
+}

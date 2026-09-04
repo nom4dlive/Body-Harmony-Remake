@@ -1,0 +1,30 @@
+{
+  "endpoint": "POST /api/v1/admin/financial/license-taxes/{id}",
+  "description": "Atualiza campos de taxa de licenciamento e sincroniza transação financeira",
+  "body": {
+    "licenciada_id": "int|null",
+    "licenciada_name": "string",
+    "licenciada_cpf": "string",
+    "licenciada_cnpj": "string",
+    "licenciada_location": "string",
+    "valor_cents": "int",
+    "valor_extenso": "string",
+    "payment_method": "pix|card|transfer|manual",
+    "payment_condition": "string",
+    "installments": "int",
+    "status": "pending_payment|paid|contract_signed|cancelled",
+    "notes": "string"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "id": "int",
+      "licenciada_id": "int|null",
+      "licenciada_name": "string",
+      "valor_cents": "int",
+      "valor_display": "string",
+      "status": "string",
+      "updated_at": "datetime"
+    }
+  }
+}

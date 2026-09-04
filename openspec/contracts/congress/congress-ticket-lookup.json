@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CongressTicketLookupContract",
+  "description": "Contrato de consulta pública e auto-recuperação de ingressos do Congresso Body Harmony por CPF ou E-mail",
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/v1/congress/ticket/lookup",
+      "summary": "Localiza ingressos confirmados ou aprovados através do CPF ou E-mail do participante",
+      "request": {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "identifier": {
+              "type": "string",
+              "description": "CPF sanitizado/formatado ou e-mail cadastrado"
+            }
+          },
+          "required": ["identifier"]
+        }
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ok": { "type": "boolean" },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ticket_token": { "type": "string" },
+                  "tier_name": { "type": "string" },
+                  "tier_slug": { "type": "string" },
+                  "customer_name": { "type": "string" },
+                  "customer_email": { "type": "string" },
+                  "customer_cpf_masked": { "type": "string" },
+                  "payment_status": { "type": "string" },
+                  "payment_method": { "type": "string" },
+                  "amount_formatted": { "type": "string" },
+                  "qr_code_url": { "type": "string" },
+                  "event_name": { "type": "string" },
+                  "event_date": { "type": "string" },
+                  "event_location": { "type": "string" }
+                },
+                "required": ["ticket_token", "tier_name", "customer_name", "payment_status"]
+              }
+            },
+            "message": { "type": "string" }
+          },
+          "required": ["ok", "data"]
+        }
+      }
+    }
+  ]
+}

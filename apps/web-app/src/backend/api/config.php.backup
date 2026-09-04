@@ -1,0 +1,244 @@
+<?php
+// api/config.php
+
+/**
+ * --------------------------------------------------------------------------
+ * PATH STANDARDIZATION (NO-DOCKER SUPPORT)
+ * --------------------------------------------------------------------------
+ * Define absolute paths to avoid relative path hell (`../../..`) and 
+ * ensure compatibility between Windows (Local) and Hostinger (Production).
+ */
+
+// 1. Detect FileSystem Root (Project Root)
+// config.php is in [Root]/apps/web-app/src/backend/api/
+$currentDir = __DIR__;
+// Go up 4 levels to get to [Root]
+// apps/web-app/src/backend/api -> apps/web-app/src/backend -> apps/web-app/src -> apps/web-app -> apps -> [Root]
+// Wait, audit showed 5 levels? Let's use robust detection.
+
+// We look for 'private_uploads' to confirm root.
+// Try 5 levels up first (Local Dev Structure: apps/web-app/src/backend/api -> Root)
+$candidateRoot = realpath(__DIR__ . '/../../../../..'); 
+
+if (!$candidateRoot || !file_exists($candidateRoot . '/private_uploads')) {
+    // Fallback: Production Structure (public_html/api -> public_html -> Root)
+    // api (1) -> public_html (2) -> Root
+    $candidateRoot = realpath(__DIR__ . '/../..');
+}
+
+// Final Fallback: If still not found, try 4 levels (Legacy/Docker?)
+if ((!$candidateRoot || !file_exists($candidateRoot . '/private_uploads'))) {
+    $candidateRoot = realpath(__DIR__ . '/../../../..');
+}
+
+define('FS_ROOT', $candidateRoot);
+
+// 2. Define Storage Paths
+// Private: Outside public_html (Security)
+define('PRIVATE_UPLOADS_DIR', FS_ROOT . '/private_uploads');
+
+// Public: Accessible via Browser
+// Local (Windows Path): apps/web-app/src/frontend/public_html/uploads
+// Production (Hostinger): [Root]/public_html/uploads (Symlink logic or direct)
+
+// Detect Environment
+$serverName = $_SERVER['SERVER_NAME'] ?? 'localhost';
+$isLocal = ($serverName === 'localhost' || $serverName === '127.0.0.1');
+
+if ($isLocal) {
+    // Local Dev (No Docker) - Use Backend Source as Public Root
+    // This matches the structure served by start-dev.ps1
+    if (!defined('PUBLIC_ROOT')) {
+        define('PUBLIC_ROOT', FS_ROOT . '/apps/web-app/src/backend');
+    }
+} else {
+    // Production - Use standard structure
+    if (!defined('PUBLIC_ROOT')) {
+        define('PUBLIC_ROOT', FS_ROOT . '/public_html'); // Adjust if Hostinger structure differs
+    }
+    
+    // Safety check for Hostinger "jailed" paths
+    if (!file_exists(PUBLIC_ROOT)) {
+         // Fallback for some hosting setups where __DIR__ is inside public_html
+         define('PUBLIC_ROOT', realpath(__DIR__ . '/../../..')); // api -> backend -> src -> public_html? No
+         // On Hostinger, often public_html IS the root or close to it.
+         // Let's stick to a safe default or use __DIR__ relative if FS_ROOT failed.
+    }
+}
+
+define('PUBLIC_UPLOADS_DIR', PUBLIC_ROOT . '/uploads');
+
+/**
+ * Database Configuration
+ * Carrega credenciais de .env se disponível, senão usa defaults do Docker
+ */
+
+// Helper para carregar .env
+function loadEnvIfExists($path = null) {
+    if ($path === null) {
+        $path = FS_ROOT . '/.env'; // Look for .env in Project Root
+    }
+
+    // Se estiver no Docker, prefere as envs do docker-compose
+    if (file_exists('/.dockerenv')) {
+        return;
+    }
+    
+    if (file_exists($path)) {
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) continue;
+            
+            list($name, $value) = explode('=', $line, 2);
+            $name = trim($name);
+            $value = trim($value);
+            
+            // Não sobrescreve se já estiver definido (Prioriza envs do sistema/contêiner)
+            if (!getenv($name) && !array_key_exists($name, $_ENV)) {
+                putenv(sprintf('%s=%s', $name, $value));
+                $_ENV[$name] = $value;
+                $_SERVER[$name] = $value;
+            }
+        }
+    }
+}
+
+// Carregar .env se existir
+loadEnvIfExists();
+
+/**
+ * Helper robusto para obter headers (Case-Insensitive)
+ * Resolve problemas de stripping de headers no Apache/Hostinger
+ */
+function getallheaders_robust() {
+    $headers = [];
+    
+    // 1. Tentar função nativa
+    if (function_exists('getallheaders')) {
+        $nativeHeaders = getallheaders();
+        foreach ($nativeHeaders as $name => $value) {
+            $headers[strtoupper($name)] = $value;
+        }
+    }
+    
+    // 2. Fallback via $_SERVER (HTTP_...)
+    foreach ($_SERVER as $name => $value) {
+        if (substr($name, 0, 5) == 'HTTP_') {
+            $headerName = str_replace('_', '-', substr($name, 5));
+            $headers[strtoupper($headerName)] = $value;
+        }
+    }
+
+    // 3. Casos especiais (Authorization pode estar sem prefixo HTTP_)
+    if (isset($_SERVER['PHP_AUTH_USER'])) {
+        // Basic auth fallback
+    }
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $headers['AUTHORIZATION'] = $_SERVER['HTTP_AUTHORIZATION'];
+    } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+        $headers['AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    }
+
+    return $headers;
+}
+
+// ============================================================================
+// ENV FILE LOADER (Production Fix)
+// ============================================================================
+
+/**
+ * Load .env file into PHP environment
+ * Supports comments and basic KEY=VALUE format
+ * 
+ * @param string $path Path to .env file
+ * @return bool True if file was loaded, false otherwise
+ */
+function loadEnvFile($path) {
+    if (!file_exists($path)) {
+        return false;
+    }
+    
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    if ($lines === false) {
+        return false;
+    }
+    
+    foreach ($lines as $line) {
+        // Skip comments and empty lines
+        $line = trim($line);
+        if (empty($line) || $line[0] === '#') {
+            continue;
+        }
+        
+        // Parse KEY=VALUE
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value);
+            
+            // Only set if not already set (environment takes precedence)
+            if (!getenv($key)) {
+                putenv("$key=$value");
+                $_ENV[$key] = $value;
+                $_SERVER[$key] = $value;
+            }
+        }
+    }
+    return true;
+}
+
+// Try multiple .env locations (production vs development)
+$envPaths = [
+    __DIR__ . '/.env',                    // /api/.env (production)
+    dirname(__DIR__) . '/.env',           // /backend/.env
+    dirname(__DIR__, 2) . '/.env',        // /src/.env
+];
+
+$envLoaded = false;
+foreach ($envPaths as $envPath) {
+    if (loadEnvFile($envPath)) {
+        $envLoaded = true;
+        break;
+    }
+}
+
+// Database credentials (strict ENV validation - no fallbacks)
+$db_host = getenv('DB_HOST');
+$db_name = getenv('DB_NAME');
+$db_user = getenv('DB_USER');
+$db_pass = getenv('DB_PASS');
+
+// Fail fast if credentials are not configured
+if (!$db_host || !$db_name || !$db_user || !$db_pass) {
+    if (defined('NexusLogger')) {
+        NexusLogger::log('CRITICAL_CONFIG_ERROR', 'Database credentials not configured in .env');
+    }
+    die('FATAL: Database credentials not configured. Check .env file.');
+}
+
+
+// Configuração de Timezone (Sincroniza PHP e Tentativa de DB)
+date_default_timezone_set('America/Sao_Paulo');
+
+try {
+    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_PERSISTENT => true
+    ]);
+    
+    // Tenta definir timezone via offset (mais compatível com shared hosting)
+    $pdo->exec("SET time_zone = '-03:00'");
+
+    // Nexus Observability (V2) - Centralized Logging
+    require_once __DIR__ . '/v1/Core/NexusLogger.php';
+    NexusLogger::init($pdo);
+    set_error_handler(['NexusLogger', 'handleError']);
+    set_exception_handler(['NexusLogger', 'handleException']);
+    
+} catch (PDOException $e) {
+    if (defined('NexusLogger')) {
+        NexusLogger::log('CRITICAL_CONFIG_ERROR', 'Database connection failed: ' . $e->getMessage());
+    }
+    die("Database connection failed: " . $e->getMessage());
+}

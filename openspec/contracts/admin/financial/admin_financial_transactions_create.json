@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FinancialTransactionCreateContract",
+  "description": "Contrato de criacao manual de transacao financeira pelo Gestor.",
+  "type": "object",
+  "properties": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["revenue", "refund", "chargeback", "expense"] },
+        "amount_cents": { "type": "integer", "minimum": 1 },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "tax_tag": { "type": "string", "enum": ["estetica_cosmetica", "servicos_medicos_educacionais", "nao_definido"], "default": "nao_definido" },
+        "cost_center_id": { "type": ["integer", "null"] },
+        "event_tag": { "type": ["string", "null"] },
+        "payment_method": { "type": "string", "enum": ["card", "pix", "boleto", "manual", "transfer"] },
+        "installments": { "type": "integer", "minimum": 1, "maximum": 12, "default": 1 },
+        "status": { "type": "string", "enum": ["pending", "confirmed"], "default": "confirmed" }
+      },
+      "required": ["type", "amount_cents", "description", "payment_method"]
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "success": { "type": "boolean" },
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "amount_formatted": { "type": "string" },
+            "message": { "type": "string" }
+          }
+        }
+      },
+      "required": ["success", "data"]
+    }
+  }
+}

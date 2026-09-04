@@ -1,0 +1,415 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Central de Instâncias WhatsApp - Body Harmony CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#c2c7cf",
+                    "whisper-border": "#D97706",
+                    "on-surface": "#191c1e",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface-tint": "#376286",
+                    "tertiary-fixed-dim": "#abcae9",
+                    "tertiary-fixed": "#cee5ff",
+                    "secondary-container": "#fd8a23",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f7f9fb",
+                    "success-emerald": "#10B981",
+                    "tertiary": "#022740",
+                    "on-primary-container": "#80a9d1",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#42474e",
+                    "sidebar-bg": "#072B44",
+                    "on-primary": "#ffffff",
+                    "sidebar-inactive-icon": "#94A3B8",
+                    "tertiary-container": "#1e3d57",
+                    "primary-fixed-dim": "#a1cbf4",
+                    "whisper-bg": "#FEF3C7",
+                    "secondary": "#944b00",
+                    "secondary-fixed": "#ffdcc5",
+                    "on-secondary-fixed-variant": "#713700",
+                    "on-secondary-fixed": "#301400",
+                    "on-tertiary-fixed": "#001d32",
+                    "on-primary-fixed": "#001d32",
+                    "on-tertiary-container": "#8aa8c6",
+                    "warning-amber": "#F59E0B",
+                    "surface-dim": "#d8dadc",
+                    "surface-variant": "#e0e3e5",
+                    "secondary-fixed-dim": "#ffb783",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#1c4a6d",
+                    "primary": "#002841",
+                    "surface-container": "#eceef0",
+                    "surface": "#f7f9fb",
+                    "danger-ruby": "#EF4444",
+                    "surface-container-high": "#e6e8ea",
+                    "primary-container": "#0a3e60",
+                    "gold-vibrant": "#FFB366",
+                    "inverse-surface": "#2d3133",
+                    "primary-fixed": "#cde5ff",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-tertiary-fixed-variant": "#2b4964",
+                    "surface-bright": "#f7f9fb",
+                    "inverse-primary": "#a1cbf4",
+                    "surface-container-low": "#f2f4f6",
+                    "on-background": "#191c1e",
+                    "outline": "#72777f",
+                    "on-error-container": "#93000a",
+                    "sidebar-inactive-text": "#E2E8F0",
+                    "on-secondary-container": "#633000"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "1rem",
+                    "inbox-list-width": "340px",
+                    "margin": "1.5rem",
+                    "sidebar-width": "250px",
+                    "dossier-width": "380px"
+            },
+            "fontFamily": {
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "headline-xl": [
+                            "Outfit"
+                    ],
+                    "headline-lg": [
+                            "Outfit"
+                    ],
+                    "chat-message": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Outfit"
+                    ]
+            },
+            "fontSize": {
+                    "label-md": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-xl": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "chat-message": [
+                            "14px",
+                            {
+                                    "lineHeight": "22px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-sm": [
+                            "13px",
+                            {
+                                    "lineHeight": "18px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-surface bg-background flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed h-screen w-sidebar-width left-0 top-0 bg-sidebar-bg flex flex-col py-gutter space-y-4 shadow-lg z-50">
+<div class="px-4 mb-4">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-primary">Body Harmony</h1>
+<p class="font-label-md text-label-md text-on-primary-container">Elite CRM</p>
+</div>
+<div class="px-4 mb-4">
+<button class="w-full bg-secondary-container text-on-primary font-headline-md text-body-lg font-bold py-3 rounded-lg hover:bg-gold-vibrant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                + Novo Paciente / Lead
+            </button>
+</div>
+<nav class="flex-1 overflow-y-auto space-y-1">
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">chat</span>
+                Omnichannel Inbox
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">history</span>
+                Histórico
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">campaign</span>
+                Campanhas
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">monetization_on</span>
+                Pipeline de Vendas
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+                Agendamento Clínico
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Faturamento
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+                Google Calendar
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+                Drive Documents
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">mail</span>
+                Gmail Sync
+            </a>
+<a class="text-secondary-container font-bold border-l-4 border-secondary-container bg-primary-container/20 px-4 py-3 flex items-center gap-3 opacity-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Configurações
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">hub</span>
+                Canais
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-3 flex items-center gap-3 transition-colors hover:bg-primary-container/10" href="#">
+<span class="material-symbols-outlined">groups</span>
+                Equipe
+            </a>
+</nav>
+<div class="mt-auto border-t border-primary-container/30 pt-4 px-2 space-y-1">
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-2 flex items-center gap-3 transition-colors hover:bg-primary-container/10 rounded-md" href="#">
+<span class="material-symbols-outlined">notifications</span>
+                Notificações
+            </a>
+<a class="text-sidebar-inactive-text hover:text-on-primary px-4 py-2 flex items-center gap-3 transition-colors hover:bg-primary-container/10 rounded-md" href="#">
+<span class="material-symbols-outlined">dark_mode</span>
+                Tema
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[250px] relative">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-250px)] z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center h-16 px-margin">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary">Body Harmony CRM</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Workspace</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Relatórios</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Dashboards</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="text-on-surface-variant hover:text-secondary transition-colors hover:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors hover:scale-95 duration-150">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors hover:scale-95 duration-150">
+<span class="material-symbols-outlined">contrast</span>
+</button>
+</div>
+<div class="flex items-center gap-3 border-l border-outline-variant pl-6">
+<div class="text-right">
+<div class="font-headline-sm text-body-md font-semibold text-primary">Mariana Silva</div>
+<div class="font-label-md text-label-md text-success-emerald">Disponível</div>
+</div>
+<img alt="Mariana Silva Profile Image" class="w-10 h-10 rounded-full border-2 border-surface-container-highest object-cover" data-alt="A professional headshot of a female clinic manager, smiling, dressed in elegant business casual attire, with a soft blurred clinical background. Light and bright corporate styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbhxNFOHVghTA0tZk4LxMeGaea3ptmcgmFiYGqTpnolNgs056tSAaV63V_sYg_B8FU0z-a2nVjF8z5_CSox0WU9kT-VhaylZ-6TTVPembCMbZolf58GEcxqkvpgnibAxuPWyB1tR-OHoPn5dQwng-79FFzAj7-cPwt9VGhJmh9lXY1J-piG-l2iAm2xHf1Bsb9xxNDooDbCwliWva7Qc8dFChYEasKcQ_fIMZKQafvV-llMB4M2DuV">
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="pt-24 px-margin pb-margin h-full overflow-y-auto">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-primary mb-2">Central de Instâncias WhatsApp</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Gerencie e monitore as conexões de WhatsApp da clínica.</p>
+</div>
+<button class="bg-primary text-on-primary font-body-md text-body-md px-6 py-2.5 rounded-lg hover:bg-tertiary-container transition-colors shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined">add_circle</span>
+                    Adicionar Nova Linha
+                </button>
+</div>
+<!-- Bento Grid for Instances -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Instance 1: Connected -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex flex-col h-[320px]">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-success-emerald/10 flex items-center justify-center text-success-emerald">
+<span class="material-symbols-outlined" style="font-size: 28px;">phone_iphone</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Recepção Principal</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+55 11 99999-1111</p>
+</div>
+</div>
+<span class="bg-success-emerald/10 text-success-emerald font-label-md text-label-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-success-emerald"></span> Conectado
+                        </span>
+</div>
+<div class="flex-1 space-y-4">
+<div class="flex justify-between items-center border-b border-surface-container py-2">
+<span class="font-body-sm text-on-surface-variant">Bateria:</span>
+<span class="font-body-md text-primary flex items-center gap-1"><span class="material-symbols-outlined text-success-emerald" style="font-size: 16px;">battery_full</span> 89%</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-container py-2">
+<span class="font-body-sm text-on-surface-variant">Última Sincronização:</span>
+<span class="font-body-md text-primary">Agora mesmo</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body-sm text-on-surface-variant">Mensagens Hoje:</span>
+<span class="font-body-md text-primary font-semibold">1.240</span>
+</div>
+</div>
+<div class="mt-auto flex gap-3 pt-4">
+<button class="flex-1 bg-surface-container text-primary font-body-sm py-2 rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
+                            Reiniciar
+                        </button>
+<button class="flex-1 bg-surface-container text-primary font-body-sm py-2 rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">send</span>
+                            Testar Envio
+                        </button>
+</div>
+</div>
+<!-- Instance 2: Waiting QR -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-md border-2 border-secondary-container/50 flex flex-col h-[320px] relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary-container"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-warning-amber/10 flex items-center justify-center text-warning-amber">
+<span class="material-symbols-outlined" style="font-size: 28px;">qr_code_scanner</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Atendimento Especialistas</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+55 11 99999-2222</p>
+</div>
+</div>
+<span class="bg-warning-amber/10 text-warning-amber font-label-md text-label-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-warning-amber animate-pulse"></span> Aguardando QR
+                        </span>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center">
+<div class="bg-white p-2 rounded-lg shadow-sm border border-outline-variant/20 mb-3">
+<img alt="QR Code de Pareamento" class="w-28 h-28 object-contain" data-alt="A highly detailed, crisp, black and white QR code graphic intended for pairing a smartphone app. It is perfectly square and centrally aligned on a stark white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-vfWGQlEDAtsR6m4SF0MVSznOp-ZIIXvQ9-nmRO1u43ksyQo6AzqCPrDW0auTYgvLsv14i9vykBixLQuZhrflYszEil_hBPmnM95G66m51LeAet8djhB5IFe6Q3-Iy5GtrvbTe8vw3qJhqCz1JOorbB3IOpqpn12OxnOQLFN50RnkWJINKjye-5vCqkoN8IiG8zIE5Y4dGTvBtti3wkxoJe9XTkkPyi8_NUyExQy8uQkOFI_PWEm2">
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center max-w-[80%]">Abra o WhatsApp no aparelho e escaneie este código para parear.</p>
+</div>
+<div class="mt-auto pt-2">
+<button class="w-full bg-secondary-container/10 text-secondary-container font-body-sm py-2 rounded-lg hover:bg-secondary-container/20 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">refresh</span>
+                            Gerar Novo QR Code
+                        </button>
+</div>
+</div>
+<!-- Instance 3: Connected -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex flex-col h-[320px]">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-success-emerald/10 flex items-center justify-center text-success-emerald">
+<span class="material-symbols-outlined" style="font-size: 28px;">phone_iphone</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Comercial / Vendas</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+55 11 99999-3333</p>
+</div>
+</div>
+<span class="bg-success-emerald/10 text-success-emerald font-label-md text-label-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-success-emerald"></span> Conectado
+                        </span>
+</div>
+<div class="flex-1 space-y-4">
+<div class="flex justify-between items-center border-b border-surface-container py-2">
+<span class="font-body-sm text-on-surface-variant">Bateria:</span>
+<span class="font-body-md text-primary flex items-center gap-1"><span class="material-symbols-outlined text-warning-amber" style="font-size: 16px;">battery_4_bar</span> 42%</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-container py-2">
+<span class="font-body-sm text-on-surface-variant">Última Sincronização:</span>
+<span class="font-body-md text-primary">Há 2 min</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body-sm text-on-surface-variant">Mensagens Hoje:</span>
+<span class="font-body-md text-primary font-semibold">3.415</span>
+</div>
+</div>
+<div class="mt-auto flex gap-3 pt-4">
+<button class="flex-1 bg-surface-container text-primary font-body-sm py-2 rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
+                            Reiniciar
+                        </button>
+<button class="flex-1 bg-surface-container text-primary font-body-sm py-2 rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">send</span>
+                            Testar Envio
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsNotebookGovernanceContract",
+  "type": "object",
+  "description": "Contrato de Governança, Insights Clínicos, Podcasts e Personificação no Gestor LMS",
+  "properties": {
+    "settings": {
+      "type": "object",
+      "properties": {
+        "maintenance_mode": {
+          "type": "boolean"
+        },
+        "maintenance_message": {
+          "type": "string"
+        },
+        "default_daily_credits": {
+          "type": "integer"
+        },
+        "system_prompt": {
+          "type": "string"
+        },
+        "llm_model": {
+          "type": "string"
+        }
+      }
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string"
+          },
+          "module_id": {
+            "type": "integer"
+          },
+          "questions_count": {
+            "type": "integer"
+          },
+          "trending": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "podcasts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "module_title": {
+            "type": "string"
+          },
+          "author_name": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "is_featured": {
+            "type": "boolean"
+          },
+          "audio_url": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

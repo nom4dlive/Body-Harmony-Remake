@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShopAdminCheckinAsaasResponse",
+  "description": "Schema de resposta do credenciamento e validação de check-in de ingressos e passaportes do congresso",
+  "type": "object",
+  "required": ["success", "status", "message"],
+  "properties": {
+    "success": { "type": "boolean" },
+    "status": {
+      "type": "string",
+      "enum": ["APPROVED", "ALREADY_CHECKED_IN", "UNPAID", "NOT_FOUND", "ERROR"]
+    },
+    "message": { "type": "string" },
+    "order": {
+      "type": "object",
+      "required": ["id", "customer_name", "product_name"],
+      "properties": {
+        "id": { "type": ["integer", "string"] },
+        "customer_name": { "type": "string" },
+        "customer_email": { "type": "string" },
+        "customer_phone": { "type": "string" },
+        "customer_cpf": { "type": ["string", "null"] },
+        "customer_cpf_masked": { "type": ["string", "null"] },
+        "product_name": { "type": "string" },
+        "tier_name": { "type": ["string", "null"] },
+        "category": { "type": ["string", "null"] },
+        "ticket_code": { "type": ["string", "null"] },
+        "ticket_token": { "type": ["string", "null"] },
+        "checked_in_at": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

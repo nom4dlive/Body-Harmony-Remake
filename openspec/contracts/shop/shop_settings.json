@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShopSettingsContract",
+  "description": "Contrato de leitura e edição dos textos da vitrine oficial /shop",
+  "type": "object",
+  "properties": {
+    "hero_title": { "type": "string" },
+    "hero_subtitle": { "type": "string" },
+    "badge_1": { "type": "string" },
+    "badge_2": { "type": "string" },
+    "badge_3": { "type": "string" },
+    "announcement_text": { "type": "string" },
+    "announcement_active": { "type": "integer", "enum": [0, 1] },
+    "support_title": { "type": "string" },
+    "support_subtitle": { "type": "string" },
+    "support_whatsapp": { "type": "string" },
+    "congresso_experience_title": { "type": "string" },
+    "congresso_experience_badge": { "type": "string" },
+    "congresso_experience_perk_badge": { "type": "string" },
+    "congresso_experience_cta": { "type": "string" },
+    "congresso_vip_title": { "type": "string" },
+    "congresso_vip_badge": { "type": "string" },
+    "congresso_vip_perk_badge": { "type": "string" },
+    "congresso_vip_cta": { "type": "string" },
+    "congresso_sections_order": { "type": "string" }
+  },
+  "required": ["hero_title", "hero_subtitle"]
+}

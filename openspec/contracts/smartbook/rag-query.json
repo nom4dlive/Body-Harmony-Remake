@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SmartBookRagQueryContract",
+  "description": "Contrato de API para consulta RAG da Licenciada com a Dra. Harmony AI sobre fontes do caderno",
+  "endpoint": {
+    "method": "POST",
+    "path": "/api/v1/smartbook/query",
+    "roles_allowed": ["LICENCIADA", "GESTOR"]
+  },
+  "request": {
+    "type": "object",
+    "required": ["notebook_id", "query"],
+    "properties": {
+      "notebook_id": {
+        "type": "string",
+        "description": "Identificador do caderno clínico no SurrealDB"
+      },
+      "query": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 2000,
+        "description": "Pergunta clínica ou dúvida da licenciada"
+      },
+      "chat_history": {
+        "type": "array",
+        "description": "Histórico prévio da conversa para manter contexto",
+        "items": {
+          "type": "object",
+          "required": ["role", "content"],
+          "properties": {
+            "role": { "type": "string", "enum": ["user", "assistant"] },
+            "content": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "required": ["answer", "sources_cited"],
+    "properties": {
+      "answer": {
+        "type": "string",
+        "description": "Resposta formulada pela Dra. Harmony AI com parâmetros e justificativas"
+      },
+      "sources_cited": {
+        "type": "array",
+        "description": "Fontes oficiais consultadas para formular a resposta",
+        "items": {
+          "type": "object",
+          "required": ["source_id", "title"],
+          "properties": {
+            "source_id": { "type": "string" },
+            "title": { "type": "string" },
+            "source_type": { "type": "string", "enum": ["pdf", "audio", "video", "text", "url"] },
+            "relevance_score": { "type": "number" },
+            "snippet": { "type": "string" }
+          }
+        }
+      },
+      "model_used": {
+        "type": "string",
+        "description": "Modelo de inferência local utilizado (ex: Qwen/Qwen2.5-32B)"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GET /v1/admin/lms/exclusive-access/list — Contrato V3.1 (PLAN-010)",
+  "description": "Lista todos os acessos exclusivos ativos (alunas e licenciadas), incluindo CPF para rastreabilidade no portal gestor.",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/admin/lms/exclusive-access/list",
+    "auth": "Bearer admin token (X-Admin-Token ou Cookie de sessão)"
+  },
+  "response": {
+    "success": {
+      "status": 200,
+      "body": {
+        "alunas": [
+          {
+            "id": "integer",
+            "aluna_id": "integer",
+            "aluna_name": "string",
+            "aluna_cpf": "string (11 dígitos numéricos) | null",
+            "module_id": "integer",
+            "module_title": "string",
+            "granted_at": "string (datetime ISO)",
+            "expires_at": "string (datetime ISO) | null"
+          }
+        ],
+        "licenciadas": [
+          {
+            "id": "integer",
+            "licenciada_id": "integer",
+            "licenciada_name": "string",
+            "licenciada_cpf": "string (11 dígitos numéricos) | null",
+            "module_id": "integer",
+            "module_title": "string",
+            "granted_at": "string (datetime ISO)",
+            "expires_at": "string (datetime ISO) | null"
+          }
+        ]
+      }
+    }
+  },
+  "plan_ref": "PLAN-010",
+  "updated_at": "2026-06-05"
+}

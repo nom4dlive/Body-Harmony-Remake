@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmExecutiveAnalyticsExportContract",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "period": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "attendants_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "total_conversations": { "type": "integer" },
+          "resolved_conversations": { "type": "integer" },
+          "avg_response_time_minutes": { "type": "number" }
+        },
+        "required": ["name", "total_conversations"]
+      }
+    },
+    "clinic_kpis": {
+      "type": "object",
+      "properties": {
+        "total_appointments": { "type": "integer" },
+        "confirmed_appointments": { "type": "integer" },
+        "noshow_appointments": { "type": "integer" },
+        "confirmation_rate_percent": { "type": "number" }
+      },
+      "required": ["total_appointments", "confirmation_rate_percent"]
+    },
+    "congress_sales_kpis": {
+      "type": "object",
+      "properties": {
+        "experience_tickets_sold": { "type": "integer" },
+        "vip_tickets_sold": { "type": "integer" },
+        "gross_revenue": { "type": "number" },
+        "conversion_rate_percent": { "type": "number" }
+      },
+      "required": ["gross_revenue"]
+    },
+    "channel_distribution": {
+      "type": "object",
+      "properties": {
+        "whatsapp": { "type": "integer" },
+        "instagram": { "type": "integer" },
+        "telegram": { "type": "integer" },
+        "email": { "type": "integer" }
+      }
+    }
+  },
+  "required": ["success", "clinic_kpis", "congress_sales_kpis"]
+}

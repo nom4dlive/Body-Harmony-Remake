@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AdminLicenciadasView360Contract",
+  "type": "object",
+  "required": ["success", "data", "summary"],
+  "properties": {
+    "success": { "type": "boolean" },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["unified_key", "nome_oficial", "status_unificado", "valor_taxa_cents"],
+        "properties": {
+          "unified_key": { "type": "string" },
+          "licenciada_id": { "type": ["integer", "null"] },
+          "onboarding_request_id": { "type": ["integer", "null"] },
+          "contract_uuid": { "type": ["string", "null"] },
+          "tax_id": { "type": ["integer", "null"] },
+          "nome_oficial": { "type": "string" },
+          "documento_cpf": { "type": ["string", "null"] },
+          "documento_cnpj": { "type": ["string", "null"] },
+          "whatsapp": { "type": ["string", "null"] },
+          "localizacao": { "type": "string" },
+          "foto_url": { "type": ["string", "null"] },
+          "status_unificado": { 
+            "type": "string",
+            "enum": ["REGULAR_ASSINADO", "QUITADO_PENDENTE_CONTRATO", "AGUARDANDO_PAGAMENTO", "EM_ONBOARDING", "CANCELADO"]
+          },
+          "status_onboarding": { "type": ["string", "null"] },
+          "status_contrato": { "type": ["string", "null"] },
+          "status_financeiro": { "type": ["string", "null"] },
+          "valor_taxa_cents": { "type": "integer" },
+          "valor_taxa_formatado": { "type": "string" },
+          "forma_pagamento": { "type": "string" },
+          "condicao_pagamento": { "type": ["string", "null"] },
+          "parcelas": { "type": "integer" },
+          "tem_comprovante": { "type": "boolean" },
+          "comprovante_url": { "type": ["string", "null"] },
+          "is_locked": { "type": "boolean" },
+          "data_entrada": { "type": "string" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_contratado_formatted", "total_recebido_formatted", "total_pendencias_count", "ticket_medio_formatted"],
+      "properties": {
+        "total_registros": { "type": "integer" },
+        "total_contratado_cents": { "type": "integer" },
+        "total_contratado_formatted": { "type": "string" },
+        "total_recebido_cents": { "type": "integer" },
+        "total_recebido_formatted": { "type": "string" },
+        "total_recebido_count": { "type": "integer" },
+        "total_pendencias_count": { "type": "integer" },
+        "ticket_medio_cents": { "type": "integer" },
+        "ticket_medio_formatted": { "type": "string" },
+        "percentual_assinados": { "type": "integer" }
+      }
+    }
+  }
+}

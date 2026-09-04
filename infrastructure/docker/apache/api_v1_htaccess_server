@@ -1,0 +1,24 @@
+RewriteEngine On
+
+# Ensure Authorization header is passed to PHP
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# Duration update endpoint
+RewriteRule ^lms/lessons/([0-9]+)/duration$ lms/update_duration.php?lesson_id=$1 [QSA,L]
+
+# Thumbnail update endpoint
+RewriteRule ^lms/lessons/([0-9]+)/thumbnail$ lms/update_thumbnail.php?lesson_id=$1 [QSA,L]
+
+# Route all other requests to index.php, preserving method
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# CORS Headers for all methods
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, X-Device-Token, Authorization"
+
+# Handle OPTIONS preflight
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]

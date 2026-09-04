@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LmsNotebookModuleSourcesContract",
+  "type": "object",
+  "description": "Inspeção detalhada de fontes e transcrições de um módulo e upload de PDFs pelo Gestor",
+  "request": {
+    "type": "object",
+    "properties": {
+      "module_id": {
+        "type": "integer"
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "required": [
+      "success",
+      "module",
+      "lessons",
+      "manual_sources"
+    ],
+    "properties": {
+      "success": {
+        "type": "boolean"
+      },
+      "module": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "notebook_id": {
+            "type": "string"
+          }
+        }
+      },
+      "lessons": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "title": {
+              "type": "string"
+            },
+            "video_type": {
+              "type": "string"
+            },
+            "transcript_status": {
+              "type": "string"
+            },
+            "transcript_preview": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "manual_sources": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "filename": {
+              "type": "string"
+            },
+            "file_url": {
+              "type": "string"
+            },
+            "created_at": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

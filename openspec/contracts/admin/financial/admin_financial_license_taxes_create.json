@@ -1,0 +1,46 @@
+{
+  "endpoint": "POST /api/v1/admin/financial/license-taxes",
+  "description": "Cria registro de taxa de licenciamento e gera transação financeira correspondente se status for paid/contract_signed",
+  "body": {
+    "licenciada_id": "int|null",
+    "licenciada_name": "string (obrigatório)",
+    "licenciada_cpf": "string|null",
+    "licenciada_cnpj": "string|null",
+    "licenciada_location": "string|null",
+    "valor_cents": "int (obrigatório, em centavos)",
+    "valor_extenso": "string|null",
+    "payment_method": "pix|card|transfer|manual (obrigatório)",
+    "payment_condition": "string|null",
+    "installments": "int (default 1)",
+    "status": "pending_payment|paid|contract_signed|cancelled",
+    "notes": "string|null",
+    "source": "onboarding|manual|imported",
+    "onboarding_request_id": "int|null"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "id": "int",
+      "licenciada_id": "int|null",
+      "licenciada_name": "string",
+      "licenciada_cpf": "string|null",
+      "licenciada_cnpj": "string|null",
+      "licenciada_location": "string|null",
+      "valor_cents": "int",
+      "valor_display": "string",
+      "valor_extenso": "string|null",
+      "payment_method": "pix|card|transfer|manual",
+      "payment_condition": "string|null",
+      "installments": "int",
+      "status": "pending_payment|paid|contract_signed|cancelled",
+      "contract_signed_at": "datetime|null",
+      "payment_confirmed_at": "datetime|null",
+      "notes": "string|null",
+      "source": "manual",
+      "onboarding_request_id": "int|null",
+      "financial_transaction_id": "int|null",
+      "created_at": "datetime",
+      "updated_at": "datetime"
+    }
+  }
+}

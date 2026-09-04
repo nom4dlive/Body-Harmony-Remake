@@ -1,0 +1,81 @@
+{
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/v1/site_config",
+      "auth_required": false,
+      "roles_allowed": ["public"],
+      "description": "Fetch global site configuration including site texts, SEO metadata, topbar state, and layout flags.",
+      "response": {
+        "status": 200,
+        "body": {
+          "site_texts": {
+            "heroTitle": "Garanta resultados visíveis",
+            "heroSubtitle": "A elite da estética corporal sob a fundamentação científica e prática.",
+            "benefits": []
+          },
+          "seo": {
+            "defaultTitle": "Body Harmony",
+            "titleSuffix": "Body Harmony",
+            "metaDescription": "Body Harmony - A elite da estética corporal."
+          },
+          "topBar": {
+            "enabled": false,
+            "text": ""
+          },
+          "showMentors": true,
+          "showNavbar": true
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v1/site_config",
+      "auth_required": true,
+      "roles_allowed": ["superadmin", "admin"],
+      "description": "Update site configuration key-value pairs (single key-value or bulk JSON object).",
+      "request": {
+        "headers": {
+          "Authorization": "Bearer {token}"
+        },
+        "body": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": ["key", "value"]
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true
+        }
+      }
+    }
+  ],
+  "schema": {
+    "table": "site_config",
+    "columns": {
+      "config_key": "VARCHAR(50) PRIMARY KEY",
+      "config_value": "TEXT (JSON or String)"
+    }
+  },
+  "compliance": {
+    "frontend": "apps/web-app/src/frontend/src/context/DataContext.jsx",
+    "backend": "apps/web-app/src/backend/api/v1/Controllers/SiteConfigController.php"
+  }
+}

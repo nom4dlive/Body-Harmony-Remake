@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CRMDossierAndTriggersContract",
+  "description": "Contrato de API para Dossiê 360º Embed e Gatilhos Reativos WhatsApp (PLAN-154 - Bloco 4)",
+  "type": "object",
+  "properties": {
+    "dossier_query": {
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string" },
+        "matched": { "type": "boolean" },
+        "tipo_usuario": { "type": "string", "enum": ["LICENCIADA", "ALUNA", "ONBOARDING", "LEAD", "DESCONHECIDO"] },
+        "data": {
+          "type": "object",
+          "properties": {
+            "nome": { "type": "string" },
+            "cpf": { "type": ["string", "null"] },
+            "whatsapp": { "type": "string" },
+            "email": { "type": ["string", "null"] },
+            "cidade_uf": { "type": "string" },
+            "status_contrato": { "type": "string" },
+            "contract_pdf_url": { "type": ["string", "null"] },
+            "sign_url": { "type": ["string", "null"] },
+            "financial_summary": { "type": "object" }
+          }
+        }
+      },
+      "required": ["phone", "matched", "tipo_usuario", "data"]
+    },
+    "trigger_contract_issuance": {
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string" },
+        "candidate_name": { "type": "string" },
+        "sign_url": { "type": "string" },
+        "dispatched": { "type": "boolean" },
+        "instance": { "type": "string", "enum": ["inst_juridico"] }
+      },
+      "required": ["phone", "candidate_name", "sign_url", "dispatched", "instance"]
+    },
+    "trigger_mentorship_reminder": {
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string" },
+        "mentee_name": { "type": "string" },
+        "datetime": { "type": "string" },
+        "meeting_link": { "type": "string" },
+        "scheduled": { "type": "boolean" },
+        "instance": { "type": "string", "enum": ["inst_licenciadas"] }
+      },
+      "required": ["phone", "mentee_name", "datetime", "meeting_link", "scheduled", "instance"]
+    }
+  },
+  "required": ["dossier_query", "trigger_contract_issuance", "trigger_mentorship_reminder"]
+}

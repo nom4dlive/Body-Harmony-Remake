@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CongressCouponValidateContract",
+  "description": "Contrato de validação de cupons para o Congresso Body Harmony",
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/v1/congress/coupons/validate",
+      "summary": "Valida cupons de desconto (20% Licenciadas e 100% Atletas/Convidadas)",
+      "request": {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string" },
+            "tier_id": { "type": "integer" }
+          },
+          "required": ["code", "tier_id"]
+        }
+      },
+      "response": {
+        "status": 200,
+        "content_type": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ok": { "type": "boolean" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "coupon_code": { "type": "string" },
+                "coupon_type": { "type": "string", "enum": ["LICENCIADA_NOMINAL", "ATLETA_CONVIDADA", "PARCEIRO", "DESCONTO_FIXO"] },
+                "discount_percentage": { "type": "number" },
+                "discount_cents": { "type": "integer" },
+                "original_amount_cents": { "type": "integer" },
+                "final_amount_cents": { "type": "integer" },
+                "requires_accreditation": { "type": "boolean" },
+                "message": { "type": "string" }
+              },
+              "required": ["coupon_code", "discount_percentage", "discount_cents", "original_amount_cents", "final_amount_cents", "requires_accreditation"]
+            }
+          },
+          "required": ["ok", "data"]
+        }
+      }
+    }
+  ]
+}

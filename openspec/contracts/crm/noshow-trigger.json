@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmNoShowTriggerContract",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "reminders_24h_sent": { "type": "integer" },
+    "reminders_2h_sent": { "type": "integer" },
+    "total_processed": { "type": "integer" },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "today_total": { "type": "integer" },
+        "confirmed": { "type": "integer" },
+        "noshow_avoided": { "type": "integer" }
+      }
+    }
+  },
+  "required": ["success", "total_processed"]
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SmartBookExecuteTransformationContract",
+  "description": "Contrato de API para execução das 9 Ferramentas do Estúdio SmartBook (V3 Mobile-First)",
+  "endpoint": {
+    "method": "POST",
+    "path": "/api/v1/smartbook/transformations/execute",
+    "roles_allowed": ["LICENCIADA", "GESTOR"]
+  },
+  "request": {
+    "type": "object",
+    "required": ["notebook_id", "transformation_key"],
+    "properties": {
+      "notebook_id": {
+        "type": "string",
+        "description": "Identificador do caderno clínico no SurrealDB"
+      },
+      "transformation_key": {
+        "type": "string",
+        "enum": [
+          "audio",
+          "slides",
+          "video",
+          "mindmap",
+          "report",
+          "flashcards",
+          "quiz",
+          "infographic",
+          "datatable",
+          "mapa_mental_clinico",
+          "quiz_simulado_alunas",
+          "guia_estudos_completo",
+          "linha_tempo_tratamento",
+          "glossario_eletroterapia",
+          "podcast_dialogado",
+          "infografico_clinico"
+        ],
+        "description": "Chave canônica da ferramenta do Estúdio"
+      },
+      "custom_instructions": {
+        "type": "string",
+        "description": "Instruções customizadas ou prompt de preset fornecido pelo usuário"
+      },
+      "preset_label": {
+        "type": "string",
+        "description": "Rótulo do preset rápido selecionado (ex: 'Resumo conciso')"
+      },
+      "source_ids": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Lista opcional de IDs de fontes específicas a filtrar"
+      },
+      "async_mode": {
+        "type": "boolean",
+        "default": false,
+        "description": "Se true, enfileira o job e retorna task_id para polling"
+      }
+    }
+  },
+  "response": {
+    "type": "object",
+    "required": ["status"],
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["completed", "processing", "failed"]
+      },
+      "task_id": {
+        "type": "string",
+        "description": "ID da tarefa em segundo plano (quando async_mode=true)"
+      },
+      "transformation_key": {
+        "type": "string"
+      },
+      "output_type": {
+        "type": "string",
+        "enum": ["mermaid", "tree_json", "markdown", "quiz", "timeline", "glossary", "audio", "chart", "image", "slides", "flashcards", "datatable", "video_script"]
+      },
+      "result": {
+        "type": "string",
+        "description": "Resultado textual/markdown, código Mermaid ou JSON de dados estruturados"
+      },
+      "audio_url": {
+        "type": "string",
+        "description": "URL do áudio sintetizado quando output_type=audio"
+      },
+      "image_url": {
+        "type": "string",
+        "description": "URL pública do gráfico gerado (PNG/SVG)"
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  }
+}

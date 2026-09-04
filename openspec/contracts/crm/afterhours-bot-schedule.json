@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CrmAfterHoursBotScheduleContract",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "is_enabled": { "type": "boolean" },
+    "weekday_start": { "type": "string" },
+    "weekday_end": { "type": "string" },
+    "weekend_enabled": { "type": "boolean" },
+    "is_currently_afterhours": { "type": "boolean" },
+    "custom_greeting": { "type": "string" }
+  },
+  "required": ["success", "is_enabled", "is_currently_afterhours"]
+}
