@@ -1,0 +1,44 @@
+name: Nexus Quality Gate & Audit Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - 'feat/qwen-*'
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  quality-gate:
+    name: Nexus Hard-Gatekeeper (V3.2)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, pdo_mysql, curl
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Frontend Dependencies
+        run: |
+          if [ -d "apps/web-app" ]; then
+            cd apps/web-app
+            npm install
+          fi
+
+      - name: Execute Nexus Gate (Deterministic Verification)
+        shell: pwsh
+        run: |
+          ./scripts/nexus_gate.ps1
