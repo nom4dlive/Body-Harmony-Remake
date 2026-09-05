@@ -333,6 +333,12 @@ export default function CongressCheckoutPage() {
     phone: ''
   });
 
+  // Credenciamento (100% OFF)
+  const [accreditationData, setAccreditationData] = useState({
+    athlete_category: '',
+    instagram_handle: ''
+  });
+
   // Estados de Submissão & Resultados
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
@@ -370,7 +376,8 @@ export default function CongressCheckoutPage() {
   // Cálculos de Preço
   const baseAmountCents = activeTier?.price_cents || 69700;
   const discountCents = couponState.applied ? (couponState.data?.discount_cents || 0) : 0;
-  const finalAmountCents = Math.max(0, baseAmountCents - discountCents);
+  const isFree = couponState.applied && (couponState.data?.discount_percentage >= 100 || couponState.data?.discount_percent >= 100);
+  const finalAmountCents = isFree ? 0 : Math.max(0, baseAmountCents - discountCents);
 
   // Cálculo de Parcelas (com repasse de juros padrão adquirente)
   const installmentOptions = useMemo(() => {
@@ -477,13 +484,14 @@ export default function CongressCheckoutPage() {
     setSubmitting(true);
 
     try {
+      const isFreeOrder = isFree || finalAmountCents === 0;
       const payload = {
         tier_id: activeTier.id,
         customer_name: customer.name,
         customer_email: customer.email,
         customer_cpf: customer.cpf,
         customer_phone: customer.phone,
-        payment_method: paymentMethod,
+        payment_method: isFreeOrder ? 'free' : paymentMethod,
         coupon_code: couponState.applied ? couponCode.trim().toUpperCase() : null,
         installments: paymentMethod === 'card' ? installments : 1,
         card_data: paymentMethod === 'card' ? cardData : null,
@@ -492,7 +500,8 @@ export default function CongressCheckoutPage() {
           name: holderInfo.name,
           cpf: holderInfo.cpf,
           phone: holderInfo.phone || customer.phone
-        } : null
+        } : null,
+        accreditation_data: isFreeOrder ? accreditationData : null
       };
 
       const res = await congressApi.checkout(payload);
@@ -729,8 +738,8 @@ export default function CongressCheckoutPage() {
     );
   }
 
-  // Se Cartão Aprovado com sucesso
-  if (checkoutResult && (checkoutResult.payment_status === 'CONFIRMED' || checkoutResult.payment_status === 'RECEIVED')) {
+  // Se Cartão ou Credenciamento Aprovado com sucesso
+  if (checkoutResult && (checkoutResult.payment_status === 'CONFIRMED' || checkoutResult.payment_status === 'RECEIVED' || checkoutResult.payment_status === 'FREE_APPROVED' || checkoutResult.payment_method === 'free')) {
     return (
       <PageContainer>
         <ContentWrapper style={{ maxWidth: '650px' }}>
@@ -830,34 +839,70 @@ export default function CongressCheckoutPage() {
                 </FormGroup>
               </SectionCard>
 
-              {/* 2. Forma de Pagamento */}
+              {/* 2. Forma de Pagamento / Credenciamento */}
               <SectionCard>
                 <SectionHeader>
                   <div className="step-number">2</div>
-                  <h2>Forma de Pagamento</h2>
+                  <h2>{isFree ? 'Credenciamento 100% Isento' : 'Forma de Pagamento'}</h2>
                 </SectionHeader>
 
-                <PaymentTabs>
-                  <PaymentTabBtn 
-                    type="button" 
-                    $active={paymentMethod === 'pix'} 
-                    onClick={() => { setPaymentMethod('pix'); setFormError(''); }}
-                  >
-                    <QrCode size={22} color={paymentMethod === 'pix' ? '#D4AF37' : '#94A3B8'} />
-                    <span>PIX Instantâneo</span>
-                    <span className="badge-sub">Aprovação Imediata</span>
-                  </PaymentTabBtn>
+                {isFree ? (
+                  <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10B981', borderRadius: '12px', padding: '1.25rem', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.75rem' }}>
+                      <Award size={24} color="#10B981" />
+                      <div>
+                        <div style={{ color: '#F8FAFC', fontWeight: 800, fontSize: '1rem' }}>
+                          Inscrição 100% Gratuita Liberada
+                        </div>
+                        <div style={{ color: '#10B981', fontSize: '0.8rem', fontWeight: 600 }}>
+                          Cupom {couponState.data?.coupon_code || couponCode} aplicado com sucesso!
+                        </div>
+                      </div>
+                    </div>
+                    <FormGroup $cols={2} style={{ marginTop: '1rem' }}>
+                      <InputWrapper>
+                        <label>Categoria / Modalidade da Atleta (Opcional)</label>
+                        <input 
+                          type="text" 
+                          placeholder="Ex: Bikini / Wellness / Convidada" 
+                          value={accreditationData.athlete_category}
+                          onChange={(e) => setAccreditationData(prev => ({ ...prev, athlete_category: e.target.value }))}
+                        />
+                      </InputWrapper>
+                      <InputWrapper>
+                        <label>Instagram Oficial (Opcional)</label>
+                        <input 
+                          type="text" 
+                          placeholder="@seuinstagram" 
+                          value={accreditationData.instagram_handle}
+                          onChange={(e) => setAccreditationData(prev => ({ ...prev, instagram_handle: e.target.value }))}
+                        />
+                      </InputWrapper>
+                    </FormGroup>
+                  </div>
+                ) : (
+                  <PaymentTabs>
+                    <PaymentTabBtn 
+                      type="button" 
+                      $active={paymentMethod === 'pix'} 
+                      onClick={() => { setPaymentMethod('pix'); setFormError(''); }}
+                    >
+                      <QrCode size={22} color={paymentMethod === 'pix' ? '#D4AF37' : '#94A3B8'} />
+                      <span>PIX Instantâneo</span>
+                      <span className="badge-sub">Aprovação Imediata</span>
+                    </PaymentTabBtn>
 
-                  <PaymentTabBtn 
-                    type="button" 
-                    $active={paymentMethod === 'card'} 
-                    onClick={() => { setPaymentMethod('card'); setFormError(''); }}
-                  >
-                    <CreditCard size={22} color={paymentMethod === 'card' ? '#D4AF37' : '#94A3B8'} />
-                    <span>Cartão de Crédito</span>
-                    <span className="badge-sub">Em até 12x</span>
-                  </PaymentTabBtn>
-                </PaymentTabs>
+                    <PaymentTabBtn 
+                      type="button" 
+                      $active={paymentMethod === 'card'} 
+                      onClick={() => { setPaymentMethod('card'); setFormError(''); }}
+                    >
+                      <CreditCard size={22} color={paymentMethod === 'card' ? '#D4AF37' : '#94A3B8'} />
+                      <span>Cartão de Crédito</span>
+                      <span className="badge-sub">Em até 12x</span>
+                    </PaymentTabBtn>
+                  </PaymentTabs>
+                )}
 
                 {/* Bloco de Cartão de Crédito */}
                 {paymentMethod === 'card' && (
@@ -917,18 +962,20 @@ export default function CongressCheckoutPage() {
                 {formError && (
                   <div style={{ background: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.4)', borderRadius: '8px', padding: '1rem', marginTop: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#F87171', fontWeight: 700, fontSize: '0.88rem', marginBottom: '0.35rem' }}>
-                      <AlertCircle size={16} /> Não foi possível autorizar o cartão
+                      <AlertCircle size={16} /> {(formError.toLowerCase().includes('cartão') || formError.toLowerCase().includes('card')) ? 'Não foi possível autorizar o cartão' : 'Atenção na Inscrição'}
                     </div>
                     <p style={{ margin: '0 0 0.75rem', fontSize: '0.82rem', color: '#CBD5E1', lineHeight: '1.4' }}>
-                      {formError}. Que tal pagar com aprovação instantânea no <strong>PIX</strong>?
+                      {formError}. {!isFree && 'Que tal pagar com aprovação instantânea no PIX?'}
                     </p>
-                    <AuraButtonPrimary 
-                      type="button" 
-                      onClick={() => { setPaymentMethod('pix'); setFormError(''); }}
-                      style={{ minHeight: '38px', fontSize: '0.82rem', padding: '0 1rem', width: 'auto' }}
-                    >
-                      <QrCode size={15} /> Pagar com PIX Agora (Sem Erros)
-                    </AuraButtonPrimary>
+                    {!isFree && (
+                      <AuraButtonPrimary 
+                        type="button" 
+                        onClick={() => { setPaymentMethod('pix'); setFormError(''); }}
+                        style={{ minHeight: '38px', fontSize: '0.82rem', padding: '0 1rem', width: 'auto' }}
+                      >
+                        <QrCode size={15} /> Pagar com PIX Agora (Sem Erros)
+                      </AuraButtonPrimary>
+                    )}
                   </div>
                 )}
 
@@ -1028,7 +1075,7 @@ export default function CongressCheckoutPage() {
                 <SummaryRow $total>
                   <span>Total Final</span>
                   <span className="total-price">
-                    R$ {(finalAmountCents / 100).toFixed(2).replace('.', ',')}
+                    {isFree ? 'R$ 0,00 (100% OFF)' : `R$ ${(finalAmountCents / 100).toFixed(2).replace('.', ',')}`}
                   </span>
                 </SummaryRow>
 
@@ -1038,7 +1085,11 @@ export default function CongressCheckoutPage() {
                     disabled={submitting} 
                     style={{ width: '100%', minHeight: '52px', fontSize: '1rem', fontWeight: 800, justifyContent: 'center' }}
                   >
-                    {submitting ? 'Processando Inscrição...' : (paymentMethod === 'pix' ? 'Gerar PIX e Concluir Vaga' : `Pagar R$ ${(finalAmountCents / 100).toFixed(2).replace('.', ',')}`)}
+                    {submitting 
+                      ? 'Processando Inscrição...' 
+                      : isFree 
+                        ? 'Confirmar Credenciamento Gratuito' 
+                        : (paymentMethod === 'pix' ? 'Gerar PIX e Concluir Vaga' : `Pagar R$ ${(finalAmountCents / 100).toFixed(2).replace('.', ',')}`)}
                   </AuraButtonPrimary>
                 </div>
               </SummaryBox>

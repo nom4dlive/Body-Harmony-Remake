@@ -133,6 +133,26 @@ $router->add('POST', '/bot/webhook', function () {
     (new TelegramWebhookController())->handle();
 });
 
+// === ASAAS PAYMENT WEBHOOK ROUTES (PLAN-230) ===
+$router->add('POST', '/payments/webhook/asaas', function () {
+    (new AsaasWebhookController())->handle();
+});
+$router->add('GET', '/payments/webhook/asaas', function () {
+    (new AsaasWebhookController())->handlePing();
+});
+$router->add('POST', '/payments/webhook/asaas/', function () {
+    (new AsaasWebhookController())->handle();
+});
+$router->add('GET', '/payments/webhook/asaas/', function () {
+    (new AsaasWebhookController())->handlePing();
+});
+$router->add('POST', '/payments/asaas/webhook', function () {
+    (new AsaasWebhookController())->handle();
+});
+$router->add('GET', '/payments/asaas/webhook', function () {
+    (new AsaasWebhookController())->handlePing();
+});
+
 // === LMS ROUTES ===
 $router->add('GET', '/lms/modules', function () use ($middleware) {
     $middleware->handle(); // Enforce Auth

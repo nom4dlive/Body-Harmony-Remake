@@ -114,13 +114,9 @@ $ScriptFile = "$ProjectRoot\winscp_sync.txt"
 $Excludes = "| .git/; .env; .env.deploy; /private_uploads/; /uploads/; /api/logs/; node_modules/; *.log; *.map; /tmp/; /ttfontdata/; /vendor/mpdf/mpdf/ttfonts/; *.filepart; *.in.*; /bot.bodyharmony.com.br/; /.ftpquota/"
 
 $WinSCPScriptContent = @"
-option batch continue
+option batch on
 option confirm off
 open ${FtpProtocol}://${FtpUser}:${FtpPassEnc}@${FtpHost}:${FtpPort}/ -timeout=300 -passive=on
-rm /*/.in.*
-rm /assets/.in.*
-rm /api/v1/.in.*
-option batch abort
 synchronize remote -filemask="$Excludes" "$BuildDir" "/"
 exit
 "@
@@ -189,11 +185,19 @@ try {
 
     # 3. Validar Endpoint de Assinatura e Contratos
     $ContractPingUrl = "https://bodyharmony.com.br/api/v1/contracts/sign.php"
-    $ContractResp = Invoke-WebRequest -Uri $ContractPingUrl -Method GET -UseBasicParsing -TimeoutSec 10 -SkipHttpErrorCheck
-    if ($ContractResp.StatusCode -eq 400 -or $ContractResp.StatusCode -eq 200) {
-        Write-Host "   ✅ Digital Contract & Terms Signing Engine: 200/400 (Online & Functional)" -ForegroundColor Green
+    $ContractRespStatusCode = 0
+    try {
+        $ContractResp = Invoke-WebRequest -Uri $ContractPingUrl -Method GET -UseBasicParsing -TimeoutSec 10
+        $ContractRespStatusCode = $ContractResp.StatusCode
+    } catch [System.Net.WebException] {
+        if ($_.Exception.Response) {
+            $ContractRespStatusCode = [int]$_.Exception.Response.StatusCode
+        }
+    }
+    if ($ContractRespStatusCode -eq 400 -or $ContractRespStatusCode -eq 200) {
+        Write-Host "   ✅ Digital Contract & Terms Signing Engine: $ContractRespStatusCode (Online & Functional)" -ForegroundColor Green
     } else {
-        throw "Digital Contract Signing Engine returned unexpected status $($ContractResp.StatusCode)"
+        throw "Digital Contract Signing Engine returned unexpected status $ContractRespStatusCode"
     }
 }
 catch {

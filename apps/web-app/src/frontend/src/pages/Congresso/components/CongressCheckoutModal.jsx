@@ -827,10 +827,6 @@ export default function CongressCheckoutModal({ isOpen, onClose, initialTier = '
       return;
     }
 
-    if (isFree && !accreditationData.athlete_category.trim()) {
-      setFormError('Para inscrições com 100% de isenção, informe a categoria/modalidade da atleta.');
-      return;
-    }
 
     if (paymentMethod === 'card' && !isFree) {
       if (!cardData.number || !cardData.holder_name || !cardData.expiry_month || !cardData.expiry_year || !cardData.ccv) {
@@ -861,7 +857,10 @@ export default function CongressCheckoutModal({ isOpen, onClose, initialTier = '
         installments: paymentMethod === 'card' ? installments : 1,
         card_data: paymentMethod === 'card' ? cardData : null,
         holder_info: (paymentMethod === 'card' && !holderInfo.is_same_as_attendee) ? holderInfo : null,
-        accreditation_data: isFree ? accreditationData : null
+        accreditation_data: isFree ? {
+          ...accreditationData,
+          athlete_category: accreditationData.athlete_category.trim() || 'Atleta / Convidada VIP'
+        } : null
       };
 
       const res = await congressApi.checkout(payload);

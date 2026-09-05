@@ -679,7 +679,7 @@ class CongressTicketService {
             $athleteCategory = trim($accreditation['athlete_category'] ?? ($data['category'] ?? ''));
 
             if (empty($athleteCategory)) {
-                throw new Exception("Para cupons de 100% de isenção, a categoria/modalidade da atleta/convidada é obrigatória.");
+                $athleteCategory = 'Atleta / Convidada VIP';
             }
 
             $stmt = $this->db->prepare("

@@ -1,7 +1,9 @@
 RewriteEngine On
 
-# Ensure Authorization header is passed to PHP
+# Ensure Authorization & Asaas Webhook headers are passed to PHP
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+SetEnvIf asaas-access-token "(.*)" HTTP_ASAAS_ACCESS_TOKEN=$1
+SetEnvIf access-token "(.*)" HTTP_ACCESS_TOKEN=$1
 
 # Route all requests to index.php (Router central PHP handles all PATCH/GET/POST routes)
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -11,7 +13,7 @@ RewriteRule ^ index.php [QSA,L]
 # CORS Headers for all methods
 Header always set Access-Control-Allow-Origin "*"
 Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-Header always set Access-Control-Allow-Headers "Content-Type, X-Device-Token, X-ALUNA-TOKEN, Authorization"
+Header always set Access-Control-Allow-Headers "Content-Type, X-Device-Token, X-ALUNA-TOKEN, Authorization, asaas-access-token, access-token"
 
 # Handle OPTIONS preflight
 RewriteCond %{REQUEST_METHOD} OPTIONS

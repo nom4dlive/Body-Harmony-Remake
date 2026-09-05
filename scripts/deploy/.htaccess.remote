@@ -34,6 +34,8 @@ CGIPassAuth On
 
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+SetEnvIf asaas-access-token "(.*)" HTTP_ASAAS_ACCESS_TOKEN=$1
+SetEnvIf access-token "(.*)" HTTP_ACCESS_TOKEN=$1
 
 # ----------------------------------------------------------------------
 # API ROUTES (Backend)
@@ -56,6 +58,6 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 🛡️ Hardened SPA Routing: Redirect everything else to index.html
-# This ensures sub-paths like /lms or /portal-licenciada/dashboard load the React app correctly.
+# 🛡️ Hardened SPA Routing: Redirect non-API requests to index.html
+RewriteCond %{REQUEST_URI} !^/api/
 RewriteRule ^ index.html [L]
