@@ -180,6 +180,10 @@ class ContractPdfService {
         bool $saveToFile = true,
         array $logoOptions = []
     ): array {
+        if (!class_exists('\Mpdf\Mpdf')) {
+            throw new Exception("mPDF library not found. Please run 'composer install' in apps/web-app/src/backend.");
+        }
+
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',

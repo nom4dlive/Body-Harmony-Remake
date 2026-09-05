@@ -38,6 +38,13 @@ jobs:
             npm install
           fi
 
+      - name: Install Backend Composer Dependencies
+        run: |
+          if [ -f "apps/web-app/src/backend/composer.json" ]; then
+            cd apps/web-app/src/backend
+            composer install --no-interaction --prefer-dist --ignore-platform-reqs
+          fi
+
       - name: Execute Nexus Gate (Deterministic Verification)
         shell: pwsh
         run: |
